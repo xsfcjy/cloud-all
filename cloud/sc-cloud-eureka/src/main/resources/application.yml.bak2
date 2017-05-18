@@ -1,0 +1,47 @@
+server:
+  port: 8082
+
+# 默认的profile为dev，其他环境通过指定启动参数使用不同的profile，比如：
+#   测试环境：java -jar my-spring-boot.jar --spring.profiles.active=test
+#   生产环境：java -jar my-spring-boot.jar --spring.profiles.active=prod
+spring:
+  profiles:
+    active: dev
+
+---
+# 开发环境配置
+spring:
+  profiles: dev
+  application:
+    name: eureka-server-clustered
+eureka:
+  instance:
+    hostname: ${hostName}
+  server:
+    peer2:
+      host: discoveryserver2
+      port: 2182
+    peer3:
+      host: discoveryserver3
+      port: 2183
+  client:
+    fetchRegistry: true
+    registerWithEureka: true
+    serviceUrl: 
+      defaultZone: http://${eureka.server.peer2.host}:${eureka.server.peer2.port}/eureka/,http://${eureka.server.peer3.host}:${eureka.server.peer3.port}/eureka/
+##设置eureka服务器所在的地址
+
+  
+---
+# 测试环境配置
+spring:
+  profiles: test
+mysql:
+  ipPort: 192.168.0.12:8066
+  
+---
+# 生产环境配置
+spring:
+  profiles: prod
+mysql:
+  ipPort: 192.168.0.13:8066

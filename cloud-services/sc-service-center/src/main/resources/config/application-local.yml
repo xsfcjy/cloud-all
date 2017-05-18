@@ -1,0 +1,15 @@
+jdbc: 
+  mycat:
+    driverClassName: com.mysql.jdbc.Driver
+    username: root
+    password: root
+    url: jdbc:mysql://localhost:3306/sc_center?characterEncoding=utf-8&amp;tinyInt1isBit=false
+    
+mybatis: 
+  center:
+    typeAliasesPackage: com.sfxie.services.center.pojo
+    mapperLocations: classpath:/com/sfxie/services/center/dao/sql/*.xml
+    configLocation: config/mybatis/mybatis-config.xml
+server:
+  port: 8083
+     

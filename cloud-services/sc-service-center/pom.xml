@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	
+	<parent>
+		<groupId>com.sfxie.services</groupId>
+		<artifactId>cloud-services</artifactId>
+		<version>0.0.1-RELEASE</version>
+<!-- 		<relativePath>../pom.xml</relativePath> -->
+	</parent>
+	<groupId>com.sfxie.services.center</groupId>
+	<artifactId>sc-service-center</artifactId>
+	<name>sc-service-center</name>
+	<url>http://maven.apache.org</url>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+	<dependencies>
+        <dependency>
+		    <groupId>com.sfxie.sharecloud.framework.core</groupId>
+		    <artifactId>sc-framework-core</artifactId>
+        	<version>0.0.1-RELEASE</version>
+        	<scope>compile</scope>
+        </dependency>
+        <dependency>
+		    <groupId>com.sfxie.sharecloud.framework</groupId>
+		    <artifactId>sc-framework-utils</artifactId>
+        	<version>0.0.1-RELEASE</version>
+        	<scope>compile</scope>
+        </dependency>
+        <dependency>
+		    <groupId>com.sfxie.sharecloud.framework</groupId>
+		    <artifactId>sc-framework-datasource</artifactId>
+        	<version>0.0.1-RELEASE</version>
+        	<scope>compile</scope>
+        </dependency>
+        <dependency>
+		    <groupId>com.sfxie.sharecloud.framework</groupId>
+		    <artifactId>sc-framework-pager</artifactId>
+        	<version>0.0.1-RELEASE</version>
+        	<scope>compile</scope>
+        </dependency>
+        <dependency>
+		    <groupId>com.sfxie.component</groupId>
+		    <artifactId>cloud-component-ui</artifactId>
+        	<version>0.0.1-RELEASE</version>
+        	<scope>compile</scope>
+        </dependency>
+        <!--表示为web工程-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <!--暴露各种指标-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-eureka</artifactId>
+        </dependency>
+		<dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-config-client</artifactId>
+        </dependency>
+		<!-- <dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-bus-amqp</artifactId>
+		</dependency> -->
+        
+	</dependencies> 
+</project>
+ 

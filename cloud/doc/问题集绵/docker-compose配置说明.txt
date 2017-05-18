@@ -1,0 +1,40 @@
+# 设置服务名称
+sc-eureka1:
+  # 指定docker镜像
+  image: "sc-eureka:0.0.1-RELEASE"
+  # 设置主机名
+  hostname: server1
+  # 设置环境变量-在这里设置的属性值可以在bootstrap.yml和application.yml或者application.properties文件中使用${xxx.xxx}获取
+  environment:
+     EUREKA_SERVER_PEER1_HOST: server1
+     EUREKA_SERVER_PEER1_PORT: 2181
+     EUREKA_SERVER_PEER2_HOST: server2
+     EUREKA_SERVER_PEER2_PORT: 2182
+     EUREKA_SERVER_PEER3_HOST: server3
+     EUREKA_SERVER_PEER3_PORT: 2183
+     SPRING_PROFILES_ACTIVE: server1
+  # 设置端口映射
+  ports:
+   - "2181:2181"
+   - "3000"
+   - "3000-3005"
+   - "8000:8000"
+   - "9090-9091:8080-8081"
+   - "49100:22"
+   - "127.0.0.1:8001:8001"
+   - "127.0.0.1:5000-5010:5000-5010"
+  # 设置域名与ip地址映射,在这里设置的映射会被放在docker容器的/etc/hosts文件中
+  extra_hosts:
+   - "server1:192.168.99.100"
+   - "server2:192.168.99.100"
+   - "server3:192.168.99.100"
+  #设置ip地址
+  networks:
+    app_net:
+      ipv4_address: 172.16.238.10
+      ipv6_address: 2001:3984:3989::10
+  #设置 dns
+  dns: 
+    - 114.114.114.114 
+    - 8.8.4.4
+ 

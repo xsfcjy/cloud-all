@@ -1,0 +1,40 @@
+zuul:
+  #Service will be mapped under the /api URI
+  #prefix: /api
+#  Uncomment to disable auto-registering all services read from Eureka
+#  ignoredServices: '*'
+  routes:
+    test:
+      path: /redirect/**
+      url: http://www.baidu.com
+    customer-by-address:
+      path: /customer-by-address/**
+      url: http://localhost:9098
+    customer-by-service:
+      path: /customer-by-service/**
+      serviceId: CUSTOMER-SERVICE
+    static:
+      path: /static/**
+    sfxieservice:
+      path: /sfxieservice/**
+      stripPrefix: true  
+ribbon:
+  eureka:
+    enabled: false
+sfxieservice:
+  ribbon:
+    listOfServers: 192.0.73.17:16802
+#endpoints:
+#  restart:
+#    enabled: true
+
+
+Service auto registration via Eureka 	http://localhost:9090/api/customer-service/customer/1
+Service registration by address 	http://localhost:9090/api/customer-by-address/customer/1
+Service registration by Eureka service id 	http://localhost:9090/api/customer-by-service/customer/1
+Display Routes 	http://localhost:9090/routes
+Static response 	http://localhost:9090/api/static
+Static response 	http://localhost:9090/api/static/dsf.svg
+Dynamic routing 	http://localhost:9090/api/redirect
+
+

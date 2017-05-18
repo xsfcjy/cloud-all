@@ -1,0 +1,10 @@
+http://www.cnblogs.com/studyzy/p/6113221.html
+
+
+
+###########################################################镜像加速方法###########################################################
+docker-machine ssh default 
+sudo sed -i "s|EXTRA_ARGS='|EXTRA_ARGS='--registry-mirror=http://030f1b39.m.daocloud.io |g" /var/lib/boot2docker/profile 
+exit 
+docker-machine restart default
+###########################################################镜像加速方法###########################################################

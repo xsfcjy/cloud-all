@@ -1,0 +1,18 @@
+1. 启动rabbitmq: docker run -d -p 5672:5672 --name sc-rabbitmq -p 15672:15672 -e RABBITMQ_PASS="mypass" tutum/rabbitmq
+2.进入boot2docker容器
+3.用docker-compose up命令启动所有项目
+
+mvn clean package docker:build
+docker-compose up
+cd /F/网站建设/workspace/git/source/xsfcjy/cloud/
+cd /d/sfxie/git/cloud/cloud
+
+docker run --name sc-mysql-3307 -p 3307:3306 -e MYSQL_ROOT_PASSWORD=root -d mysql:5.6.35
+docker run --name sc-mysql-3308 -p 3308:3306 -e MYSQL_ROOT_PASSWORD=root -d mysql:5.6.35
+docker run --name sc-mysql-apigateway -p 3306:3306 -e MYSQL_ROOT_PASSWORD=root -d mysql:5.6.35
+docker run -d -p 27017:27017 -p 28017:28017 -e MONGODB_PASS="mypass" tutum/mongodb
+
+## 启动zipkin
+sudo docker run --name=openzipkinmysql -h openzipkinmysql -p 3305:3306 openzipkin/zipkin-mysql:1.16.0 
+sudo docker run --name=openzipkin --link=openzipkinmysql -h openzipkin -p 9410:9410 -p 9411:9411 openzipkin/zipkin:1.16.0
+

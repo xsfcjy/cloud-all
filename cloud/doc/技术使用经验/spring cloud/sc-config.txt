@@ -1,0 +1,2 @@
+刷新配置：http://scconfig:9999/refresh post
+刷新配置：http://scconfig:9999/bus/reflesh get

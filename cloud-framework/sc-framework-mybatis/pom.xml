@@ -1,0 +1,44 @@
+﻿<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>sharecloud-framework</artifactId>
+    <groupId>com.sfxie.sharecloud.framework</groupId>
+    <version>0.0.1-RELEASE</version>
+  </parent>
+  <artifactId>sc-framework-mybatis</artifactId>
+  <name>sc-framework-mybatis</name>
+  <dependencies>
+  		<dependency>
+			<groupId>com.sfxie.sharecloud.framework</groupId>
+			<artifactId>sc-framework-datasource</artifactId>
+	  		<version>${sfxie.version}</version> 
+	  		<scope>compile</scope>
+		</dependency>
+  		<dependency>
+			<groupId>com.sfxie.sharecloud.framework</groupId>
+			<artifactId>sc-framework-logger</artifactId>
+	  		<version>${sfxie.version}</version> 
+	  		<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.sfxie.sharecloud.framework</groupId>
+			<artifactId>sc-framework-exception</artifactId>
+	  		<version>${sfxie.version}</version> 
+	  		<scope>compile</scope>
+		</dependency>
+      	<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+		</dependency>
+        <!-- mybatis/spring包 -->
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis-spring</artifactId>
+            <version>1.2.2</version>
+        </dependency>
+        <dependency>
+            <groupId>dom4j</groupId>
+            <artifactId>dom4j</artifactId>
+        </dependency>
+  </dependencies>
+</project>

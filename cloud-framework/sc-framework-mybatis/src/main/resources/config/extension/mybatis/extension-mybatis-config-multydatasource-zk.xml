@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:p="http://www.springframework.org/schema/p"
+  xmlns:context="http://www.springframework.org/schema/context"
+  xmlns:aop="http://www.springframework.org/schema/aop"
+  xmlns:tx="http://www.springframework.org/schema/tx"
+  xmlns:util="http://www.springframework.org/schema/util"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-4.0.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+    http://www.springframework.org/schema/util
+    http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+  <!-- mybatis文件配置，扫描所有mapper文件 -->
+ <!-- 配置自定义的SqlSessionTemplate模板，注入相关配置 -->
+ 	<bean id="multyDatasourceSqlSessionTemplate" class="com.sfxie.extension.mybatis.multydatasoure.zookeeper.ZookeeperDatasourceSqlSessionTemplate">
+     	<constructor-arg ref="defaultSqlSessionFactory" />
+    <!--  <property name="targetSqlSessionFactorys">
+     	<ref bean="targetMybatisSqlSessionFactorys"  />
+     </property> -->
+	<!--      <property name="zookeeperPath" value="/datasource/cluster"></property> -->
+     	<property name="zookeeperFactoryBean">
+     		<ref bean="zookeeperFactoryBean11"/>
+     	</property>
+ 	</bean>      
+  	<bean id="defaultSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"
+       p:dataSource-ref="defaultDataSource"
+       p:configLocation="classpath:config/website/mybatis/definition/mybatis-configuration.xml"
+       p:mapperLocations="classpath:com/golive/*/modules/**/sql/**.xml"/>
+  	<!-- spring与mybatis整合配置，扫描所有basePackage配置路径的所有dao -->
+  	<!-- spring与mybatis整合配置，扫描所有basePackage配置路径的所有dao -->
+ 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer"
+ 		p:basePackage="com.sfxie.extension.mybatis.dao,com.sfxie.website.modules.*.*.dao,com.sfxie.website.modules.*.dao"
+        p:annotationClass="com.sfxie.extension.mybatis.annotation.MyBatisRepository" >
+        <property name="sqlSessionTemplate"><ref bean="multyDatasourceSqlSessionTemplate"  /></property>
+ 	</bean>
+ 	
+  	<context:component-scan base-package="com.sfxie.extension.mybatis.service" />
+  
+</beans>

@@ -1,0 +1,32 @@
+﻿<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+		<groupId>com.sfxie.sharecloud.message</groupId>
+		<artifactId>cloud-message</artifactId>
+    <version>0.0.1-RELEASE</version>
+  </parent>
+  <artifactId>cloud-message-kafka</artifactId>
+  <name>cloud-message-kafka</name>
+  <properties>
+    <java.version>1.8</java.version>
+
+    <spring-kafka.version>1.1.2.RELEASE</spring-kafka.version>
+  </properties>
+  <dependencies>
+		<dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <!-- Spring Kafka -->
+    <dependency>
+      <groupId>org.springframework.kafka</groupId>
+      <artifactId>spring-kafka</artifactId>
+      <version>${spring-kafka.version}</version>
+    </dependency>
+  </dependencies>
+</project>

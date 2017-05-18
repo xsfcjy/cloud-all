@@ -1,0 +1,29 @@
+﻿<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>sharecloud-framework</artifactId>
+    <groupId>com.sfxie.sharecloud.framework</groupId>
+    <version>0.0.1-RELEASE</version>
+  </parent>
+  <artifactId>sc-framework-pager</artifactId>
+  <name>sc-framework-pager</name>
+  <dependencies>
+  		<dependency>
+			<groupId>com.sfxie.sharecloud.framework</groupId>
+			<artifactId>sc-framework-mybatis</artifactId>
+	  		<version>${sfxie.version}</version> 
+	  		<scope>compile</scope>
+		</dependency>
+    	<dependency>
+		    <groupId>com.github.pagehelper</groupId>
+		    <artifactId>pagehelper</artifactId>
+		    <version>4.1.6</version>
+		</dependency>
+		<dependency>
+		    <groupId>commons-io</groupId>
+		    <artifactId>commons-io</artifactId>
+		    <version>2.5</version>
+		</dependency>
+				
+  </dependencies>
+</project>

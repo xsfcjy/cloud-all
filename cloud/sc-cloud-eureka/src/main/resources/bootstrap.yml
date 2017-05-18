@@ -1,0 +1,12 @@
+---
+spring:
+  application:
+    name: eureka-server-clustered
+
+
+eureka:
+  instance:
+    nonSecurePort: ${server.port:8888}
+    perferIpAddress: true
+  metadataMap:
+    instanceId: ${spring.application.name}:${spring.application.instance_id:${random.value}}

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<selects xmlns="http://xmlbeans.golive.com/schema/data/select">
+	<select name="common.state.validation" state="1" description="记录状态 ">
+		<record>
+			<value>1</value>
+			<text>有效</text>
+		</record>
+		<record>
+			<value>0</value>
+			<text>无效</text>
+		</record>
+	</select>
+	<select name="common.YN" state="1" description="是否选择 ">
+		<record>
+			<value>Y</value>
+			<text>是</text>
+		</record>
+		<record>
+			<value>N</value>
+			<text>否</text>
+		</record>
+	</select>
+	<select name="common.NY" state="1" description="是否选择 ">
+		<record>
+			<value>N</value>
+			<text>否</text>
+		</record>
+		<record>
+			<value>Y</value>
+			<text>是</text>
+		</record>
+	</select>
+</selects> 

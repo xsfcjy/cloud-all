@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+	<classPathEntry
+		location="E:/sfxie/maven/repository/mysql/mysql-connector-java/5.1.39/mysql-connector-java-5.1.39.jar" />
+	<context id="my" targetRuntime="MyBatis3">
+		<!-- 是否去除自动生成的注释 -->
+		<!-- <commentGenerator>
+			<property name="suppressDate" value="false" />
+			<property name="suppressAllComments" value="true" />
+		</commentGenerator> -->
+		<commentGenerator>
+			<property name="suppressDate" value="false"/>
+			<property name="suppressAllComments" value="false" />
+			<property name="addRemarkComments" value="true" />
+		</commentGenerator>
+
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+			connectionURL="jdbc:mysql://localhost:3306/sc_center" userId="root"
+			password="root" />
+
+		<!-- false：JDBC DECIMAL、NUMERIC类型解析为Integer，默认方式 -->
+		<!-- true： JDBC DECIMAL、NUMERIC类型解析为java.math.BigDecimal -->
+		<javaTypeResolver>
+			<property name="forceBigDecimals" value="false" />
+		</javaTypeResolver>
+
+		<!-- 生成模型的包名和位置 -->
+		<javaModelGenerator targetPackage="com.sfxie.services.center.pojo"
+			targetProject="E:/sfxie/git/cloud/cloud-all/cloud-services/sc-service-center/src/main/java">
+			<!-- 是否让schema作为包的后缀 -->
+			<property name="enableSubPackages" value="true" />
+			<!-- 从数据库返回的值被清理前后的空格 -->
+			<property name="trimStrings" value="true" />
+		</javaModelGenerator>
+
+		<!-- 生成映射文件的包名和位置 -->
+		<sqlMapGenerator targetPackage="com.sfxie.services.center.dao.sql"
+			targetProject="E:/sfxie/git/cloud/cloud-all/cloud-services/sc-service-center/src/main/java">
+			<property name="enableSubPackages" value="true" />
+		</sqlMapGenerator>
+
+		<!-- 生成DAO的包名和位置 -->
+		<javaClientGenerator targetPackage="com.sfxie.services.center.dao.mapper"
+			targetProject="E:/sfxie/git/cloud/cloud-all/cloud-services/sc-service-center/src/main/java"
+			type="XMLMAPPER">
+			<property name="enableSubPackages" value="true" />
+		</javaClientGenerator>
+
+		<!--<table tableName="T_FEE_AGTBILL" domainObjectName="FeeAgentBill" enableCountByExample="false" 
+			enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" 
+			selectByExampleQueryId="false"/> <ignoreColumn column="name" /> -->
+		<!-- tableName：数据库表 -->
+		<!-- domainObjectName：对应于数据库表的javaBean类名 -->
+		<table tableName="sfxie_sys_role_action" domainObjectName="SfxieSysRoleAction"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false">
+			<partitionField name="partition_company" ></partitionField>
+		</table>
+		<table tableName="sfxie_sys_action" domainObjectName="SfxieSysAction"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false">
+			<conditionField name="action_name" operate="like" leftString="'%" rightString="%'"></conditionField>
+			<partitionField name="partition_company" ></partitionField>
+		</table>
+		<table tableName="sfxie_sys_authorization" domainObjectName="SfxieSysAuthorization"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false">
+			<conditionField name="company_code" operate="like" leftString="'%" rightString="%'"></conditionField>
+			<conditionField name="role_code" operate="like" leftString="'%" rightString="%'"></conditionField>
+			<partitionField name="partition_company" ></partitionField>
+		</table>
+		<table tableName="sfxie_sys_auth_role_menu" domainObjectName="SfxieSysAuthRoleMenu"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false">
+			<partitionField name="partition_company" ></partitionField>
+		</table>
+		<table tableName="sfxie_sys_auth_data" domainObjectName="SfxieSysAuthData"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false">
+			<conditionField name="resource_name" operate="like" leftString="'%" rightString="%'"></conditionField>
+			<conditionField name="resource_code" operate="like" leftString="'%" rightString="%'"></conditionField>
+			<partitionField name="partition_company" ></partitionField>
+		</table>
+		<table tableName="sfxie_sys_post_role" domainObjectName="SfxieSysPostRole"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false">
+			<partitionField name="partition_company" ></partitionField>
+		</table>
+		<table tableName="sfxie_sys_user_relation" domainObjectName="SfxieSysUserRelation"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false">
+			<conditionField name="user_name_cn" operate="like" leftString="'%" rightString="%'"></conditionField>
+			<partitionField name="partition_company" ></partitionField>
+		</table>
+		<table tableName="sfxie_sys_post" domainObjectName="SfxieSysPost"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false">
+			<conditionField name="post_name" operate="like" leftString="'%" rightString="%'"></conditionField>
+			<partitionField name="partition_company" ></partitionField>
+		</table>
+		<table tableName="sfxie_sys_department" domainObjectName="SfxieSysDepartment"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false">
+			<conditionField name="department_name" operate="like" leftString="'%" rightString="%'"></conditionField>
+			<partitionField name="partition_company" ></partitionField>
+		</table>
+		<table tableName="sfxie_sys_organization" domainObjectName="SfxieSysOrganization"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false">
+		</table>
+		<table tableName="sfxie_sys_company" domainObjectName="SfxieSysCompany"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false">
+			<conditionField name="company_name_cn" operate="like" leftString="'%" rightString="%'"></conditionField>
+		</table>
+		<table tableName="sfxie_sys_role_menu" domainObjectName="SfxieSysRoleMenu"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false">
+			<partitionField name="partition_company" ></partitionField>
+		</table>
+		<table tableName="sfxie_sys_menu" domainObjectName="SfxieSysMenu"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false">
+			<conditionField name="menu_name" operate="like" leftString="'%" rightString="%'"></conditionField>
+			<partitionField name="partition_company" ></partitionField>
+		</table>
+		<table tableName="sfxie_sys_user_role" domainObjectName="SfxieSysUserRole"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false">
+			<partitionField name="partition_company" ></partitionField>
+		</table>
+		<table tableName="sfxie_sys_role" domainObjectName="SfxieSysRole"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false">
+			<conditionField name="role_name" operate="like" leftString="'%" rightString="%'"></conditionField>
+			<partitionField name="partition_company" ></partitionField>
+		</table>
+		<table tableName="sfxie_sys_system" domainObjectName="SfxieSysSystem"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false">
+			<conditionField name="system_name" operate="like" leftString="'%" rightString="%'"></conditionField>
+			<partitionField name="partition_company" ></partitionField>
+		</table>
+		<table tableName="sfxie_sys_userinfo" domainObjectName="SfxieSysUserinfo"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false">
+			<conditionField name="user_id" operate="like" leftString="'%" rightString="%'"></conditionField>
+			<partitionField name="partition_company" ></partitionField>
+		</table>
+	</context>
+</generatorConfiguration>

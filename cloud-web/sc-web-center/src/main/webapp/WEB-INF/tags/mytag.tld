@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE taglib PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.2//EN" "http://java.sun.com/dtd/web-jsptaglibrary_1_2.dtd" >
+<taglib>
+	<tlib-version>1.0</tlib-version>
+	<jsp-version>1.2</jsp-version>
+	<short-name>mytag</short-name>
+	<uri>http://www.sfxie.com/tags</uri>
+	<tag>
+		<name>menu</name>
+		<tag-class>com.sfxie.web.tag.menu.MenuTag</tag-class>
+		<description>菜单生成标签</description>
+	</tag>
+	<tag>
+		<name>resources</name>
+		<tag-class>com.sfxie.component.ui.ResourceLoaderTag</tag-class>
+		<description>资源加载控制标签</description>
+	</tag>
+	<tag>
+	    <name>select</name>
+	    <tag-class>com.sfxie.component.ui.tags.SelectTag</tag-class>
+	    <body-content></body-content>
+	    <description>下拉框标签</description>
+	    <attribute>
+	      <name>selectId</name>
+	      <required>true</required>
+	      <rtexprvalue>true</rtexprvalue>
+	      <description><![CDATA[]]></description>
+	    </attribute>
+	    <attribute>
+	      <name>selectName</name>
+	      <required>false</required>
+	      <rtexprvalue>true</rtexprvalue>
+	      <description><![CDATA[]]></description>
+	    </attribute>
+	    <attribute>
+	      <name>parameter</name>
+	      <required>false</required>
+	      <rtexprvalue>true</rtexprvalue>
+	      <description><![CDATA[]]></description>
+	    </attribute>
+	    <attribute>
+	      <name>dataProvider</name>
+	      <required>true</required>
+	      <rtexprvalue>true</rtexprvalue>
+	      <description><![CDATA[ ]]></description>
+	    </attribute>
+	    <attribute>
+	      <name>displayField</name>
+	      <required>true</required>
+	      <rtexprvalue>true</rtexprvalue>
+	      <description><![CDATA[]]></description>
+	    </attribute>
+	    <attribute>
+	      <name>valueField</name>
+	      <required>true</required>
+	      <rtexprvalue>true</rtexprvalue>
+	      <description><![CDATA[ ]]></description>
+	    </attribute>
+	    <attribute>
+	      <name>nullable</name>
+	      <required>false</required>
+	      <rtexprvalue>true</rtexprvalue>
+	      <description><![CDATA[ ]]></description>
+	    </attribute>
+	    <attribute>
+	      <name>nullText</name>
+	      <required>false</required>
+	      <rtexprvalue>true</rtexprvalue>
+	      <description><![CDATA[ ]]></description>
+	    </attribute>
+	    <attribute>
+	      <name>selectType</name>
+	      <required>false</required>
+	      <rtexprvalue>true</rtexprvalue>
+	      <description><![CDATA[  ]]></description>
+	    </attribute>
+	    <attribute>
+	      <name>value</name>
+	      <required>false</required>
+	      <rtexprvalue>true</rtexprvalue>
+	      <description><![CDATA[  ]]></description>
+	    </attribute>
+	    <attribute>
+	      <name>className</name>
+	      <required>false</required>
+	      <rtexprvalue>true</rtexprvalue>
+	      <description><![CDATA[]]></description>
+	    </attribute>
+	    <attribute>
+	      <name>style</name>
+	      <required>false</required>
+	      <rtexprvalue>true</rtexprvalue>
+	      <description><![CDATA[]]></description>
+	    </attribute>
+	    <attribute>
+	      <name>optionIdPrefix</name>
+	      <required>false</required>
+	      <rtexprvalue>true</rtexprvalue>
+	      <description><![CDATA[]]></description>
+	    </attribute>
+	    <attribute>
+	      <name>isText</name>
+	      <required>false</required>
+	      <rtexprvalue>true</rtexprvalue>
+	      <description><![CDATA[]]></description>
+	    </attribute>
+	    <attribute>
+	      <name>dataOptions</name>
+	      <required>false</required>
+	      <rtexprvalue>true</rtexprvalue>
+	      <description><![CDATA[]]></description>
+	    </attribute>
+	</tag>
+</taglib>

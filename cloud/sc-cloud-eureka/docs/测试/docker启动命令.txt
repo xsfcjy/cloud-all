@@ -1,0 +1,2 @@
+## 创建第一个测试服务
+docker run -d -i -v /data/service/cloud:/data/service/cloud -p 7071:7071 -h xsfcjy.services.test105 --name api-service1-7071 tifayuki/java:8 java -XX:MaxMetaspaceSize=128m -Duser.timezone=GMT+08 -Xmx768m -Xms250m -jar /data/service/cloud/api-service1-0.0.1-RELEASE.jar --accessTimeout=10000

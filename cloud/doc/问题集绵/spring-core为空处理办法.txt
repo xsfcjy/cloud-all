@@ -1,0 +1,2 @@
+删除maven\repository\org\springframework\boot\spring-boot-starter\1.4.1.RELEASE\spring-boot-starter-1.4.1.RELEASE.pom文件下的spring-core依赖
+删除maven\repository\org\springframework\boot\spring-boot\1.4.1.RELEASE\spring-boot-starter-1.4.1.RELEASE.pom文件下的spring-core依赖

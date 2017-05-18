@@ -1,0 +1,28 @@
+@charset "utf-8";
+/* CSS Document */
+
+.right{width:98%; height:auto; height:auto \9; *height:auto; _height:auto; overflow:hidden; padding-top:9px; padding-left:19px;}
+
+.right_text{width:100%; height:30px; line-height:30px; color:#727272;}
+
+.right_text span{ display:block; float:left; margin-top:5px; margin-right:12px;}
+
+.right_text a:link,.right_text a:visited{color:#727272; text-decoration:underline;}
+
+.right_text a:hover{ color:#727272; text-decoration:none;}
+
+.right_button{width:100%; height:20px;padding-top:10px;}
+
+.right_but{width:63px; height:19px; text-align:center; background:url(../images/click.jpg) no-repeat; float:left; line-height:19px; padding-left:5px;}
+.right_but1{width:160px; height:19px; text-align:center; background:url(../images/click01.jpg) no-repeat; float:left; line-height:19px; padding-left:10px;}
+
+
+.right_but2{width:95px; height:19px; text-align:center; background:url(../images/click02.jpg) no-repeat; float:left; line-height:19px; padding-left:8px;}
+
+
+.right_but3{width:170px; height:19px; text-align:center; background:url(../images/click01.jpg) no-repeat; float:left; line-height:19px; padding-left:15px;}
+
+.right_but a:link,.right_but a:visited{color:#727272;text-decoration:none;}
+
+.right_but a:hover{color:#727272;text-decoration:none;}
+

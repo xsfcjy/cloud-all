@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<!DOCTYPE mycat:schema SYSTEM "schema.dtd">
+<mycat:schema xmlns:mycat="http://io.mycat/">
+
+	<schema name="sc_apigateway" checkSQLschema="false" sqlMaxLimit="100">
+		<table name="api_gateway_system" primaryKey="id" type="global" dataNode="mysql_apigateway_$0-1" />
+		<table name="api_gateway_module" primaryKey="id" type="global" dataNode="mysql_apigateway_$0-1" />
+		<table name="api_gateway_interface" primaryKey="id" type="global" dataNode="mysql_apigateway_$0-1" />
+		<table name="api_gateway_config" primaryKey="id" type="global" dataNode="mysql_apigateway_$0-1" />
+		<table name="api_gateway_authority" primaryKey="id" type="global" dataNode="mysql_apigateway_$0-1" />
+	</schema>
+	
+	
+	<!-- 
+		DROP TABLE sfxie_sys_role_action;
+		DROP TABLE sfxie_sys_action;
+		DROP TABLE sfxie_sys_authorization;
+		DROP TABLE sfxie_sys_auth_role_menu;
+		DROP TABLE sfxie_sys_auth_data;
+		DROP TABLE sfxie_sys_post_role;
+		DROP TABLE sfxie_sys_user_relation;
+		DROP TABLE sfxie_sys_post;
+		DROP TABLE sfxie_sys_department;
+		DROP TABLE sfxie_sys_organizition;
+		DROP TABLE sfxie_sys_company;
+		DROP TABLE sfxie_sys_role_menu;
+		DROP TABLE sfxie_sys_menu;
+		DROP TABLE sfxie_sys_user_role;
+		DROP TABLE sfxie_sys_role;
+		DROP TABLE sfxie_sys_system;
+		DROP TABLE sfxie_sys_userinfo; 
+	-->
+	<schema name="sc_center" checkSQLschema="false" sqlMaxLimit="100">
+		<!-- 
+		<table name="sfxie_sys_organizition" primaryKey="id_" dataNode="dn_sc_center_1" />
+		<table name="sfxie_sys_company" primaryKey="id_"  dataNode="dn_sc_center_1" /> 
+		-->
+		<table name="sfxie_sys_organizition" primaryKey="id_" type="global"  dataNode="mysql_center_$0-1"/>
+		<table name="sfxie_sys_company" primaryKey="id_" type="global" dataNode="mysql_center_$0-1"/>
+		<table name="sfxie_sys_user_relation" primaryKey="id_"  dataNode="mysql_center_$0-1"  rule="sharding-by-intfile" /> 
+		<table name="sfxie_sys_userinfo" primaryKey="id_"  dataNode="mysql_center_$0-1"  rule="sharding-by-intfile" /> 
+	</schema>
+	
+	<dataNode name="mysql_apigateway_0" dataHost="mysql_3306" database="sc_apigateway" />
+	<dataNode name="mysql_apigateway_1" dataHost="mysql_3307" database="sc_apigateway" />
+	<dataNode name="mysql_center_0" dataHost="mysql_3306" database="sc_center" />
+	<dataNode name="mysql_center_1" dataHost="mysql_3307" database="sc_center" />
+<!-- 	<dataNode name="dn_sc_center_2" dataHost="mysql_3306" database="sc_center" /> -->
+	
+	<dataHost name="mysql_3306" maxCon="10" minCon="10" balance="0"
+			  writeType="0" dbType="mysql" dbDriver="native" switchType="1"  slaveThreshold="100">
+		<heartbeat>select user()</heartbeat>
+		<writeHost host="mysql_scapigateway" url="mysql_scapigateway:3306" user="root"
+				   password="root">
+		</writeHost>
+	</dataHost>
+	
+	<dataHost name="mysql_3307" maxCon="10" minCon="10" balance="0"
+			  writeType="0" dbType="mysql" dbDriver="native" switchType="1"  slaveThreshold="100">
+		<heartbeat>select user()</heartbeat>
+		<writeHost host="mysql_sc_center_1" url="mysql_sc_center_1:3307" user="root"
+				   password="root">
+		</writeHost>
+	</dataHost>
+	<!-- 
+	<dataHost name="mysql_3308" maxCon="10" minCon="10" balance="0"
+			  writeType="0" dbType="mysql" dbDriver="native" switchType="1"  slaveThreshold="100">
+		<heartbeat>select user()</heartbeat>
+		<writeHost host="mysql_sc_center_2" url="mysql_sc_center_2:3308" user="root"
+				   password="root">
+		</writeHost>
+	</dataHost> -->
+</mycat:schema>

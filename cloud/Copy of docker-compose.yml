@@ -1,0 +1,116 @@
+# 启动注册中心 1
+sc-eureka1:
+  image: "sc-eureka:0.0.1-RELEASE"
+  hostname: server1
+  environment:
+     EUREKA_SERVER_PEER1_HOST: server1
+     EUREKA_SERVER_PEER1_PORT: 2181
+     EUREKA_SERVER_PEER2_HOST: server2
+     EUREKA_SERVER_PEER2_PORT: 2182
+     EUREKA_SERVER_PEER3_HOST: server3
+     EUREKA_SERVER_PEER3_PORT: 2183
+     SPRING_PROFILES_ACTIVE: server1
+  ports:
+   - "2181:2181"
+  extra_hosts:
+   - "server1:192.168.99.100"
+   - "server2:192.168.99.100"
+   - "server3:192.168.99.100"
+  
+# 启动注册中心 2
+sc-eureka2:
+  image: "sc-eureka:0.0.1-RELEASE"
+  hostname: server2
+  environment:
+     EUREKA_SERVER_PEER1_HOST: server1
+     EUREKA_SERVER_PEER1_PORT: 2181
+     EUREKA_SERVER_PEER2_HOST: server2
+     EUREKA_SERVER_PEER2_PORT: 2182
+     EUREKA_SERVER_PEER3_HOST: server3
+     EUREKA_SERVER_PEER3_PORT: 2183
+     SPRING_PROFILES_ACTIVE: server2
+  ports:
+   - "2182:2182"
+  extra_hosts:
+   - "server1:192.168.99.100"
+   - "server2:192.168.99.100"
+   - "server3:192.168.99.100"
+  
+# 启动注册中心 3
+sc-eureka3:
+  image: "sc-eureka:0.0.1-RELEASE"
+  hostname: server3
+  environment:
+     EUREKA_SERVER_PEER1_HOST: server1
+     EUREKA_SERVER_PEER1_PORT: 2181
+     EUREKA_SERVER_PEER2_HOST: server2
+     EUREKA_SERVER_PEER2_PORT: 2182
+     EUREKA_SERVER_PEER3_HOST: server3
+     EUREKA_SERVER_PEER3_PORT: 2183
+     SPRING_PROFILES_ACTIVE: server3
+  ports:
+   - "2183:2183"
+  extra_hosts:
+   - "server1:192.168.99.100"
+   - "server2:192.168.99.100"
+   - "server3:192.168.99.100"
+   
+# 启动rabbitmq消息中间件   
+rabbitmq:
+  image: "tutum/rabbitmq:latest"
+  
+  hostname: rabbitmq
+  ports:
+   - "5672:5672"
+   - "15672:15672"
+  
+# 启动rabbitmq消息中间件 
+openzipkin:
+  image: "openzipkin/zipkin:latest"
+  hostname: openzipkin
+  links:
+    - openzipkinmysql
+  ports:
+   - "9410-9411"
+  
+# 启动rabbitmq消息中间件 
+openzipkinmysql:
+  image: "openzipkin/zipkin-mysql:latest"
+  hostname: openzipkinmysql
+  ports:
+   - "3306:3306"
+  
+# 启动配置中心 
+scconfig:
+  image: "sc-config:0.0.1-RELEASE"
+  hostname: scconfig
+  links:
+    - sc-eureka1
+    - sc-eureka2
+    - sc-eureka3
+    - rabbitmq
+  environment:
+    SERVER_PORT: 9999
+    EUREKA_SERVER_PEER1_HOST: server1
+    EUREKA_SERVER_PEER1_PORT: 2181
+    EUREKA_SERVER_PEER2_HOST: server2
+    EUREKA_SERVER_PEER2_PORT: 2182
+    EUREKA_SERVER_PEER3_HOST: server3
+    EUREKA_SERVER_PEER3_PORT: 2183
+    SPRING_CLOUD_CONFIG_ENV: dev
+    SPRING_CLOUD_CONFIG_LABEL: master
+    SPRING_CLOUD_CONFIG_SERVER_GIT_URI: https://github.com/xsfcjy/spring-cloud-config-test.git
+    SPRING_CLOUD_CONFIG_SERVER_GIT_SEARCHPATHS: apigateway
+    SPRING_RABBITMQ_HOST: 192.168.99.100
+    SPRING_RABBITMQ_PORT: 5672
+    SPRING_RABBITMQ_USERNAME: admin
+    SPRING_RABBITMQ_PASSWORD: mypass
+    ENDPOINTS_RESTART_ENABLED: "true"
+    SPRING_PROFILES_ACTIVE: docker
+  extra_hosts:
+   - "server1:192.168.99.100"
+   - "server2:192.168.99.100"
+   - "server3:192.168.99.100"
+   - "rabbitmq:192.168.99.100"
+  ports:
+   - "9999:9999"

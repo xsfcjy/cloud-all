@@ -1,0 +1,2 @@
+http://scconfig:9999/refresh
+http://scconfig:9999/bus/reflesh

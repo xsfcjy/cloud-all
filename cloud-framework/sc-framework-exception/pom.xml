@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>sharecloud-framework</artifactId>
+		<groupId>com.sfxie.sharecloud.framework</groupId>
+		<version>0.0.1-RELEASE</version>
+	</parent>
+	<artifactId>sc-framework-exception</artifactId>
+	<name>sc-framework-exception</name>
+	<url>http://maven.apache.org</url>
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.sfxie.sharecloud.framework</groupId>
+			<artifactId>sc-framework-utils</artifactId>
+	  		<version>${sfxie.version}</version> 
+	  		<scope>compile</scope>
+		</dependency>
+		<dependency>
+		    <groupId>com.sfxie.sharecloud.framework.core</groupId>
+		    <artifactId>sc-framework-core</artifactId> 
+	  		<version>${sfxie.version}</version> 
+	  		<scope>compile</scope>
+		</dependency>
+	</dependencies>
+</project>

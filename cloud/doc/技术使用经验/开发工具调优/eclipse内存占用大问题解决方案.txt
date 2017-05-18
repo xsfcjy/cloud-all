@@ -1,0 +1,11 @@
+解决Eclipse狂吃内存的解决方法（转）
+
+1、在eclipse的安装路径下建一个文件叫options，千万别又扩展名，然后添加内容如下：
+           org.eclipse.ui/perf/showHeapStatus=true
+     保存并退出
+
+2、右击eclipse/myeclipse的快捷方式--快捷方式--目标，加入 如下内容
+           Eclipse -debug options -vm javaw.exe
+    修改后可如下形式：
+        E:\Tools\eclipse\eclipse.exe Eclipse -debug options -vm javaw.exe
+3、重启eclipse，会发现右下角有个小垃圾桶的图标，点一下就做垃圾回收，释放eclipse占用的多 余的内存空间

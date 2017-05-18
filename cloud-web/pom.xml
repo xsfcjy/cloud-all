@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.sfxie.web.boot</groupId>
+	<artifactId>web-boot</artifactId>
+	<version>0.0.1-RELEASE</version>
+	<packaging>pom</packaging>
+	<name>sc-web-boot</name>
+	<modules>
+		<module>sc-web-center</module>
+	</modules>
+
+	<properties>
+		<webVersion>3.0</webVersion>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<spring.version>4.3.2.RELEASE</spring.version>
+		<jackson.version>2.4.6</jackson.version>
+		<main.basedir>${basedir}/../..</main.basedir>
+		<m2eclipse.wtp.contextRoot>/</m2eclipse.wtp.contextRoot>
+	</properties>
+	<build>
+		<resources>
+			<resource>
+				<directory>${basedir}/src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+			<resource>
+				<directory>${basedir}/src/main/java</directory>
+				<includes>
+					<include>**/*.xml</include>
+				</includes>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+	
+	<dependencyManagement>
+     <dependencies>
+	        <dependency>
+	            <!-- Import dependency management from Spring Boot -->
+	            <groupId>org.springframework.boot</groupId>
+	            <artifactId>spring-boot-dependencies</artifactId>
+	            <version>1.4.0.RELEASE</version>
+	            <type>pom</type>
+	            <scope>import</scope>
+	        </dependency>
+	    </dependencies>
+	</dependencyManagement>
+	<dependencies>
+		<!--Spring Boot -->
+		<!--支持 Web 应用开发，包含 Tomcat 和 spring-mvc。 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!--模板引擎 -->
+		<!--支持使用 JDBC 访问数据库 -->
+	</dependencies>
+	
+	<distributionManagement>
+		<repository>
+			<id>nexus-releases</id>
+			<url>http://xsfcjy.oicp.net:8888/nexus-2.6.4-02/content/repositories/releases/</url>
+		</repository>
+		<snapshotRepository>
+			<id>nexus-snapshots</id>
+			<url>http://xsfcjy.oicp.net:8888/nexus-2.6.4-02/content/repositories/snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
+</project>

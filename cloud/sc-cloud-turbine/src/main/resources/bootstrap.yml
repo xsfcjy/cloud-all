@@ -1,0 +1,15 @@
+---
+spring:
+  application:
+    name: sc-turbine
+  cloud:
+    config:
+      discovery:
+        enabled: false
+
+eureka:
+  instance:
+    nonSecurePort: ${server.port:9090}
+  client:
+    serviceUrl:
+      defaultZone: http://server1:2181/eureka/,http://server2:2182/eureka/,http://server3:2183/eureka/

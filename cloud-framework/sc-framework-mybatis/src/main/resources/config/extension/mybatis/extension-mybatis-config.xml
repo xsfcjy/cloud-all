@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:context="http://www.springframework.org/schema/context"
+  xmlns:aop="http://www.springframework.org/schema/aop"
+  xmlns:tx="http://www.springframework.org/schema/tx"
+  xmlns:util="http://www.springframework.org/schema/util"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-4.0.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+    http://www.springframework.org/schema/util
+    http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+ 
+  <!-- mybatis文件配置，扫描所有mapper文件 -->
+  <bean id="sqlSessionFactory"
+       class="org.mybatis.spring.SqlSessionFactoryBean" >
+       <property name="dataSource" ref="dataSource"></property>
+<!--        <property name="configLocation" value="classpath:config/*/mybatis/definition/mybatis-configuration.xml"></property> -->
+       <property name="configLocation" value="classpath:config/website/mybatis/definition/mybatis-configuration.xml"></property>
+       <property name="mapperLocations" value="classpath:com/golive/*/modules/**/sql/**.xml"></property>
+  </bean>
+       
+ <!-- spring与mybatis整合配置，扫描所有basePackage配置路径的所有dao -->
+  <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer" >
+        <property name="basePackage" value="com.sfxie.extension.mybatis.dao,com.sfxie.*.modules.*.*.dao,com.sfxie.*.modules.*.*.dao.*,com.sfxie.*.modules.*.*.*.dao.*,com.sfxie.*.modules.*.*.*.dao"></property>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+        <property name="annotationClass" value="com.sfxie.extension.mybatis.annotation.MyBatisRepository"></property>
+  </bean>
+  
+  <context:component-scan base-package="com.sfxie.extension.mybatis.service" />
+  
+</beans>

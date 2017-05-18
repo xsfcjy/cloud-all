@@ -1,0 +1,90 @@
+server1:
+  image: "sc-eureka:0.0.1-RELEASE"
+  hostname: server1
+  environment:
+     EUREKA_SERVER_PEER1_HOST: server1
+     EUREKA_SERVER_PEER1_PORT: 2181
+     EUREKA_SERVER_PEER2_HOST: server2
+     EUREKA_SERVER_PEER2_PORT: 2182
+     EUREKA_SERVER_PEER3_HOST: server3
+     EUREKA_SERVER_PEER3_PORT: 2183
+     SPRING_PROFILES_ACTIVE: server1
+  ports:
+   - "2181:2181"
+server2:
+  image: "sc-eureka:0.0.1-RELEASE"
+  hostname: server2
+  environment:
+     EUREKA_SERVER_PEER1_HOST: server1
+     EUREKA_SERVER_PEER1_PORT: 2181
+     EUREKA_SERVER_PEER2_HOST: server2
+     EUREKA_SERVER_PEER2_PORT: 2182
+     EUREKA_SERVER_PEER3_HOST: server3
+     EUREKA_SERVER_PEER3_PORT: 2183
+     SPRING_PROFILES_ACTIVE: server2
+  ports:
+   - "2182:2182"
+server3:
+  image: "sc-eureka:0.0.1-RELEASE"
+  hostname: server3
+  environment:
+     EUREKA_SERVER_PEER1_HOST: server1
+     EUREKA_SERVER_PEER1_PORT: 2181
+     EUREKA_SERVER_PEER2_HOST: server2
+     EUREKA_SERVER_PEER2_PORT: 2182
+     EUREKA_SERVER_PEER3_HOST: server3
+     EUREKA_SERVER_PEER3_PORT: 2183
+     SPRING_PROFILES_ACTIVE: server3
+  ports:
+   - "2183:2183"
+rabbitmq:
+  image: "tutum/rabbitmq:latest"
+scconfig:
+  image: "sc-config:0.0.1-RELEASE"
+  hostname: scconfig
+  links:
+    - server1
+    - server2
+    - server3
+    - rabbitmq
+  environment:
+    SERVER_PORT: 9999
+    EUREKA_SERVER_PEER1_HOST: server1
+    EUREKA_SERVER_PEER1_PORT: 2181
+    EUREKA_SERVER_PEER2_HOST: server2
+    EUREKA_SERVER_PEER2_PORT: 2182
+    EUREKA_SERVER_PEER3_HOST: server3
+    EUREKA_SERVER_PEER3_PORT: 2183
+    SPRING_CLOUD_CONFIG_ENV: dev
+    SPRING_CLOUD_CONFIG_LABEL: master
+    SPRING_CLOUD_CONFIG_SERVER_GIT_URI: https://github.com/xsfcjy/spring-cloud-config-test.git
+    SPRING_CLOUD_CONFIG_SERVER_GIT_SEARCHPATHS: apigateway
+    SPRING_RABBITMQ_HOST: 192.168.0.105
+    SPRING_RABBITMQ_PORT: 5672
+    SPRING_RABBITMQ_USERNAME: admin
+    SPRING_RABBITMQ_PASSWORD: mypass
+    ENDPOINTS_RESTART_ENABLED: "true"
+    SPRING_PROFILES_ACTIVE: docker
+  ports:
+   - "9999:8080"
+scapigateway:
+  image: "sc-apigateway:0.0.1-RELEASE"
+  hostname: scapigateway
+  links:
+    - scconfig
+  environment:
+    SERVER_PORT: 8181
+    EUREKA_SERVER_PEER1_HOST: server1
+    EUREKA_SERVER_PEER1_PORT: 2181
+    EUREKA_SERVER_PEER2_HOST: server2
+    EUREKA_SERVER_PEER2_PORT: 2182
+    EUREKA_SERVER_PEER3_HOST: server3
+    EUREKA_SERVER_PEER3_PORT: 2183
+    SPRING_CLOUD_CONFIG_DISCOVERY_ENABLED: "true"
+    SPRING_CLOUD_CONFIG_DISCOVERY_SERVICEID: sc-config-server
+    SPRING_CLOUD_CONFIG_PROFILE: dev
+    SPRING_CLOUD_CONFIG_LABEL: master
+    ZUUL_SENDERRORFILTER_POST_DISABLE: "true"
+    SPRING_PROFILES_ACTIVE: docker
+  ports:
+   - "8181:8080"

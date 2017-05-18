@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sfxie.sharecloud.apigateway.authentication.apigateway.dao.business.mapper.AuthMapper" >
+
+	<select id="getApiGatewayConfig" parameterType="string" resultType="apiGatewayConfig" > 
+             SELECT c.app_secret appSecret,c.app_id appId,c.type,c.enable  from api_gateway_config c where c.app_id = #{appId}  and c.is_delete = 0 and c.`enable` = 1
+    </select>   
+    <select id="getInterfacesByAppId" parameterType="map" resultType="apiGatewayInterface" > 
+            SELECT
+				i.server_url serverUrl,
+				i.method_name methodName,
+				i.enable enable,
+				i.match_type matchType
+			FROM
+			  api_gateway_config c,
+			  api_gateway_authority a ,
+			  api_gateway_interface i
+			WHERE
+				c.app_id = #{appId}
+			AND c.is_delete = 0
+			AND c.`enable` = 1
+			AND a.appgateway_config_id = c.id
+			AND i.id = a.appgateway_interface_id
+    </select>   
+</mapper>
