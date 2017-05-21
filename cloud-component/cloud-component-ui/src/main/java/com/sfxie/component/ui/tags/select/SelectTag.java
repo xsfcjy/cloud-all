@@ -1,4 +1,4 @@
-package com.sfxie.component.ui.tags;
+package com.sfxie.component.ui.tags.select;
 
 import java.io.Writer;
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ import com.sfxie.utils.jacson.codehaus.JsonUtil;
  * @TODO 
  * @author xsf
  * @since 2017年4月22日下午3:29:21
- * {@link com.golive.advert.common.tag.struts.select.SelectTag}
+ * {@link com.sfxie.component.ui.tags.select.golive.advert.common.tag.struts.select.SelectTag}
  */
 public class SelectTag extends TagSupport {
 	

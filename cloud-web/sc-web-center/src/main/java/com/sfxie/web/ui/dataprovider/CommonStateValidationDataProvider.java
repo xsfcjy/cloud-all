@@ -7,8 +7,8 @@ import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
-import com.sfxie.component.ui.tags.SelectUIDataProvider;
-import com.sfxie.component.ui.tags.SelecteDataProviderParameter;
+import com.sfxie.component.ui.tags.select.SelectUIDataProvider;
+import com.sfxie.component.ui.tags.select.SelecteDataProviderParameter;
 
 /**
  * 通用下拉框数据提供者：状态下拉框数据

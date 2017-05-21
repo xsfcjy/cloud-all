@@ -28,7 +28,9 @@
 			<resource>
 				<directory>${basedir}/src/main/java</directory>
 				<includes>
-					<include>**/*.xml</include>
+					<include>**/**.xml</include>
+					<include>**/**.js</include>
+					<include>**/**.txt</include>
 				</includes>
 			</resource>
 		</resources>

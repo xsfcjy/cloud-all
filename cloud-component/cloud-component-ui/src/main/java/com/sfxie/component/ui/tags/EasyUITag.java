@@ -8,7 +8,7 @@ import javax.servlet.jsp.tagext.TagSupport;
  * @TODO 
  * @author xsf
  * @since 2017年4月22日下午3:29:21
- * {@link com.golive.advert.common.tag.struts.select.SelectTag}
+ * {@link com.sfxie.component.ui.tags.select.golive.advert.common.tag.struts.select.SelectTag}
  */
 public class EasyUITag extends TagSupport {
 	

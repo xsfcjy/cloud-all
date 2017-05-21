@@ -16,8 +16,78 @@
 		<description>资源加载控制标签</description>
 	</tag>
 	<tag>
+		<name>report</name>
+		<tag-class>com.sfxie.component.ui.tags.report.IReportTag</tag-class>
+		<description>ireprot报表标签</description>
+		<attribute>
+			<name>queryFormId</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>url</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>northStyle</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>queryAreaStyle</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>paginationAreaStyle</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>autoQuery</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	<tag>
+		<name>singleReport</name>
+		<tag-class>com.sfxie.component.ui.tags.report.copy.IReportTag</tag-class>
+		<description>ireprot报表标签</description>
+		<attribute>
+			<name>queryFormId</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>reportDealer</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>northStyle</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>queryAreaStyle</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>paginationAreaStyle</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>autoQuery</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	<tag>
 	    <name>select</name>
-	    <tag-class>com.sfxie.component.ui.tags.SelectTag</tag-class>
+	    <tag-class>com.sfxie.component.ui.tags.select.SelectTag</tag-class>
 	    <body-content></body-content>
 	    <description>下拉框标签</description>
 	    <attribute>

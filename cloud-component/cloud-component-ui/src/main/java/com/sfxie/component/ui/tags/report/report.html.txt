@@ -1,0 +1,54 @@
+<div class="easyui-layout" data-options="fit:true">
+    <div data-options="region:'north',split:true,border:false" ${northStyle} >
+    	<div ${queryAreaStyle}  id="formContentDivId"></div>
+        <div  ${paginationAreaStyle} >
+        	<div class="easyui-panel" >
+		        
+		        <div id="buttonList"> 
+			        <table style="border-spacing:0">
+			            <tr>
+			                <td>
+			                    <select id="exportType">
+									<option value="PDF">请选择报表...</option>
+									${reportSelectedList}
+								</select>
+			                </td>
+			            	<td><div class="pagination-btn-separator"></div></td>
+			                <td>
+			                    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true" onclick="doHtmlReport('single');">查询</a>
+			                </td>
+			                <td><div class="pagination-btn-separator"></div></td>
+			                <td>
+			                    <select style="width:60px;" id="exportType">
+									<option value="PDF">pdf</option>
+									<option value="xlsx">xlsx</option>
+									<option value="docx">docx</option>
+									<option value="xls">xls</option>
+									<option value="DOC">doc</option>
+								</select>
+			                </td>
+			                <td>
+			                    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save', plain:true" onclick="doExportReport('single');">导出当前页</a>
+			                </td>
+			                <td>
+			                    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true" onclick="doExportReport('all');">导出全部</a>
+			                </td>
+			                <td><div class="pagination-btn-separator"></div></td>
+			            </tr>
+			        </table>
+			    </div>
+		        <div id="pp" class="easyui-pagination" data-options="
+		                    total:0,
+		                    showPageList:true,
+		                    pageSize: 10,
+				            onSelectPage:onSelectPage,
+				            buttons:$('#buttonList')
+		        "></div>
+	        </div>
+	    </div>
+    </div>
+    <div data-options="region:'center',border:false">
+    	<div id="contentId" style="overflow: auto;width:99.8%;text-align:center;padding-left:2px;margin:0px;"></div>
+    </div>
+</div>
+<div id="loadingContentId" class="report-loading-none"><img src='${ctx}/static/images/loading2.gif' width='60' height='60'></div>

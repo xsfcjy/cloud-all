@@ -1,4 +1,4 @@
-package com.sfxie.component.ui.tags;
+package com.sfxie.component.ui.tags.select;
 
 import java.util.List;
 
