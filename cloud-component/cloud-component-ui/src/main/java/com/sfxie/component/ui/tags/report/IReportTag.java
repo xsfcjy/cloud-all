@@ -1,13 +1,19 @@
 package com.sfxie.component.ui.tags.report;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Writer;
+import java.util.Map;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
+
+import com.sfxie.component.ui.tags.report.netty.report.ReportWebSocketClient;
+import com.sfxie.component.ui.tags.report.netty.report.ReportWebSocketClientHandlerCallback;
+import com.sfxie.component.ui.tags.report.netty.report.ReportWebSocketEntity;
 
 
 /**
@@ -33,13 +39,23 @@ public class IReportTag extends TagSupport {
 	
 	/**	页面北边区域内分页栏区域的style属性	*/
 	private String autoQuery;
+	/**	easyui文件根目录	*/
+	private String easyUIRootPath;
+	/** 报表模板存放路径	*/
+	private String templatePath;
 	
 	private String url;
 	
 	@Override
 	public int doEndTag() throws JspException {
+		String contextPath = pageContext.getRequest().getServletContext().getContextPath();
+		String dir = pageContext.getRequest().getServletContext().getRealPath("/");
+		if(dir.endsWith(File.separator))
+			dir = dir.substring(0, dir.lastIndexOf(File.separator));
+//		E:\git\fork\third\cloud-all\cloud-web\sc-web-center\src\main\webapp\
+		watchReportTemplates(dir);
 		try{
-			start(pageContext.getOut(),pageContext.getRequest().getServletContext().getContextPath()) ;
+			start(pageContext.getOut(),contextPath) ;
 		} catch (Exception e) {
 			return super.doStartTag();
 		}
@@ -47,6 +63,7 @@ public class IReportTag extends TagSupport {
 	}
 	
 	public void start(Writer writer,String contextPath) {
+		
 		try {
 			if(null==northStyle || northStyle.equals("")){
 				northStyle = " style=\"height:100px;\"";
@@ -63,6 +80,7 @@ public class IReportTag extends TagSupport {
 			String js = dd.replaceAll("\\$\\{ctx\\}", contextPath);
 			writer.write(js.replaceAll("\\$\\{queryFormId\\}", queryFormId)
 							.replaceAll("\\$\\{url\\}", url)
+							.replaceAll("\\$\\{easyUIRootPath\\}", easyUIRootPath)
 					     );
 			writer.write(inputStream2String(this.getClass().getResourceAsStream("report.html.txt"))
 					      .replaceAll("\\$\\{northStyle\\}", northStyle)
@@ -79,10 +97,18 @@ public class IReportTag extends TagSupport {
 		}
     }
 	
+	/**
+	 * 生成报表下拉选项
+	 * @return
+	 */
 	private String getReportSelectedList(){
 		StringBuffer sb = new StringBuffer();
-		String option = "<option value=\"1\">测试报表生成</option>";
-		sb.append(option);
+		Map<String, ReportWebSocketEntity> reportsMap = ReportWebSocketClient.getInstance().getReports();
+		for(String key : reportsMap.keySet()){
+			ReportWebSocketEntity report = reportsMap.get(key);
+			String option = "<option value=\""+report.getReportName()+"\">"+report.getReportText()+"</option>";
+			sb.append(option);
+		}
 		return sb.toString();
 	}
 
@@ -177,5 +203,41 @@ public class IReportTag extends TagSupport {
 		this.url = url;
 	}
 
+	public String getEasyUIRootPath() {
+		return easyUIRootPath;
+	}
+
+	public void setEasyUIRootPath(String easyUIRootPath) {
+		this.easyUIRootPath = easyUIRootPath;
+	}
+
+	public String getTemplatePath() {
+		return templatePath;
+	}
+
+	public void setTemplatePath(String templatePath) {
+		this.templatePath = templatePath;
+	}
+
+	/**
+	 * 实时更新报表模板
+	 * @param contextPath
+	 */
+	public void watchReportTemplates(String contextPath){
+		if(!ReportWebSocketClient.getInstance().isStart()){
+			try {
+				System.out.println(contextPath+(null!=templatePath?templatePath:""));
+				ReportWebSocketClientHandlerCallback  callback = new ReportWebSocketClientHandlerCallback(){
+					@Override
+					public void callback() {
+						
+					}};
+				ReportWebSocketClient.getInstance().start(contextPath+(null!=templatePath?templatePath:""),
+						callback	);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
     
 }

@@ -15,6 +15,6 @@
   				</tbody>
   			</table>
    		</form>
-	  	<mytag:report queryFormId="queryForm" autoQuery="false" url="/ui/report" northStyle="style=\"height:100px;\""></mytag:report>
+	  	<mytag:report templatePath="/WEB-INF/template" easyUIRootPath="/static/js/ui/jquery-easyui-1.5.2" queryFormId="queryForm" autoQuery="false" url="/ui/report" northStyle="style=\"height:100px;\""></mytag:report>
   </body>
 </html>

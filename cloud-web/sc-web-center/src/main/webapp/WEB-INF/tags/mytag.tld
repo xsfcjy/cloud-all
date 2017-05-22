@@ -49,6 +49,19 @@
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
+		<attribute>
+			<name>easyUIRootPath</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>easyui文件根目录</description>
+		</attribute>
+		<attribute>
+			<name>templatePath</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>报表模板存放路径</description>
+		</attribute>
+		
 	</tag>
 	<tag>
 		<name>singleReport</name>

@@ -1,8 +1,8 @@
-<link rel="stylesheet" type="text/css" href="${ctx}/static/js/ui/jquery-easyui-1.5.2/themes/gray/easyui.css">
-<link rel="stylesheet" type="text/css" href="${ctx}/static/js/ui/jquery-easyui-1.5.2/themes/icon.css">
-<script type="text/javascript" src="${ctx}/static/js/ui/jquery-easyui-1.5.2/jquery.min.js"></script>
-<script type="text/javascript" src="${ctx}/static/js/ui/jquery-easyui-1.5.2/jquery.easyui.min.js"></script>
-<script type="text/javascript" src="${ctx}/static/js/ui/jquery-easyui-1.5.2/locale/easyui-lang-zh_CN.js"></script>
+<link rel="stylesheet" type="text/css" href="${ctx}${easyUIRootPath}/themes/gray/easyui.css">
+<link rel="stylesheet" type="text/css" href="${ctx}${easyUIRootPath}/themes/icon.css">
+<script type="text/javascript" src="${ctx}${easyUIRootPath}/jquery.min.js"></script>
+<script type="text/javascript" src="${ctx}${easyUIRootPath}/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="${ctx}${easyUIRootPath}/locale/easyui-lang-zh_CN.js"></script>
 <style type="text/css">
 	.report-loading-none{
 		display: none;

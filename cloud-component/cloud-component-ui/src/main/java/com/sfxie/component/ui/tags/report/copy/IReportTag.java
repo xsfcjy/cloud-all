@@ -34,6 +34,8 @@ public class IReportTag extends TagSupport {
 	/**	页面北边区域内分页栏区域的style属性	*/
 	private String autoQuery;
 	
+	private String easyUIRootPath;
+	
 	@Override
 	public int doEndTag() throws JspException {
 		try{
@@ -61,6 +63,7 @@ public class IReportTag extends TagSupport {
 			String js = dd.replaceAll("\\$\\{ctx\\}", contextPath);
 			writer.write(js.replaceAll("\\$\\{queryFormId\\}", queryFormId)
 					       .replaceAll("\\$\\{reportDealer\\}", reportDealer)
+						   .replaceAll("\\$\\{easyUIRootPath\\}", easyUIRootPath)
 					     );
 			writer.write(inputStream2String(this.getClass().getResourceAsStream("report.html.txt"))
 					      .replaceAll("\\$\\{northStyle\\}", northStyle)
@@ -165,6 +168,14 @@ public class IReportTag extends TagSupport {
 
 	public void setAutoQuery(String autoQuery) {
 		this.autoQuery = autoQuery;
+	}
+
+	public String getEasyUIRootPath() {
+		return easyUIRootPath;
+	}
+
+	public void setEasyUIRootPath(String easyUIRootPath) {
+		this.easyUIRootPath = easyUIRootPath;
 	}
 
     
