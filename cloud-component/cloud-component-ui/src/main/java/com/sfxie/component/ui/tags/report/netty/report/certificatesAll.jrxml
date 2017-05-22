@@ -26,7 +26,7 @@
 		if(LENGTH( t.certificateId) <> 18 and t.certificateType = 1,'身份证号码位数问题;',''),
 		if((REPLACE(REPLACE(trim(t.certificateId),'X',''),'x','')  REGEXP '[^0-9]')  and t.certificateType = 1,'身份证号码有误','')
 	) errorTag
-	 FROM vankecrm_center.data_export_certificateid_mch t
+	 FROM .data_export_certificateid_mch t
 	INNER JOIN (
 		SELECT
 		di.`value`,
@@ -45,7 +45,7 @@
 	)
 	t LEFT JOIN (
 		SELECT t.certificateId,t.manageCode from(
-		SELECT DISTINCT t.manageName,t.manageCode,t.certificateId,t.fullName,t.mainMobile FROM vankecrm_center.data_export_certificateid_mch t
+		SELECT DISTINCT t.manageName,t.manageCode,t.certificateId,t.fullName,t.mainMobile FROM .data_export_certificateid_mch t
 		WHERE t.certificateId <> ''  AND t.certificateType = 1
 		GROUP BY t.manageName,t.certificateId,t.fullName,t.mainMobile
 		ORDER BY t.certificateId
