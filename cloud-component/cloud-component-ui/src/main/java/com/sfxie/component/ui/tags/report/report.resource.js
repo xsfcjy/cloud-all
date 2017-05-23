@@ -15,9 +15,29 @@
 	}
 </style>
 <SCRIPT type="text/javascript">
+		
+	var _reportEntityMap = ${reportEntityMap};
+	
+	String.prototype.format = function() {
+		if (arguments.length == 0)
+			return this;
+		var obj = arguments[0];
+		if(typeof obj == "object"){
+			s = this;
+			for(var key in obj){
+				s = s.replace(new RegExp("\\{" + key + "\\}", "g"), obj[key]);
+			}
+			return s;
+		}else{
+			for (var s = this, i = 0; i < arguments.length; i++)
+				s = s.replace(new RegExp("\\{" + i + "\\}", "g"), arguments[i]);
+			return s;
+		}
+	};
 	$(document).ready(function () {
 		var formContentDive = $('#formContentDivId');
 		formContentDive.append($('#${queryFormId}'));
+		$("#exportFile").change(reportSelected);
 	});
 	function doHtmlReport(exportDataType){
 		var paginationObj = $('#pp').pagination('options','pageNumber');	
@@ -63,8 +83,12 @@
 	Report = new Object();
 	Report.doReport = _$doReport;
 	function _$doReport(config){
+		var exportFile = $('#exportFile').val();
+		if(!exportFile){
+			_$showMessage({timeout:2000,icon:'info',msg:'请选择报表！'});
+			return ;
+		}
 		var buttonListChildren = $('#buttonList').children().clone( true );
-		alert(buttonListChildren);
 		if(config['queryFormId']){
 			var data = DomUtil.getJSONObjectFromForm(config['queryFormId']);
 			if(config['data'])
@@ -110,6 +134,32 @@
 		}
 	}
 	
+	function _$showMessage(config){
+		var _config = {
+				showType:'slide',
+				timeout:2000,
+				style:{
+	                right:'',
+	                top:document.body.scrollTop+document.documentElement.scrollTop,
+	                bottom:''
+	            }
+		};
+		$.extend(_config,config);
+		_config.title = _config.title || '操作提示'; 
+		_config.msg = _$getMsgString(_config.icon,'<span style="color:red;">'+_config.msg+'</span>');
+		$.messager.show(_config);
+		$('#loadingContentId').removeClass('report-loading-display');
+	}
+	function _$getMsgString(icon,msg){
+		var string =' <div class="messager-body panel-body panel-body-noborder window-body" '+
+					'	title="" style="width: 266px;">'+
+					'	<div class="messager-icon messager-{0}"></div>'+
+					'	<div>{1}</div>'+
+					'	<div style="clear: both;"></div>'+
+					' </div>';
+		return string.format(icon,msg);
+	}
+	
 	function _$reportAjax(config,successFunc,errorFunc){
 		$('#loadingContentId').removeClass('report-loading-none');
 		$('#loadingContentId').addClass('report-loading-display');
@@ -121,7 +171,7 @@
 			  var result =  successFunc(config,response);
 		  },
 		  error:function(response){
-			  alert('服务器内部处理出错！');
+			  _$showMessage({timeout:2000,icon:'info',msg:'服务器内部处理出错！'});
 		  }
 		};
 		
@@ -236,4 +286,74 @@
 	     }
 	     return o.toString().replace(/\"\:/g, '":""');
 	 }
+	
+	function reportSelected(e,d){
+		var value = $(this).children('option:selected').val(); 
+		if(value){
+			var reportParameters = _reportEntityMap[value]['parameters'];
+			var formId = '#queryForm';
+			addFormElement(formId,reportParameters);
+		}
+	}
+	
+	function addFormElement(formId,reportParameters){
+		$(formId).empty();
+		if(reportParameters && reportParameters.length > 0){
+			console.log(reportParameters);
+			for(var i=0;i<reportParameters.length;i++){
+				var parameter = reportParameters[i];
+				appendParameter(formId,parameter);
+			}
+		}
+		
+	}
+	
+	function appendParameter(formId,parameter){
+		var elementType = parameter['elementType'];
+		if(elementType == 'input'){
+			appendInputParameter(formId,parameter);
+		}else if(elementType == 'select'){
+			appendSelectParameter(formId,parameter);
+		}
+		
+	}
+
+	function appendInputParameter(formId,parameter){
+		var name = parameter['name'];
+		var text = parameter['title'];
+		text = tohanzi(text);
+		var input = '<div>'+
+					'<label for="{name}">{title}：</label>'+
+					'<input id="{name}" name="{name}" class="easyui-textbox" '+'data-options="iconCls:\'icon-search\'" style="width:300px">'+
+					'</div>';
+		$(formId).append(input.format({name:name,title:text}));
+		$('#'+name).textbox({
+			width: 300,
+			label: text
+		});
+	}
+	function appendSelectParameter(formId,parameter){
+		var name = parameter['name'];
+		var text = parameter['title'];
+		text = tohanzi(text);
+		var input = '<div>'+
+					'<label for="{name}">{title}：</label>'+
+					'<input id="{name}" name="{name}" class="easyui-textbox" '+'data-options="iconCls:\'icon-search\'" style="width:300px">'+
+					'</div>';
+		$(formId).append(input.format({name:name,title:text}));
+		$('#'+name).textbox({
+			width: 300,
+			label: text
+		});
+	}
+	function tohanzi(data){
+	    if(data == '') return '请输入十六进制unicode';
+	    data = data.split("u");
+	    var str ='';
+	    for(var i=0;i<data.length;i++)
+	    {
+	        str+=String.fromCharCode(parseInt(data[i],16).toString(10));
+	    }
+	    return str;
+	}
 </SCRIPT>

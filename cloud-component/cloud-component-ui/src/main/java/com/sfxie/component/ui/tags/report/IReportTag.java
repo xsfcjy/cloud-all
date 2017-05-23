@@ -11,9 +11,11 @@ import java.util.Map;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 
-import com.sfxie.component.ui.tags.report.netty.report.ReportWebSocketClient;
-import com.sfxie.component.ui.tags.report.netty.report.ReportWebSocketClientHandlerCallback;
-import com.sfxie.component.ui.tags.report.netty.report.ReportWebSocketEntity;
+import com.sfxie.component.ui.tags.report.netty.ReportWebSocketEntity;
+import com.sfxie.component.ui.tags.report.netty.client.ReportWebSocketClient;
+import com.sfxie.component.ui.tags.report.netty.client.ReportWebSocketClientHandlerCallback;
+import com.sfxie.utils.StringUtils;
+import com.sfxie.utils.jacson.codehaus.JsonUtil;
 
 
 /**
@@ -81,6 +83,7 @@ public class IReportTag extends TagSupport {
 			writer.write(js.replaceAll("\\$\\{queryFormId\\}", queryFormId)
 							.replaceAll("\\$\\{url\\}", url)
 							.replaceAll("\\$\\{easyUIRootPath\\}", easyUIRootPath)
+							.replaceAll("\\$\\{reportEntityMap\\}", getReportEntityMapString())
 					     );
 			writer.write(inputStream2String(this.getClass().getResourceAsStream("report.html.txt"))
 					      .replaceAll("\\$\\{northStyle\\}", northStyle)
@@ -225,19 +228,37 @@ public class IReportTag extends TagSupport {
 	 */
 	public void watchReportTemplates(String contextPath){
 		if(!ReportWebSocketClient.getInstance().isStart()){
-			try {
-				System.out.println(contextPath+(null!=templatePath?templatePath:""));
-				ReportWebSocketClientHandlerCallback  callback = new ReportWebSocketClientHandlerCallback(){
-					@Override
-					public void callback() {
-						
-					}};
-				ReportWebSocketClient.getInstance().start(contextPath+(null!=templatePath?templatePath:""),
-						callback	);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			Thread t = new Thread(new Runnable() {
+				@Override
+				public void run() {
+					try {
+						System.out.println(contextPath+(null!=templatePath?templatePath:""));
+						ReportWebSocketClientHandlerCallback  callback = new ReportWebSocketClientHandlerCallback(){
+							@Override
+							public void callback() {
+								
+							}};
+							ReportWebSocketClient.getInstance().start(contextPath+(null!=templatePath?templatePath:""),
+									callback	);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			});
+			t.start();
 		}
+	}
+	
+	private String getReportEntityMapString(){
+//		${reportEntityMap}
+		String queryParameters = JsonUtil.toJSON(ReportWebSocketClient.getInstance().getReports());
+		System.out.println(queryParameters);
+		return queryParameters;
+	}
+	
+	private String getInputString(String name,String title,String validator){
+		String input = "<input class=\"easyui-textbox\" name=\"{0}\" style=\"width:50%\" data-options=\"label:'{2}:',{3}\">";
+		return StringUtils.format(input, name,title,validator);
 	}
     
 }

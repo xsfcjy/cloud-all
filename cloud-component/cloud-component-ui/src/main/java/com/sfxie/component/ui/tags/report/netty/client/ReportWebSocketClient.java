@@ -16,7 +16,6 @@
 package com.sfxie.component.ui.tags.report.netty.client;
 
 import io.netty.bootstrap.Bootstrap;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
@@ -27,8 +26,6 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.http.DefaultHttpHeaders;
 import io.netty.handler.codec.http.HttpClientCodec;
 import io.netty.handler.codec.http.HttpObjectAggregator;
-import io.netty.handler.codec.http.websocketx.CloseWebSocketFrame;
-import io.netty.handler.codec.http.websocketx.PingWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketClientHandshakerFactory;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;
@@ -36,18 +33,19 @@ import io.netty.handler.codec.http.websocketx.WebSocketVersion;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
-import io.netty.handler.ssl.util.SelfSignedCertificate;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
+
+import com.sfxie.component.ui.tags.report.netty.ReportWebSocketEntity;
 
 /**
  * This is an example of a WebSocket client.
  * <p>
  * In order to run this example you need a compatible WebSocket server.
  * Therefore you can either start the WebSocket server from the examples
- * by running {@link io.netty.ReportWebSocketServer.http.websocketx.server.WebSocketServer}
+ * by running {@link com.sfxie.component.ui.tags.report.netty.server.ReportWebSocketServer.http.websocketx.server.WebSocketServer}
  * or connect to an existing WebSocket server such as
  * <a href="http://www.websocket.org/echo.html">ws://echo.websocket.org</a>.
  * <p>
@@ -55,11 +53,25 @@ import java.net.URI;
  * You don't have to specify any arguments if you want to connect to the example WebSocket server,
  * as this is the default.
  */
-public final class WebSocketClient {
+public final class ReportWebSocketClient {
 
-    static final String URL = System.getProperty("url", "ws://127.0.0.1:8080/websocket");
+    static final String URL = System.getProperty("url", "ws://127.0.0.1:8380/websocket/report");
 
-    public static void main(String[] args) throws Exception {
+    private boolean isStart = false;
+    
+    private static ReportWebSocketClient reportWebSocketClient ;
+    
+
+	
+	private Map<String,ReportWebSocketEntity> reports = new HashMap<String,ReportWebSocketEntity>();
+    
+    public static ReportWebSocketClient getInstance(){
+    	if(null==reportWebSocketClient)
+    		reportWebSocketClient = new ReportWebSocketClient();
+    	return reportWebSocketClient;
+    }
+    
+    public void start(String reportTemplatePath,ReportWebSocketClientHandlerCallback callback) throws Exception {
         URI uri = new URI(URL);
         String scheme = uri.getScheme() == null? "ws" : uri.getScheme();
         final String host = uri.getHost() == null? "127.0.0.1" : uri.getHost();
@@ -95,10 +107,20 @@ public final class WebSocketClient {
             // Connect with V13 (RFC 6455 aka HyBi-17). You can change it to V08 or V00.
             // If you change it to V00, ping is not supported and remember to change
             // HttpResponseDecoder to WebSocketHttpResponseDecoder in the pipeline.
-            final WebSocketClientHandler handler =
-                    new WebSocketClientHandler(
-                            WebSocketClientHandshakerFactory.newHandshaker(
-                                    uri, WebSocketVersion.V13, null, false, new DefaultHttpHeaders()));
+        	ReportWebSocketClientHandler handlerTemp = null;
+            
+            if(null!=reportTemplatePath){
+            	handlerTemp = new ReportWebSocketClientHandler(
+            			WebSocketClientHandshakerFactory.newHandshaker(
+            					uri, WebSocketVersion.V13, null, false, new DefaultHttpHeaders())
+            					,reportTemplatePath,callback);
+            }else{
+            	handlerTemp = new ReportWebSocketClientHandler(
+            			WebSocketClientHandshakerFactory.newHandshaker(
+            					uri, WebSocketVersion.V13, null, false, new DefaultHttpHeaders())
+            					);
+            }
+            final ReportWebSocketClientHandler handler = handlerTemp;
 
             Bootstrap b = new Bootstrap();
             b.group(group)
@@ -119,8 +141,12 @@ public final class WebSocketClient {
 
             Channel ch = b.connect(uri.getHost(), port).sync().channel();
             handler.handshakeFuture().sync();
-
-            BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
+            WebSocketFrame frame = new TextWebSocketFrame("");
+            ch.writeAndFlush(frame);
+            isStart = true;
+            ch.closeFuture().sync();
+//            Thread.sleep(Long.MAX_VALUE);
+            /*BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
             while (true) {
                 String msg = console.readLine();
                 if (msg == null) {
@@ -136,9 +162,32 @@ public final class WebSocketClient {
                     WebSocketFrame frame = new TextWebSocketFrame(msg);
                     ch.writeAndFlush(frame);
                 }
-            }
+            }*/
         } finally {
             group.shutdownGracefully();
         }
     }
+    
+    
+    public boolean isStart() {
+		return isStart;
+	}
+
+
+	public Map<String, ReportWebSocketEntity> getReports() {
+		return reports;
+	}
+
+	public void setReports(Map<String, ReportWebSocketEntity> reports) {
+		this.reports = reports;
+	}
+
+	public static void main(String[] args) {
+		try {
+			String reportTemplatePath = null;
+			new ReportWebSocketClient().start(reportTemplatePath,null);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

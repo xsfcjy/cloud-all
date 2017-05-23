@@ -22,6 +22,31 @@ public class DateHelper {
 	/**yyyy-MM-dd*/
 	public static String format_no = "yyyy-MM-dd";
 	
+	/**   
+     * 计算两个日期之间相差的月数   
+     * @param date1   
+     * @param date2   
+     * @return   
+     */    
+    public static int getMinusMonth(Date startDate, Date endDate){
+    	Integer year1 = Integer.valueOf(DateHelper.getYear(startDate));
+    	Integer year2 = Integer.valueOf(DateHelper.getYear(endDate));
+    	Integer month1 = Integer.valueOf(DateHelper.getMonth(startDate));
+    	Integer month2 = Integer.valueOf(DateHelper.getMonth(endDate));
+
+//    	System.out.println("month1:"+month1+";month2:"+month2);
+    	int minusYear = (year2 - year1);
+    	int minusMonth = (month2 - month1);
+    	if(minusYear > 1){
+    		return (minusYear*12) + minusMonth+1;
+    	}else if(minusYear == 0){
+    		return minusMonth +1;
+    	}else if(minusYear == 1){
+    		return month2 + (12-month1) +1;
+    	}
+        return 1;     
+    }  
+	
 	
 	private static final DateFormat[] ACCEPT_DATE_FORMATS = {  
         new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"),  
@@ -213,11 +238,20 @@ public class DateHelper {
 	 * 
 	 * @return [yyyy]
 	 */
-
 	public static String getYear() {
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy");
 		Date nowc = new Date();
 		String pid = formatter.format(nowc);
+		return pid;
+	}
+	/**
+	 * 返回当前年份
+	 * 
+	 * @return [yyyy]
+	 */
+	public static String getYear(Date date) {
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy");
+		String pid = formatter.format(date);
 		return pid;
 	}
 
@@ -233,7 +267,17 @@ public class DateHelper {
 		String pid = formatter.format(nowc);
 		return pid;
 	}
+	/**
+	 * 返回当前月份
+	 * 
+	 * @return [MM]
+	 */
 
+	public static String getMonth(Date date) {
+		SimpleDateFormat formatter = new SimpleDateFormat("MM");
+		String pid = formatter.format(date);
+		return pid;
+	}
 	/**
 	 * 返回当前日
 	 * 
@@ -241,11 +285,9 @@ public class DateHelper {
 	 */
 	public static String getDay() {
 		SimpleDateFormat formatter = new SimpleDateFormat("dd");
-		Date nowc = new Date();
-		String pid = formatter.format(nowc);
+		String pid = formatter.format(new Date());
 		return pid;
 	}
-
 	/**
 	 * 返回当前时间24小时制式
 	 * 
@@ -981,7 +1023,9 @@ public class DateHelper {
 	}
 	
 	public static void main(String[] args) throws ParseException {
-		System.out.println(hour2Secord(1.0f));
+//		System.out.println(hour2Secord(1.0f));
+		System.out.println(DateHelper.getMinusMonth(new Date("2017/05/23 00:00:00"),new Date("2018/05/30 00:00:00")));
+
 	}
 	
 }

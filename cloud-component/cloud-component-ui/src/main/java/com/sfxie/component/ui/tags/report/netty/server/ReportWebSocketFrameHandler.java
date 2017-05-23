@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.sfxie.component.ui.tags.report.netty.report;
+package com.sfxie.component.ui.tags.report.netty.server;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -30,7 +30,7 @@ import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.sfxie.component.ui.tags.report.netty.report.ReportWebSocketServer;
+import com.sfxie.component.ui.tags.report.netty.server.ReportWebSocketServer;
 import com.sfxie.utils.StringUtils;
 import com.sfxie.utils.jacson.codehaus.JsonUtil;
 

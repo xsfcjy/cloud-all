@@ -35,7 +35,7 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //THE SOFTWARE.
 
-package com.sfxie.component.ui.tags.report.netty.report;
+package com.sfxie.component.ui.tags.report.netty.client;
 
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -52,6 +52,7 @@ import io.netty.util.CharsetUtil;
 
 import java.io.File;
 
+import com.sfxie.component.ui.tags.report.netty.ReportWebSocketEntity;
 import com.sfxie.utils.jacson.codehaus.JsonUtil;
 
 public class ReportWebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
@@ -118,7 +119,7 @@ public class ReportWebSocketClientHandler extends SimpleChannelInboundHandler<Ob
             	reportTemplatePath = this.getClass().getResource("").getPath()+File.separator+"files";
             String destFileName = reportTemplatePath;
             ReportWebSocketEntity reportWebSocketEntity = JsonUtil.fromJSON(textFrame.text(), ReportWebSocketEntity.class);
-            ReportWebSocketClient.getInstance().getReports().put(reportWebSocketEntity.getReportName(),new ReportWebSocketEntity(reportWebSocketEntity.getReportText(),reportWebSocketEntity.getReportName()));
+            ReportWebSocketClient.getInstance().getReports().put(reportWebSocketEntity.getReportName(),new ReportWebSocketEntity(reportWebSocketEntity.getReportText(),reportWebSocketEntity.getReportName()).addParameter(reportWebSocketEntity.getParameters()));
             System.out.println("WebSocket Client received message: " + textFrame.text());
             IreportCompilor.compileReportForString(reportWebSocketEntity.getReportJrxml(), destFileName+File.separator+reportWebSocketEntity.getReportName().replaceAll("jrxml", "jasper"));
         } else if (frame instanceof PongWebSocketFrame) {

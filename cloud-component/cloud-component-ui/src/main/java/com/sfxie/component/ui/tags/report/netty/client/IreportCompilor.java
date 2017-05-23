@@ -1,4 +1,4 @@
-package com.sfxie.component.ui.tags.report.netty.report;
+package com.sfxie.component.ui.tags.report.netty.client;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
