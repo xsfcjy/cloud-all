@@ -3,6 +3,8 @@ package com.sfxie.component.ui.tags.report;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -13,9 +15,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @since 2017-05-10
  *
  */
+@Controller
 public class ReportUIController {
 	
 	private ReportFactory reportFactory;
+	
+
+	public void setReportFactory(ReportFactory reportFactory) {
+		this.reportFactory = reportFactory;
+	}
 
 	/**
 	 * easyui表格数据提供
@@ -25,13 +33,23 @@ public class ReportUIController {
 	 * @throws Exception 
 	 */
 	@RequestMapping(value = "/ui/report", method = RequestMethod.POST)
-	public void report(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		response.setCharacterEncoding("utf-8");
-		response.setContentType("application/json;charset=utf-8");
-		reportFactory.doReport(request, response);
+	public void report(@RequestBody ReportControllerParameter reportControllerParameter,HttpServletRequest request, HttpServletResponse response) throws Exception {
+		response.setCharacterEncoding("UTF-8");
+		dealReport(reportControllerParameter,request, response);
 	}
-
-	public void setReportFactory(ReportFactory reportFactory) {
-		this.reportFactory = reportFactory;
+	@RequestMapping(value = "/ui/report/export", method = RequestMethod.POST)
+	public void reportHref(ReportControllerParameter reportControllerParameter,HttpServletRequest request, HttpServletResponse response) throws Exception {
+		dealReport(reportControllerParameter,request, response);
+	}
+	
+	/**
+	 * 处理报表
+	 * @param reportControllerParameter
+	 * @param request
+	 * @param response
+	 * @throws Exception
+	 */
+	private void dealReport(ReportControllerParameter reportControllerParameter,HttpServletRequest request, HttpServletResponse response) throws Exception{
+		reportFactory.doReport(reportControllerParameter,request, response);
 	}
 }

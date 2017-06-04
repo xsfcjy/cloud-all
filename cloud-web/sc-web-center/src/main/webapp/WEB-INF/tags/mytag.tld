@@ -23,11 +23,25 @@
 			<name>queryFormId</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
+			<description>查询参数表单id</description>
+		</attribute>
+		<attribute>
+			<name>debug</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>是否启用调试</description>
 		</attribute>
 		<attribute>
 			<name>url</name>
 			<required>true</required>
 			<rtexprvalue>true</rtexprvalue>
+			<description>html查询处理url</description>
+		</attribute>
+		<attribute>
+			<name>exportUrl</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>导出文件处理url</description>
 		</attribute>
 		<attribute>
 			<name>northStyle</name>
@@ -48,6 +62,7 @@
 			<name>autoQuery</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
+			<description>是否启用页面加载自动查询</description>
 		</attribute>
 		<attribute>
 			<name>easyUIRootPath</name>

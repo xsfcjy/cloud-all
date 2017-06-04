@@ -1,9 +1,13 @@
 package com.sfxie.component.ui.tags.report;
 
+import groovy.lang.GroovyClassLoader;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -43,7 +48,6 @@ import net.sf.jasperreports.engine.util.JRLoader;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.apache.log4j.spi.LoggerFactory;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -51,45 +55,61 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.struts2.views.jasperreports.JasperReportConstants;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.core.annotation.AnnotationUtils;
 
+import com.sfxie.component.ui.tags.report.netty.ReportParameter;
+import com.sfxie.component.ui.tags.report.netty.client.ReportWebSocketClient;
 import com.sfxie.core.framework.core.SpringContext;
 import com.sfxie.utils.DateHelper;
+import com.sfxie.utils.ObjectUtil;
 import com.sfxie.utils.jacson.codehaus.JsonUtil;
 
-public class ReportFactory implements JasperReportConstants {
+public class ReportFactory implements JasperReportConstants,ApplicationContextAware {
 	
 	public static final String FORMAT_DOC = "DOC";
 	public static final String FORMAT_DOCX = "DOCX";
 	public static final String FORMAT_XLSX = "XLSX";
-	private static final long serialVersionUID = -2523174799621182907L;
     private final static Logger LOG = null;
+    
+    
+    private String templatePath;
+    
+    /**
+	 * groovy class loader
+	 */
+	private GroovyClassLoader groovyClassLoader = new GroovyClassLoader();
 
-	public void doReport(HttpServletRequest request, HttpServletResponse response) throws Exception{
-		Map<String,Object> reportParameter =  (Map<String, Object>) buildMapParameter(request);
-		IReportHandler reportHandler = (IReportHandler) SpringContext.getBeanByName("");
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public void doReport(ReportControllerParameter reportControllerParameter,HttpServletRequest request, HttpServletResponse response) throws Exception{
+		Map<String,Object> reportParameter =  (Map<String, Object>) buildMapParameter(reportControllerParameter);
+//		String handlerString = SerializeUtil.getFileString( "ListReportHandler.txt",this.getClass());
+//		IReportHandler reportHandler = (IReportHandler) SpringContext.getBeanByName("");
+		String reportName = reportControllerParameter.getReportName();
+//		Integer reportId = Integer.valueOf(reportName[0]);
+//		Integer version = Integer.valueOf(reportName[1]);
+		String handlerString = ReportWebSocketClient.getInstance().getReports().get(reportName).getDatasetJava();
+		IReportHandler reportHandler = loadNewInstance(handlerString);
 		Object dataSource = reportHandler.dataset(reportParameter);
-		doExecute(dataSource,request,response,reportParameter);
+		doExecute(dataSource,request,response, reportControllerParameter,reportParameter);
 	}
 	
-	private void report(Object datasource,HttpServletRequest request,HttpServletResponse response,Map<String,Object> reportParameter){
-		
-	}
-	
-	
-	
-	protected void doExecute(Object dataSource,HttpServletRequest request,HttpServletResponse response,Map<String,Object> reportParameter) throws Exception {
+	protected void doExecute(Object dataSource,HttpServletRequest request,HttpServletResponse response,ReportControllerParameter reportControllerParameter ,Map<String,Object> reportParameter) throws Exception {
         // Will throw a runtime exception if no "datasource" property. TODO Best place for that is...?
-		IReportEntity ireportEntity = new IReportEntity();
-        String format = ireportEntity.getFormat();
-        String stencilName = ireportEntity.getFileName();
+        String format = reportControllerParameter.getExportFileType();
+        String stencilName = reportControllerParameter.getReportName();
         String imageServletUrl = "";
         
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Creating JasperReport for dataSource = " + dataSource + ", format = " + format);
-        }
+//        if (LOG.isDebugEnabled()) {
+//            LOG.debug("Creating JasperReport for dataSource = " + dataSource + ", format = " + format);
+//        }
 
 //        response.setCharacterEncoding("utf-8");
-        String reportTemplatePath = "";
+        String reportTemplatePath = templatePath;
         String dirPath = request.getSession().getServletContext().getRealPath("/")+reportTemplatePath;
         // Handle IE special case: it sends a "contype" request first.
         // TODO Set content type to config settings?
@@ -109,31 +129,50 @@ public class ReportFactory implements JasperReportConstants {
 
         // Construct the data source for the report.
 //        ValueStackDataSource stackDataSource = null;
+        
         JRDataSource jrdataSource = null;
-
         Connection conn = null;
-        if (conn == null)
-//            stackDataSource = new ValueStackDataSource(stack, dataSource);
+
+        Map parameters = new HashMap();
+        int listSize = ((List<?>) dataSource).size();
+        
+      //设置是否忽略分页
+        if (null!=reportParameter.get("isIgnorePage") && !new Boolean(reportParameter.get("isIgnorePage").toString()) ) {
+        	parameters.put("IS_IGNORE_PAGINATION", Boolean.TRUE);
+        	
+        	int start = 0;
+            int end = 0;
+            //设置mysql分页参数(limit start, end)
+            if(reportControllerParameter.getPageNumber() > 0 && reportControllerParameter.getPageSize() > 0){
+            	int pageSize = reportControllerParameter.getPageSize();
+            	int pageNumber = reportControllerParameter.getPageNumber();
+            	start = pageSize*(pageNumber-1);
+            	end = pageSize*(pageNumber);
+            	reportParameter.put("start",start);
+            	reportParameter.put("end", end);
+            }
+            
+            dataSource = ((List<?>) dataSource).subList(start, end>listSize ? listSize : end);
+        }
+        
+        if (!(dataSource instanceof Connection)){
         	jrdataSource =  new JRBeanCollectionDataSource((Collection<?>) dataSource);
+        }else{
+        	conn = (Connection) dataSource;
+        }
+
 
         // Determine the directory that the report file is in and set the reportDirectory parameter
         // For WW 2.1.7:
         //  ServletContext servletContext = ((ServletConfig) invocation.getInvocationContext().get(ServletActionContext.SERVLET_CONFIG)).getServletContext();
 //        ServletContext ervletContext = (ServletContext) invocation.getInvocationContext().get(ServletActionContext.SERVLET_CONTEXT);
 //        String systemId = servletContext.getRealPath(finalLocation);
-        String systemId = dirPath + stencilName;
-        Map parameters = new HashMap();
+        String systemId = dirPath +File.separator+ stencilName;
 //        File directory = new File(systemId.substring(0, systemId.lastIndexOf(File.separator)));
         File directory = new File(dirPath);
         parameters.put("reportDirectory", directory);
         parameters.put(JRParameter.REPORT_LOCALE, request.getLocale());
         parameters.put("SUBREPORT_DIR", dirPath);
-        
-        //设置是否忽略分页
-        if (null!=reportParameter.get("isIgnorePage") && new Boolean(reportParameter.get("isIgnorePage").toString()) ) {
-        	parameters.put("IS_IGNORE_PAGINATION", Boolean.TRUE);
-        }
-        
         
         // put timezone in jasper report parameter
         /*if (timeZone != null) {
@@ -145,6 +184,8 @@ public class ReportFactory implements JasperReportConstants {
             }
         }*/
 
+
+        
         // Add any report parameters from action to param map.
         parameters.putAll(reportParameter);
 
@@ -167,8 +208,8 @@ public class ReportFactory implements JasperReportConstants {
         try {
             
             String fileName = "";
-            if(StringUtils.isNotEmpty(ireportEntity.getFileName())){
-          	  fileName = new String(ireportEntity.getFileName().getBytes("gb2312"), "ISO8859-1")+"."+format.toLowerCase(); 
+            if(StringUtils.isNotEmpty(reportControllerParameter.getReportTitle())){
+          	  fileName = new String(reportControllerParameter.getReportTitle().getBytes("gb2312"), "ISO8859-1")+"."+format.toLowerCase(); 
           	  response.setHeader("Content-disposition",
           			  "attachment;filename="+ fileName);
           	  
@@ -228,20 +269,25 @@ public class ReportFactory implements JasperReportConstants {
 
             Map exportParams = new HashMap();
             if (exportParams != null) {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Found export parameters; adding to exporter parameters...");
-                }
+//                if (LOG.isDebugEnabled()) {
+//                    LOG.debug("Found export parameters; adding to exporter parameters...");
+//                }
                 exporter.getParameters().putAll(exportParams);
             }
-            
-            
-            generateTotalCount(jasperReport,parameters,ireportEntity,conn); 
-            
-            if(reportParameter.get("exportDataType").toString().equals("all")){
-            	parameters.put("pagesize", ireportEntity.getTotal());
-            }else{
-            	parameters.put("pagesize",reportParameter.get("pageSize"));
+            int total = -1;
+            if(null!=conn){
+            	total = generateTotalCount(jasperReport,parameters,conn); 
+            }else if(dataSource instanceof List){
+            	total = listSize;
+            }else if(dataSource instanceof Object){
+            	total = 1;
             }
+            
+//            if(null!=reportParameter.get("exportDataType") && reportParameter.get("exportDataType").toString().equals("all")){
+            reportParameter.put("total", total);
+//            }else{
+//            	reportParameter.put("total",reportParameter.get("pageSize"));
+//            }
             
             if(format.equals(FORMAT_HTML)){
             	String data = exportReportToStringBuffer(jasperPrint, exporter);
@@ -473,7 +519,7 @@ public class ReportFactory implements JasperReportConstants {
 	 * TODO
 	 * void
 	 */
-	private void generateTotalCount(JasperReport jasperReport,Map<String,Object> parameters,IReportEntity ireportEntity,Connection conn) throws SQLException{
+	private int generateTotalCount(JasperReport jasperReport,Map<String,Object> parameters,Connection conn) throws SQLException{
         JRQuery  jjj = jasperReport.getQuery();
         String se = jjj.getText();
         if(jjj.getLanguage().toUpperCase().equals("SQL")){
@@ -511,9 +557,10 @@ public class ReportFactory implements JasperReportConstants {
         		}
 //        		.replaceAll("(?i)limit *\\? *, *\\?", "")
         		int totalCount = queryTotalCount("SELECT count(*) FROM ( "+sb.toString()+" ) a",conn,paramList);
-        		ireportEntity.setTotal(totalCount);
+        		return totalCount;
         	}
         }
+        return -1;
 	}
 	private Object transformParameter(String text,Class<?> clazz){
 		Object value = null;
@@ -564,10 +611,106 @@ public class ReportFactory implements JasperReportConstants {
 		return reportHandler;
 	}
 	
-	private Map<String,Object> buildMapParameter(HttpServletRequest request){
-		String reportParameters = request.getParameter("reportParameters");
-		reportParameters = "{\"aa\":\"bb\",\"bb\":1}";
+	private Map<String,Object> buildMapParameter(ReportControllerParameter reportControllerParameter){
+		String reportParameters = reportControllerParameter.getQueryFormParameter();
 		Map<String,Object> reportParameter = (Map<String,Object>) JsonUtil.fromJSON(reportParameters, Map.class);
 		return reportParameter;
 	}
+	
+	
+	
+	
+	// ----------------------------- spring support -----------------------------
+		private static ApplicationContext applicationContext;
+		private static ReportFactory reportFactory;
+		public static ReportFactory getInstance(){
+			return reportFactory;
+		}
+		
+		@Override
+		public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+			ReportFactory.applicationContext = applicationContext;
+			ReportFactory.reportFactory = (ReportFactory) applicationContext.getBean("reportFactory");
+		}
+		
+		/**
+		 * inject action of spring
+		 * @param instance
+		 */
+		public void injectService(Object instance){
+			if (instance==null) {
+				return;
+			}
+		    
+			Field[] fields = instance.getClass().getDeclaredFields();
+			for (Field field : fields) {
+				if (Modifier.isStatic(field.getModifiers())) {
+					continue;
+				}
+				
+				Object fieldBean = null;
+				// with bean-id, bean could be found by both @Resource and @Autowired, or bean could only be found by @Autowired
+				if (AnnotationUtils.getAnnotation(field, Resource.class) != null) {
+					try {
+						Resource resource = AnnotationUtils.getAnnotation(field, Resource.class);
+						if (resource.name()!=null && resource.name().length()>0){
+							fieldBean = applicationContext.getBean(resource.name());
+						} else {
+							fieldBean = applicationContext.getBean(field.getName());
+						}
+					} catch (Exception e) {
+					}
+					if (fieldBean==null ) {
+						fieldBean = applicationContext.getBean(field.getType());
+					}
+				} else if (AnnotationUtils.getAnnotation(field, Autowired.class) != null) {
+					Qualifier qualifier = AnnotationUtils.getAnnotation(field, Qualifier.class);
+					if (qualifier!=null && qualifier.value()!=null && qualifier.value().length()>0) {
+						fieldBean = applicationContext.getBean(qualifier.value());
+					} else {
+						fieldBean = applicationContext.getBean(field.getType());
+					}
+				}
+				
+				if (fieldBean!=null) {
+					field.setAccessible(true);
+					try {
+						field.set(instance, fieldBean);
+					} catch (IllegalArgumentException e) {
+						e.printStackTrace();
+					} catch (IllegalAccessException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+		
+		// ----------------------------- load instance -----------------------------
+		// load new instance, prototype
+		public IReportHandler loadNewInstance(String codeSource) throws Exception{
+			if ( codeSource == null ||  codeSource.equals("")) {
+				return null;
+			}
+			if (codeSource!=null && codeSource.trim().length()>0) {
+				Class<?> clazz = groovyClassLoader.parseClass(codeSource);
+				if (clazz != null) {
+					Object instance = clazz.newInstance();
+					if (instance!=null) {
+						if (instance instanceof IReportHandler) {
+							this.injectService(instance);
+							return (IReportHandler) instance;
+						} else {
+							throw new IllegalArgumentException(">>>>>>>>>>> xxl-glue, loadNewInstance error, "
+									+ "cannot convert from instance["+ instance.getClass() +"] to IJobHandler");
+						}
+					}
+				}
+			}
+			throw new IllegalArgumentException(">>>>>>>>>>> xxl-glue, loadNewInstance error, instance is null");
+		}
+
+		public void setTemplatePath(String templatePath) {
+			this.templatePath = templatePath;
+		}
+		
 }

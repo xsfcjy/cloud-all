@@ -119,9 +119,13 @@ public class ReportWebSocketClientHandler extends SimpleChannelInboundHandler<Ob
             	reportTemplatePath = this.getClass().getResource("").getPath()+File.separator+"files";
             String destFileName = reportTemplatePath;
             ReportWebSocketEntity reportWebSocketEntity = JsonUtil.fromJSON(textFrame.text(), ReportWebSocketEntity.class);
-            ReportWebSocketClient.getInstance().getReports().put(reportWebSocketEntity.getReportName(),new ReportWebSocketEntity(reportWebSocketEntity.getReportText(),reportWebSocketEntity.getReportName()).addParameter(reportWebSocketEntity.getParameters()));
             System.out.println("WebSocket Client received message: " + textFrame.text());
             IreportCompilor.compileReportForString(reportWebSocketEntity.getReportJrxml(), destFileName+File.separator+reportWebSocketEntity.getReportName().replaceAll("jrxml", "jasper"));
+            reportWebSocketEntity.setReportJrxml(null);
+            ReportWebSocketClient.getInstance().getReports().put(reportWebSocketEntity.getReportName(),reportWebSocketEntity);
+//            ReportWebSocketClient.getInstance().getReports().put(reportWebSocketEntity.getReportName(),
+//            		new ReportWebSocketEntity(reportWebSocketEntity.getReportText(),reportWebSocketEntity.getReportName())
+//            .addParameter(reportWebSocketEntity.getParameters()));
         } else if (frame instanceof PongWebSocketFrame) {
             System.out.println("WebSocket Client received pong");
         } else if (frame instanceof CloseWebSocketFrame) {

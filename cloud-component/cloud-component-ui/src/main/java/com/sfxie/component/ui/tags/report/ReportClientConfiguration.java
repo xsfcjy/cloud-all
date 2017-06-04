@@ -5,20 +5,19 @@ import org.springframework.context.annotation.Configuration;
 
 
 /**
- * 报表配置类
+ * 报表配置类(客户端)
  * @author xiesf
  * @since 2017-05-21
  *
  */
 @Configuration
-public class ReportConfiguration {
+public class ReportClientConfiguration {
 
 	@Bean
-	public ReportFactory reportFactory(){
+	public ReportFactory reportFactory() throws Exception{
 		ReportFactory reportFactory = new ReportFactory();
 		return reportFactory;
 	}
-	
 	@Bean
 	public ReportUIController reportUIController(ReportFactory reportFactory){
 		ReportUIController reportUIController = new ReportUIController();

@@ -1,5 +1,6 @@
 <link rel="stylesheet" type="text/css" href="${ctx}${easyUIRootPath}/themes/gray/easyui.css">
 <link rel="stylesheet" type="text/css" href="${ctx}${easyUIRootPath}/themes/icon.css">
+
 <script type="text/javascript" src="${ctx}${easyUIRootPath}/jquery.min.js"></script>
 <script type="text/javascript" src="${ctx}${easyUIRootPath}/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="${ctx}${easyUIRootPath}/locale/easyui-lang-zh_CN.js"></script>
@@ -13,11 +14,17 @@
 		left: 500px;
 		top: 300px;
 	}
+	table tr{
+		height:15px;
+	}
+	.panel-body table{
+		font-size:5px;
+	}
 </style>
 <SCRIPT type="text/javascript">
 		
 	var _reportEntityMap = ${reportEntityMap};
-	
+
 	String.prototype.format = function() {
 		if (arguments.length == 0)
 			return this;
@@ -43,18 +50,20 @@
 		var paginationObj = $('#pp').pagination('options','pageNumber');	
 		var pageNumber = paginationObj.pageNumber;
 		var pageSize = paginationObj.pageSize;
+		var reportName = $('#exportFile').val();
+		var reportTitle = $('#exportFile').find('option:selected').text();
 		Report.doReport({
 			queryFormId:'${queryFormId}',
 			contentId:'contentId',
 			paginationId:'pp',
 			centextPath:'${ctx}',
 			data:{
-				isIgnorePage:"true",
 				pageSize:pageSize,
 				pageNumber:pageNumber,
 				exportDataType:exportDataType,
-				exportFileType:'html',
-				register:'${reportDealer}'
+				exportFileType:'HTML',
+				reportName:reportName,
+				reportTitle: reportTitle
 			}
 		});
 	}
@@ -62,61 +71,65 @@
 		var paginationObj = $('#pp').pagination('options','pageNumber');
 		var pageNumber = paginationObj.pageNumber;
 		var pageSize = paginationObj.pageSize;
+		var reportName = $('#exportFile').val();
+		var reportTitle = $('#exportFile').find('option:selected').text();
 		Report.doReport({
 			queryFormId:'${queryFormId}',
 			contentId:'contentId',
 			paginationId:'pp',
 			centextPath:'${ctx}',
 			data:{
-				isIgnorePage:"true",
 				pageSize:pageSize,
 				pageNumber:pageNumber,
 				exportDataType:exportDataType,
 				exportFileType:$('#exportType').val(),
-				register:'${reportDealer}'
+				reportName:reportName,
+				reportTitle: reportTitle
 			}
 		});
 	}
 	function onSelectPage(pageNumber, pageSize){
+		$('#exportFile').data('selectedPageSize',pageSize);
 		doHtmlReport('single');
+		var input = $('#pp table td:eq(6) input');
+		$('#exportFile').data('selectedPageSize',"");
+		if($('#exportFile').data('selectedPageSize'))
+			$(input).val(1);
 	}
 	Report = new Object();
 	Report.doReport = _$doReport;
 	function _$doReport(config){
+		
 		var exportFile = $('#exportFile').val();
 		if(!exportFile){
 			_$showMessage({timeout:2000,icon:'info',msg:'请选择报表！'});
 			return ;
 		}
 		var buttonListChildren = $('#buttonList').children().clone( true );
+		var data ;
 		if(config['queryFormId']){
-			var data = DomUtil.getJSONObjectFromForm(config['queryFormId']);
-			if(config['data'])
-				$.extend(config['data'],data);
-			else 
-				config['data'] = data;
+			data = DomUtil.getJSONObjectFromForm(config['queryFormId']);
+			
 		}
-		config['data']['paramMap.formParameter'] = encodeURI(_$obj2str(data));
+		if(!data)
+			data = new Object();
+		data['isIgnorePage'] = $('#isIgnorePage').find('option:selected').val();
+		config['isIgnorePage'] = data['isIgnorePage'];
+		config['data']['queryFormParameter'] = _$obj2str(data);
+		
 		config['dataType'] =  "text";
 		config.url = config.centextPath+"${url}";
+		config.exportUrl = config.centextPath+"${exportUrl}"; 
 		config['async']=false;
-		config['data']['paramMap.exportFileType']= config['data']['exportFileType'];
-		config['data']['paramMap.isIgnorePage']= config['data']['isIgnorePage'];
-		if(config['data']['exportFileType'] && config['data']['exportFileType']=='html'){
+		if(config['data']['exportFileType'] && config['data']['exportFileType']=='HTML'){
 			config['dataType'] =  "json";
 			_$reportAjax(config,editHtmlSuccessFunc,null);
 		}else{
 			config['paramObj'] = config['data'];
 			_$reportlocation(config);
 		}
-		if($('#buttonList').children().length==0){
-			$('#buttonList').empty();
-			$('#buttonList').append(buttonListChildren);
-		}
 		function editHtmlSuccessFunc(config,response){
-			$('#'+config.paginationId).pagination({
-				total: response.total
-			});
+			
 			var re1 = /<body[\S|\s| |\n|\r|\t|\f|\cX|\b|\v|\0|\w|\W|\d|\D]*<\/body>/g;  
 			var bodyStartRe = /<body[\S|\s| |\n|\r|\t|\f|\cX|\b|\v|\0|\w|\W|\d|\D]*>\s/;
 			var ddsdf = re1.exec(response.content)[0];
@@ -127,11 +140,30 @@
 			var contentDeleteTds = contentDom.find('td[width="50%"]');
 			var contentTable =  contentDom.find('table');
 			contentDeleteTds.remove();
-			contentTable.css({width:'100%'});
-			$("#"+config['contentId']).append(contentDom);
+			contentTable.css({width:'98%'});
+			$("#"+config['contentId']).append(contentDom).append("<br/><br/><br/>");
 			$('#loadingContentId').removeClass('report-loading-display');
 			$('#loadingContentId').addClass('report-loading-none');
+			if(config['isIgnorePage']=='true'){
+				$('#pp').pagination('refresh',{
+					total: response.total,
+					pageNumber: 1
+				});
+				refreshPaginationText();
+			}else{
+				$('#pp').pagination('refresh',{
+					total: response.total
+				});
+			}
 		}
+	}
+	
+	function refreshPaginationText(){
+		var span = $('#pp table td:eq(7) span');
+		var div = $('#pp div.pagination-info');
+		var divTexts = $('#pp div.pagination-info').text().split(',')[1];
+		$(div).text(divTexts);
+		$(span).text("共1页");
 	}
 	
 	function _$showMessage(config){
@@ -167,6 +199,8 @@
 		var ajaxObj = {
 		  cache: false,
 		  dataType:  "json",
+		  type:'POST',
+		  contentType:config.contentType?config.contentType:'application/json;charset=UTF-8',
 		  success: function(response){
 			  var result =  successFunc(config,response);
 		  },
@@ -178,7 +212,7 @@
 		if(config['data'].pageNumber == 0){
 			config['data'].pageNumber = 1;
 		}
-		
+		config['data'] = _$obj2str(config['data']);
 		$.extend(ajaxObj,config);
 		$.ajax(ajaxObj);
 		return result;
@@ -217,14 +251,14 @@
 	}
 	
 	function _$reportlocation(obj){
-		_$winReportPostHref(obj['url'],obj['paramObj']);
+		_$winReportPostHref(obj['exportUrl'],obj['paramObj']);
 	}
 	function _$winReportPostHref(url,params){
 		$('form[name="exportForm"]').remove();
 		var temp=document.createElement("form");
-		temp.action=url;
+		temp.action= url;
 		temp.name = 'exportForm';
-		temp.method="post";
+		temp.method="POST";
 		temp.style.display="none";
 		if(params != null){
 			for(var x in params) {
@@ -237,12 +271,14 @@
 		}
 		$('body').append(temp);
 		temp.submit(function(e){
+			alert(11);
 		    var postData = $(this).serializeArray();
 		    var formURL = $(this).attr("action");
 		    $.ajax({
 		        url : formURL,
 		        type: "POST",
-		        data : postData,
+		        data : _$obj2str(postData),
+				contentType:config.contentType?config.contentType:'application/json;charset=UTF-8',
 		        success:function(data, textStatus, jqXHR){
 		        	$('#loadingContentId').removeClass('report-loading-display');
 		    		$('#loadingContentId').addClass('report-loading-none');
@@ -299,7 +335,6 @@
 	function addFormElement(formId,reportParameters){
 		$(formId).empty();
 		if(reportParameters && reportParameters.length > 0){
-			console.log(reportParameters);
 			for(var i=0;i<reportParameters.length;i++){
 				var parameter = reportParameters[i];
 				appendParameter(formId,parameter);
@@ -321,7 +356,6 @@
 	function appendInputParameter(formId,parameter){
 		var name = parameter['name'];
 		var text = parameter['title'];
-		text = tohanzi(text);
 		var input = '<div>'+
 					'<label for="{name}">{title}：</label>'+
 					'<input id="{name}" name="{name}" class="easyui-textbox" '+'data-options="iconCls:\'icon-search\'" style="width:300px">'+
@@ -335,7 +369,6 @@
 	function appendSelectParameter(formId,parameter){
 		var name = parameter['name'];
 		var text = parameter['title'];
-		text = tohanzi(text);
 		var input = '<div>'+
 					'<label for="{name}">{title}：</label>'+
 					'<input id="{name}" name="{name}" class="easyui-textbox" '+'data-options="iconCls:\'icon-search\'" style="width:300px">'+
@@ -345,15 +378,5 @@
 			width: 300,
 			label: text
 		});
-	}
-	function tohanzi(data){
-	    if(data == '') return '请输入十六进制unicode';
-	    data = data.split("u");
-	    var str ='';
-	    for(var i=0;i<data.length;i++)
-	    {
-	        str+=String.fromCharCode(parseInt(data[i],16).toString(10));
-	    }
-	    return str;
 	}
 </SCRIPT>

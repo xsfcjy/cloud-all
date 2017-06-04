@@ -34,4 +34,13 @@ public class ObjectUtil {
 		}
 		return obj;
 	}
+	
+	public static boolean isNotEmpty(Object obj){
+		if(null==obj)
+			return false;
+		if(obj instanceof String){
+			return !obj.equals("");
+		}
+		return true;
+	}
 }

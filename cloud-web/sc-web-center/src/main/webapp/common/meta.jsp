@@ -17,7 +17,7 @@
 <title>组织架构共享云平台</title>
 <link rel="stylesheet" type="text/css" href="${ctx}/static/js/ui/jquery-easyui-1.4.2/themes/gray/easyui.css">
 <link rel="stylesheet" type="text/css" href="${ctx}/static/js/ui/jquery-easyui-1.4.2/themes/icon.css">
-<link rel="stylesheet" type="text/css" href="${ctx}/static/css/golive-business.css">
+<link rel="stylesheet" type="text/css" href="${ctx}/static/css/sfxie.css">
 <script type="text/javascript" src="${ctx}/static/js/ui/jquery-easyui-1.4.2/jquery.min.js"></script>
 <script type="text/javascript" src="${ctx}/static/js/ui/jquery-easyui-1.4.2/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="${ctx}/static/js/ui/jquery-easyui-1.4.2/locale/easyui-lang-zh_CN.js"></script>

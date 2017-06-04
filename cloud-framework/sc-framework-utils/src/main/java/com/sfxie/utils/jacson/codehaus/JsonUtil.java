@@ -17,6 +17,7 @@ import org.codehaus.jackson.map.JsonSerializer;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
 import org.codehaus.jackson.map.SerializerProvider;
+import org.codehaus.jackson.map.ser.BeanSerializerFactory;
 import org.codehaus.jackson.map.ser.CustomSerializerFactory;
 import org.codehaus.jackson.type.JavaType;
 import org.codehaus.jackson.type.TypeReference;
@@ -41,22 +42,21 @@ public class JsonUtil {
 	
 	private static ObjectMapper objectMapper;
 	
+	private static CustomSerializerFactory serializerFactory ;
+	
 //	private static JsonBinder  binder = JsonBinder.buildNonDefaultBinder();  
 	/**
 	 * 懒惰单例模式得到ObjectMapper实例
 	 * 此对象为Jackson的核心
 	 */
-	private static ObjectMapper getMapper(){
+	private static ObjectMapper getMapper(boolean returnUnicode){
+		
 		if (objectMapper== null){
 			objectMapper= new ObjectMapper();
 			//当找不到对应的序列化器时 忽略此字段
 			objectMapper.configure(SerializationConfig.Feature.FAIL_ON_EMPTY_BEANS, false);
 			//设置当在被反系列化对象中找不到与反系列化字符串中的属性时忽略此属性
 			objectMapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-			//使Jackson JSON支持Unicode编码非ASCII字符
-			CustomSerializerFactory serializerFactory= new CustomSerializerFactory();
-			serializerFactory.addSpecificMapping(String.class, new StringUnicodeSerializer());
-			objectMapper.setSerializerFactory(serializerFactory);
 			// 允许单引号
 			objectMapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
 	        // 字段和值都加引号
@@ -77,11 +77,20 @@ public class JsonUtil {
 	            }
 	        });
 		}
+		if(returnUnicode){
+			//使Jackson JSON支持Unicode编码非ASCII字符
+			if(null==serializerFactory)
+				serializerFactory = new CustomSerializerFactory();
+			serializerFactory.addSpecificMapping(String.class, new StringUnicodeSerializer());
+			objectMapper.setSerializerFactory(serializerFactory);
+		}else{
+			objectMapper.setSerializerFactory(BeanSerializerFactory.instance);
+		}
 		return objectMapper;
 	}
 	
 	public static ObjectMapper getObjectMapper(){
-		return getMapper();
+		return getMapper(true);
 	}
 	/**
 	 * 用法如下：<br/>
@@ -104,7 +113,7 @@ public class JsonUtil {
 	 */
 	private static JsonParser getParser(String content){
 		try{
-			return getMapper().getJsonFactory().createJsonParser(content);
+			return getMapper(true).getJsonFactory().createJsonParser(content);
 		}catch (IOException ioe){
 			return null;
 		}
@@ -114,9 +123,9 @@ public class JsonUtil {
 	 * 创建JSON生成器的静态方法, 使用标准输出
 	 * @return
 	 */
-	private static JsonGenerator getGenerator(StringWriter sw){
+	private static JsonGenerator getGenerator(StringWriter sw,boolean returnUnicode){
 		try{
-			return getMapper().getJsonFactory().createJsonGenerator(sw);
+			return getMapper(returnUnicode).getJsonFactory().createJsonGenerator(sw);
 		}catch (IOException e) {
 			return null;
 		}
@@ -127,7 +136,7 @@ public class JsonUtil {
 	 */
 	public static String toJSON(Object obj){
 		StringWriter sw= new StringWriter();
-		JsonGenerator jsonGen= getGenerator(sw);
+		JsonGenerator jsonGen= getGenerator(sw,true);
 		if (jsonGen== null){
 			try {
 				sw.close();
@@ -150,7 +159,34 @@ public class JsonUtil {
 		}
 		return null;		
 	}
-	
+	/**
+	 * JSON对象序列化
+	 */
+	public static String toJSONNotUnicode(Object obj){
+		StringWriter sw= new StringWriter();
+		JsonGenerator jsonGen= getGenerator(sw,false);
+		if (jsonGen== null){
+			try {
+				sw.close();
+			} catch (IOException e) {
+			}
+			return null;
+		}		
+		try {
+			//由于在getGenerator方法中指定了OutputStream为sw
+			//因此调用writeObject会将数据输出到sw
+			jsonGen.writeObject(obj);
+			//由于采用流式输出 在输出完毕后务必清空缓冲区并关闭输出流
+			jsonGen.flush();
+			jsonGen.close();
+			return sw.toString();
+		} catch (JsonGenerationException jge) {
+			logger.error("JSON生成错误" + jge.getMessage());
+		} catch (IOException ioe) {
+			logger.error("JSON输入输出错误" + ioe.getMessage());
+		}
+		return null;		
+	}
 	/**
 	 * JSON对象反序列化
 	 */
@@ -192,7 +228,7 @@ public class JsonUtil {
 //		如果是ArrayList<YourBean>那么使用ObjectMapper 的getTypeFactory().constructParametricType(collectionClass, elementClasses);
 //		如果是HashMap<String,YourBean>那么 ObjectMapper 的getTypeFactory().constructParametricType(HashMap.class,String.class, YourBean.class);
 		try {
-			List<T> beanList = getMapper().readValue(listString, getCollectionType(ArrayList.class,clazz));
+			List<T> beanList = getMapper(true).readValue(listString, getCollectionType(ArrayList.class,clazz));
 			return beanList;
 		} catch (JsonParseException e) {
 			e.printStackTrace();
@@ -205,11 +241,11 @@ public class JsonUtil {
 
 	}
 	public static JavaType getCollectionType(Class<?> collectionClass, Class<?>... elementClasses) {   
-		return getMapper().getTypeFactory().constructParametricType(collectionClass, elementClasses);   
+		return getMapper(true).getTypeFactory().constructParametricType(collectionClass, elementClasses);   
 	}  
 	
 
 	public static JavaType getJaveType(Class<?> collectionClass, Class<?>... elementClasses) {   
-		return getMapper().getTypeFactory().constructParametricType(collectionClass, elementClasses);   
+		return getMapper(true).getTypeFactory().constructParametricType(collectionClass, elementClasses);   
 	} 
 }

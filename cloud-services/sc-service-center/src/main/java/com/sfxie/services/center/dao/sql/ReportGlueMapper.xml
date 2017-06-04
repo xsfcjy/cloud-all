@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sfxie.services.center.dao.mapper.ReportGlueMapper">
+  <select id="findJrxml" parameterType="map" resultType="string">
+  	SELECT rv.source_jrxml  FROM report_version rv WHERE rv.reprot_id = #{reprotId} AND rv.version = #{version};
+  </select>
+  <select id="findDatasetJava" parameterType="map" resultType="string">
+  	SELECT rv.dataset_java  FROM report_version rv WHERE rv.reprot_id = #{reprotId} AND rv.version = #{version};
+  </select>
+  <select id="loadAll"  resultType="com.sfxie.component.ui.tags.report.netty.ReportWebSocketEntity">
+  	 SELECT rv.report_id reportId,
+		rd.`name` reportText, 
+		CONCAT(rv.report_id,'_',rv.version) reportName, 
+		rv.version, 
+		rv.dataset_java datasetJava, 
+		rv.source_jrxml reportJrxml
+		
+		 FROM report_definition rd 
+		INNER JOIN report_version rv ON rv.report_id = rd.id
+  </select>
+  <select id="loadParameters"  parameterType="map" resultType="com.sfxie.component.ui.tags.report.netty.ReportParameter">
+  	 SELECT rp.title,rp.`name`,rp.type,rp.`value` ,rp.element_type elementType FROM report_parameter_definition_version rpdv
+		INNER JOIN report_parameter rp ON rp.id = rpdv.parameter_id
+		WHERE rpdv.report_id = #{reportId} OR rpdv.version_id = #{versionId}
+  </select>
+ 
+</mapper>

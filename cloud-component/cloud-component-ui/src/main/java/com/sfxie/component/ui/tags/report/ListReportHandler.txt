@@ -1,6 +1,7 @@
 package com.sfxie.component.ui.tags.report;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,10 +14,8 @@ public class ListReportHandler extends ReportGroovyHandler<List,Map> {
 
 	@Override
 	public List dataset(Map parameter) {
-		List<DemoReportEntity> result = new ArrayList<DemoReportEntity>();
-		for(int i=0;i<100;i++){
-			result.add(new DemoReportEntity(""+i,"name"+i,"1","1","1"));
-		}
+		List<Map> result = new ArrayList<Map>();
+		result.add(new HashMap());
 		return result;
 	}
 	

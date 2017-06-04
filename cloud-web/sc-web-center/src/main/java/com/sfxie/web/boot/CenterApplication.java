@@ -18,6 +18,7 @@ import org.springframework.web.client.RestTemplate;
 import com.sfxie.component.ui.ResourceEntity;
 import com.sfxie.component.ui.ResourceList;
 import com.sfxie.component.ui.UIConfiguration;
+import com.sfxie.component.ui.tags.report.ReportClientConfiguration;
 
 @ComponentScan(basePackages = { 
 		"com.sfxie.core.framework",
@@ -60,6 +61,7 @@ public class CenterApplication  {
 	public static void main(String[] args) throws Exception {
 		SpringApplication.run(new Object []{
 				CenterApplication.class,
+				ReportClientConfiguration.class,
 				UIConfiguration.class}, args);
 	}
 

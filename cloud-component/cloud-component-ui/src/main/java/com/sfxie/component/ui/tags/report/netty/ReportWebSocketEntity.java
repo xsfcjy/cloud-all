@@ -11,10 +11,12 @@ public class ReportWebSocketEntity {
 	private String reportText;
 	/**	报表源代码 	*/
 	private String reportJrxml;
+	/**	报表数据提供类 	*/
+	private String datasetJava;
 	
 	private boolean notupdated = true;
 	/**	报表参数	*/
-	private List<ReportParameter> parameters = new ArrayList<ReportParameter>();
+	private List<ReportParameter> parameters ;
 	
 	public ReportWebSocketEntity(){}
 
@@ -25,11 +27,11 @@ public class ReportWebSocketEntity {
 	}
 	
 	public ReportWebSocketEntity addParameter(String name, String title, String type,String elementType, Object value){
-		parameters.add(new ReportParameter(name, title, type,elementType, value));
+		getParameters().add(new ReportParameter(name, title, type,elementType, value));
 		return this;
 	}
 	public ReportWebSocketEntity addParameter(List<ReportParameter> reportParameters){
-		parameters.addAll(reportParameters);
+		getParameters().addAll(reportParameters);
 		return this;
 	}
 
@@ -64,8 +66,19 @@ public class ReportWebSocketEntity {
 	public void setNotupdated(boolean notupdated) {
 		this.notupdated = notupdated;
 	}
+	
+
+	public String getDatasetJava() {
+		return datasetJava;
+	}
+
+	public void setDatasetJava(String datasetJava) {
+		this.datasetJava = datasetJava;
+	}
 
 	public List<ReportParameter> getParameters() {
+		if(null==parameters)
+			parameters = new ArrayList<ReportParameter>();
 		return parameters;
 	}
 

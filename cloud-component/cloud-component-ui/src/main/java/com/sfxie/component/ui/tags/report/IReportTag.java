@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Writer;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.jsp.JspException;
@@ -14,7 +15,6 @@ import javax.servlet.jsp.tagext.TagSupport;
 import com.sfxie.component.ui.tags.report.netty.ReportWebSocketEntity;
 import com.sfxie.component.ui.tags.report.netty.client.ReportWebSocketClient;
 import com.sfxie.component.ui.tags.report.netty.client.ReportWebSocketClientHandlerCallback;
-import com.sfxie.utils.StringUtils;
 import com.sfxie.utils.jacson.codehaus.JsonUtil;
 
 
@@ -45,8 +45,15 @@ public class IReportTag extends TagSupport {
 	private String easyUIRootPath;
 	/** 报表模板存放路径	*/
 	private String templatePath;
-	
+	/** html查询处理url */
 	private String url;
+	/** 导出文件处理url */
+	private String exportUrl;
+
+	private String debug = "false";
+	
+	private static String jsString = null;
+	private static String htmlString =null;
 	
 	@Override
 	public int doEndTag() throws JspException {
@@ -76,16 +83,24 @@ public class IReportTag extends TagSupport {
 			if(null==paginationAreaStyle || paginationAreaStyle.equals("")){
 				paginationAreaStyle = " style=\"vertical-align: middle;height: 35%;\"";
 			}
-			
 			InputStream i = this.getClass().getResource("report.resource.js").openStream();
-			String dd = inputStream2String(i);
-			String js = dd.replaceAll("\\$\\{ctx\\}", contextPath);
+			if(null==jsString)
+				jsString = inputStream2String(i);
+			if(debug.equals("true"))
+				jsString = inputStream2String(i);
+			
+			String js = jsString.replaceAll("\\$\\{ctx\\}", contextPath);
 			writer.write(js.replaceAll("\\$\\{queryFormId\\}", queryFormId)
 							.replaceAll("\\$\\{url\\}", url)
+							.replaceAll("\\$\\{exportUrl\\}", exportUrl)
 							.replaceAll("\\$\\{easyUIRootPath\\}", easyUIRootPath)
 							.replaceAll("\\$\\{reportEntityMap\\}", getReportEntityMapString())
 					     );
-			writer.write(inputStream2String(this.getClass().getResourceAsStream("report.html.txt"))
+			if(null==htmlString)
+				htmlString = inputStream2String(this.getClass().getResourceAsStream("report.html.txt"));
+			if(debug.equals("true"))
+				htmlString = inputStream2String(this.getClass().getResourceAsStream("report.html.txt"));
+			writer.write(htmlString
 					      .replaceAll("\\$\\{northStyle\\}", northStyle)
 				          .replaceAll("\\$\\{queryAreaStyle\\}", queryAreaStyle)
 				          .replaceAll("\\$\\{paginationAreaStyle\\}", paginationAreaStyle)
@@ -134,6 +149,7 @@ public class IReportTag extends TagSupport {
 	   while ((line = in.readLine()) != null){
 	     buffer.append(line);
 	   }
+	   is.close();
 	   return buffer.toString();
 	}
 	/**
@@ -228,6 +244,7 @@ public class IReportTag extends TagSupport {
 	 */
 	public void watchReportTemplates(String contextPath){
 		if(!ReportWebSocketClient.getInstance().isStart()){
+			ReportFactory.getInstance().setTemplatePath(templatePath);
 			Thread t = new Thread(new Runnable() {
 				@Override
 				public void run() {
@@ -251,14 +268,36 @@ public class IReportTag extends TagSupport {
 	
 	private String getReportEntityMapString(){
 //		${reportEntityMap}
-		String queryParameters = JsonUtil.toJSON(ReportWebSocketClient.getInstance().getReports());
-		System.out.println(queryParameters);
+		Map<String,ReportWebSocketEntity> reportJsMap = new HashMap<String,ReportWebSocketEntity>();
+		for(String key : ReportWebSocketClient.getInstance().getReports().keySet()){
+			ReportWebSocketEntity t =  ReportWebSocketClient.getInstance().getReports().get(key);
+			ReportWebSocketEntity entity = new ReportWebSocketEntity();
+			entity.setReportName(t.getReportName());
+			entity.setReportText(t.getReportText());
+			entity.addParameter(t.getParameters());
+			reportJsMap.put(key, entity);
+		}
+		String queryParameters = JsonUtil.toJSONNotUnicode(reportJsMap);
+//		System.out.println(queryParameters);
 		return queryParameters;
 	}
-	
-	private String getInputString(String name,String title,String validator){
-		String input = "<input class=\"easyui-textbox\" name=\"{0}\" style=\"width:50%\" data-options=\"label:'{2}:',{3}\">";
-		return StringUtils.format(input, name,title,validator);
+
+	public String getDebug() {
+		return debug;
 	}
+
+	public void setDebug(String debug) {
+		this.debug = debug;
+	}
+
+	public String getExportUrl() {
+		return exportUrl;
+	}
+
+	public void setExportUrl(String exportUrl) {
+		this.exportUrl = exportUrl;
+	}
+	
+	
     
 }

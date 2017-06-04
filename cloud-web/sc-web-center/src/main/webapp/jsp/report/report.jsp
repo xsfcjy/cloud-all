@@ -7,6 +7,6 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   </head>
   <body>
-	  	<mytag:report templatePath="/WEB-INF/template" easyUIRootPath="/static/js/ui/jquery-easyui-1.4.2" queryFormId="queryForm" autoQuery="false" url="/ui/report" northStyle="style=\"height:100px;\""></mytag:report>
+	  	<mytag:report debug="true" templatePath="/WEB-INF/template" easyUIRootPath="/static/js/ui/jquery-easyui-1.4.2" queryFormId="queryForm" autoQuery="false" url="/ui/report" exportUrl="/ui/report/export" northStyle="style=\"height:100px;\""></mytag:report>
   </body>
 </html>

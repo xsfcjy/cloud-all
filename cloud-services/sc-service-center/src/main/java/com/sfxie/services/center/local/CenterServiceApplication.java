@@ -6,12 +6,18 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.XADataSourceAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import com.sfxie.component.ui.tags.report.ReportFactory;
+import com.sfxie.component.ui.tags.report.ReportGlueLoader;
+import com.sfxie.component.ui.tags.report.ReportServerConfiguration;
+import com.sfxie.component.ui.tags.report.netty.server.ReportWebSocketServer;
 import com.sfxie.core.framework.boot.BaseApplicationConfig;
 import com.sfxie.extension.datasource.mycat.DsMycatConfiguration;
 import com.sfxie.services.center.config.MybatisCenterConfiguration;
+import com.sfxie.services.center.service.impl.ReportGlueServiceImpl;
 
 /**
  * 
@@ -59,9 +65,9 @@ import com.sfxie.services.center.config.MybatisCenterConfiguration;
 public class CenterServiceApplication extends BaseApplicationConfig {
 	@Override
 	public void run(String... arg0) throws Exception {
+		new ReportWebSocketServer().start();
 	}
-
-
+	
 	/**
 	 * 启动服务
 	 * 
@@ -76,6 +82,7 @@ public class CenterServiceApplication extends BaseApplicationConfig {
 		startServer(new Object[] { 
 				CenterServiceApplication.class,
 //				PagerConfigurer.class,
+				ReportServerConfiguration.class,
 				DsMycatConfiguration.class,
 				MybatisCenterConfiguration.class,
 				DataSourceTransactionManagerAutoConfiguration.class }, args);
