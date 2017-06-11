@@ -2,6 +2,15 @@
 	
 	if(!GoLive.EasyUI)
 		GoLive.EasyUI = new Object();
+	GoLive.EasyUI.settings = new Object();
+	GoLive.EasyUI.settings.dom={
+			label:'<label>{label}:</label>',
+			td:'<td id="td{name}"></td>',
+			input: '<div><input name="{name}" id="{id}"  style="width:{width}px"></div>',
+			select: '<div><select name="{name}" id="{id}" style="width:{width}px"></select></div>',
+			seperator: '<td><div class="datagrid-btn-separator"></div></td>'
+	};
+	
 	var type = {
         str : '[object String]',
         arr : '[object Array]',
@@ -360,6 +369,7 @@
 				extractParameter(params);
 			}
 			var url = _config.url;
+			extractConditionParameters(params,_config.conditionList);
 			GoLive.ajax({
 				url : url,
 				async : true,
@@ -386,8 +396,146 @@
 						var queryParamArray = getQueryParamArray(decoratedColumns,datagridId);
 						decoratedDataGridColumn(queryParamArray,decoratedColumns,_config);
 					}
+					/*if(_config.inputList){
+						var inputListTd = $("#"+_config.inputList).find('td').clone();
+						$('.datagrid-toolbar tr').append(inputListTd);
+						var inputList = $(inputListTd).find('input');
+						var selectList = $(inputListTd).find('select');
+						decoratedInputs(inputList);
+						decoratedSelects(selectList);
+						
+					}*/
+					generatedConditions(_config.conditionList);
+					setConditionParameters(params,_config.conditionList);
 				}
 			});
+		}
+		
+		function setConditionParameters(params,conditionList){
+			if(conditionList && conditionList.length>0){
+				for(var i=0;i<conditionList.length;i++){
+					var condition = conditionList[i];
+//					var type = condition['type'];
+//					if(type=='textbox'){
+						var conditionTdId = 'td'+condition['name'];
+						try{
+							if(params[condition['name']]){
+								$('#'+conditionTdId).find('.textbox-value').val(params[condition['name']]);
+								$('#'+conditionTdId).find('.textbox-text').val(params[condition['name']]);
+								$('#'+conditionTdId).find('.textbox-text').removeClass('textbox-prompt').removeClass('validatebox-invalid');
+								$('#'+conditionTdId).find('.textbox').addClass('textbox-focused');
+								$('#'+conditionTdId).find('.textbox').removeClass('textbox-invalid');
+							}
+						}catch(e){
+							alert(e);;
+						}
+//					}
+				}
+			}
+		}
+		function extractConditionParameters(params,conditionList){
+			if(conditionList && conditionList.length>0){
+				for(var i=0;i<conditionList.length;i++){
+					var condition = conditionList[i];
+//					var type = condition['type'];
+//					if(type=='textbox'){
+					var conditionTdId = 'td'+condition['name'];
+					try{
+						var value = $('#'+conditionTdId).find('.textbox-value').val();
+						params[condition['name']] = value;
+					}catch(e){
+						;
+					}
+//					}
+				}
+			}
+		}
+		function generatedConditions(conditionList){
+			if(conditionList && conditionList.length>0){
+				var toolbarTr = $('.datagrid-toolbar tr');
+				for(var i=0;i<conditionList.length;i++){
+					var condition = conditionList[i];
+					var type = condition['type'];
+					var domTd = $(GoLive.EasyUI.settings.dom['td'].format(condition));
+					var seperator = GoLive.EasyUI.settings.dom['seperator'];
+					if(type=='textbox'){
+						generatedTextbox(toolbarTr,domTd,seperator,condition);
+					}else if(type=='datebox'){
+						generatedDatebox(toolbarTr,domTd,seperator,condition);
+					}else if(type=='datetimebox'){
+						generatedDatetimebox(toolbarTr,domTd,seperator,condition);
+					}
+					
+				}
+			}
+			
+		}
+		//处理文本输入框
+		function generatedTextbox(toolbarTr,domTd,seperator,condition){
+			condition['id'] = condition['id']?condition['id']:(condition['name']+'ID');
+			var domInput = $(GoLive.EasyUI.settings.dom['input'].format(condition));
+			toolbarTr.append($(seperator));
+			if(condition['label']){
+				var label = $(GoLive.EasyUI.settings.dom['label'].format(condition));
+				domTd.append(label);
+			}
+			domTd.append(domInput);
+			toolbarTr.append(domTd);
+			$(domInput).textbox(condition['options']);
+		}
+		//处理文本输入框
+		function generatedDatebox(toolbarTr,domTd,seperator,condition){
+			condition['id'] = condition['id']?condition['id']:(condition['name']+'ID');
+			var domInput = $(GoLive.EasyUI.settings.dom['input'].format(condition));
+			toolbarTr.append($(seperator));
+			if(condition['label']){
+				var label = $(GoLive.EasyUI.settings.dom['label'].format(condition));
+				domTd.append(label);
+			}
+			domTd.append(domInput);
+			toolbarTr.append(domTd);
+			$(domInput).datebox(condition['options']);
+		}
+
+		//处理时间输入框
+		function generatedDatetimebox(toolbarTr,domTd,seperator,condition){
+			condition['id'] = condition['id']?condition['id']:(condition['name']+'ID');
+			var domInput = $(GoLive.EasyUI.settings.dom['input'].format(condition));
+			toolbarTr.append($(seperator));
+			if(condition['label']){
+				var label = $(GoLive.EasyUI.settings.dom['label'].format(condition));
+				domTd.append(label);
+			}
+			domTd.append(domInput);
+			toolbarTr.append(domTd);
+			$(domInput).datetimebox(condition['options']);
+		}
+		
+		//处理文本输入框
+		function decoratedInputs(inputList){
+			if(inputList){
+				for(var i=0;i<inputList.length;i++){
+					var uiclass = $(inputList[i]).attr('uiclass');
+					if(uiclass == 'easyui-datebox'){
+					    $(inputList[i]).datebox({
+					        required:true
+					    });
+					}
+					if(uiclass == 'easyui-textbox'){
+					    $(inputList[i]).textbox({
+					        required:true
+					    });
+					}
+				}
+			}
+		}
+		//处理下拉框
+		function decoratedSelects(selectList){
+			if(selectList){
+				for(var i=0;i<selectList.length;i++){
+					var uiclass = $(selectList[i]).attr('uiclass');
+				}
+			}
 		}
 		function decoratedDataGridColumn(queryParamArray,decoratedColumns,_config){
 			var params = {

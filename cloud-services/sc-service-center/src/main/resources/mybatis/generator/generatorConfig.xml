@@ -3,9 +3,10 @@
         PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 
+
 <generatorConfiguration>
 	<classPathEntry
-		location="E:/sfxie/maven/repository/mysql/mysql-connector-java/5.1.39/mysql-connector-java-5.1.39.jar" />
+		location="E:/vanke/maven/repository/mysql/mysql-connector-java/5.1.39/mysql-connector-java-5.1.39.jar" />
 	<context id="my" targetRuntime="MyBatis3">
 		<!-- 是否去除自动生成的注释 -->
 		<!-- <commentGenerator>
@@ -30,7 +31,7 @@
 
 		<!-- 生成模型的包名和位置 -->
 		<javaModelGenerator targetPackage="com.sfxie.services.center.pojo"
-			targetProject="E:/sfxie/git/cloud/cloud-all/cloud-services/sc-service-center/src/main/java">
+			targetProject="E:/git/fork/third/cloud-all/cloud-services/sc-service-center/src/main/java">
 			<!-- 是否让schema作为包的后缀 -->
 			<property name="enableSubPackages" value="true" />
 			<!-- 从数据库返回的值被清理前后的空格 -->
@@ -39,13 +40,13 @@
 
 		<!-- 生成映射文件的包名和位置 -->
 		<sqlMapGenerator targetPackage="com.sfxie.services.center.dao.sql"
-			targetProject="E:/sfxie/git/cloud/cloud-all/cloud-services/sc-service-center/src/main/java">
+			targetProject="E:/git/fork/third/cloud-all/cloud-services/sc-service-center/src/main/java">
 			<property name="enableSubPackages" value="true" />
 		</sqlMapGenerator>
 
 		<!-- 生成DAO的包名和位置 -->
 		<javaClientGenerator targetPackage="com.sfxie.services.center.dao.mapper"
-			targetProject="E:/sfxie/git/cloud/cloud-all/cloud-services/sc-service-center/src/main/java"
+			targetProject="E:/git/fork/third/cloud-all/cloud-services/sc-service-center/src/main/java"
 			type="XMLMAPPER">
 			<property name="enableSubPackages" value="true" />
 		</javaClientGenerator>
@@ -168,5 +169,39 @@
 			<conditionField name="user_id" operate="like" leftString="'%" rightString="%'"></conditionField>
 			<partitionField name="partition_company" ></partitionField>
 		</table>
+		
+		<!-- 		report 		-->
+		<table tableName="report_definition" domainObjectName="ReportDefinition"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false">
+		</table>
+		<table tableName="report_version" domainObjectName="ReportVersion"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false">
+		</table>
+		<table tableName="report_active" domainObjectName="ReportActive"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false">
+		</table>
+		<table tableName="report_parameter" domainObjectName="ReportParameter"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false">
+		</table>
+		<table tableName="report_parameter_definition_version" domainObjectName="ReportParameterDefinitionVersion"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false">
+		</table>
+		<table tableName="report_server_register" domainObjectName="ReportServerRegister"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false">
+		</table>
+		
+		
 	</context>
 </generatorConfiguration>

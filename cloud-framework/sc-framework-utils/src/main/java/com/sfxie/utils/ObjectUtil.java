@@ -1,5 +1,10 @@
 package com.sfxie.utils;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.Map;
+
+import org.apache.commons.beanutils.BeanUtils;
+
 /**
  * 对象辅助类
  * @TODO	
@@ -42,5 +47,26 @@ public class ObjectUtil {
 			return !obj.equals("");
 		}
 		return true;
+	}
+	/**
+	 *  判断key是否为空
+	 * @param obj
+	 * 		被判断的对象
+	 * @param keyMessage
+	 * 		被判断的key和提示信息map
+	 * @return
+	 */
+	public static String judgeNull(Object obj,Map<String,String> keyMessage){
+		for(String key : keyMessage.keySet()){
+			try {
+				if(null==BeanUtils.getProperty(obj, key)){
+					return keyMessage.get(key);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return null;
+		
 	}
 }
