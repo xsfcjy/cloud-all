@@ -216,15 +216,59 @@
 	GoLive.EasyUI.Form.loadData = _$formLoadData;
 	GoLive.EasyUI.Form.submit = _$formSubmit;
 	GoLive.EasyUI.Form.reset = _$resetForm;
+	
 	function _$resetForm(formId){
 		$('#'+formId).form('reset');
 	}
 	
 	function _$formSubmit(config){
+		var url = config.url;
+		var id = config.restfulId;
+		var method = 'POST';
+		var idValue = $('#'+id).val();
+		if(idValue){
+			method = 'PUT';
+		}
 		var formId = config.formId;
+		var formParams = GoLive.DomUtil.getJSONObjectFromForm(formId);
+		url = url.format(formParams);
 		var success = config.success;
 		var onSubmit = config.onSubmit;
-		$('#'+formId).form('submit',{
+		
+		var isValidate = true;
+        if(onSubmit){
+        	isValidate = GoLive.Judge.isBool(onSubmit(formParams));
+        }
+        //如果onSubmit返回false,则中断提交
+        if(isValidate){
+        	isValidate = $('#'+formId).form('enableValidation').form('validate');
+        }
+		if(isValidate){
+			GoLive.ajax({
+				url : url,
+				async : true,
+				data : JSON.stringify(formParams),
+				dataType : "json",
+				type: method,
+				contentType: "application/json",
+				success : function(data) {
+					var data = eval('(' + data + ')'); 
+					if(data['errorCode']){
+						if(data['errorCode']=='serviceError'){
+							_$showMessage({timeout:5000,icon:'error',msg:data['errorMsg']||data['localErrorMsg']});
+						}else{
+							_$showMessage({timeout:4000,icon:'info',msg:data['localErrorMsg']||data['errorMsg']});
+						}
+					}else{
+						if(success){
+							success(data);
+						}
+					}
+				}
+			});
+		}
+		
+		/*$('#'+formId).form('submit',{
 		    success: function(data){
 		    	var data = eval('(' + data + ')'); 
 		    	if(data['errorCode']){
@@ -252,7 +296,7 @@
 		        	return $(this).form('enableValidation').form('validate');
 		        }
 		    }
-		});
+		});*/
 	}
 	/**
 	 * 加载表单数据,使用示例如下:
@@ -369,7 +413,7 @@
 				extractParameter(params);
 			}
 			var url = _config.url;
-			extractConditionParameters(params,_config.conditionList);
+			extractConditionParameters(params,_config.toolbarConditions);
 			GoLive.ajax({
 				url : url,
 				async : true,
@@ -405,16 +449,16 @@
 						decoratedSelects(selectList);
 						
 					}*/
-					generatedConditions(_config.conditionList);
-					setConditionParameters(params,_config.conditionList);
+					generatedConditions(_config.toolbarConditions);
+					setConditionParameters(params,_config.toolbarConditions);
 				}
 			});
 		}
 		
-		function setConditionParameters(params,conditionList){
-			if(conditionList && conditionList.length>0){
-				for(var i=0;i<conditionList.length;i++){
-					var condition = conditionList[i];
+		function setConditionParameters(params,toolbarConditions){
+			if(toolbarConditions && toolbarConditions.length>0){
+				for(var i=0;i<toolbarConditions.length;i++){
+					var condition = toolbarConditions[i];
 //					var type = condition['type'];
 //					if(type=='textbox'){
 						var conditionTdId = 'td'+condition['name'];
@@ -433,10 +477,10 @@
 				}
 			}
 		}
-		function extractConditionParameters(params,conditionList){
-			if(conditionList && conditionList.length>0){
-				for(var i=0;i<conditionList.length;i++){
-					var condition = conditionList[i];
+		function extractConditionParameters(params,toolbarConditions){
+			if(toolbarConditions && toolbarConditions.length>0){
+				for(var i=0;i<toolbarConditions.length;i++){
+					var condition = toolbarConditions[i];
 //					var type = condition['type'];
 //					if(type=='textbox'){
 					var conditionTdId = 'td'+condition['name'];
@@ -450,11 +494,11 @@
 				}
 			}
 		}
-		function generatedConditions(conditionList){
-			if(conditionList && conditionList.length>0){
+		function generatedConditions(toolbarConditions){
+			if(toolbarConditions && toolbarConditions.length>0){
 				var toolbarTr = $('.datagrid-toolbar tr');
-				for(var i=0;i<conditionList.length;i++){
-					var condition = conditionList[i];
+				for(var i=0;i<toolbarConditions.length;i++){
+					var condition = toolbarConditions[i];
 					var type = condition['type'];
 					var domTd = $(GoLive.EasyUI.settings.dom['td'].format(condition));
 					var seperator = GoLive.EasyUI.settings.dom['seperator'];

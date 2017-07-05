@@ -19,6 +19,9 @@ import com.sfxie.component.ui.ResourceEntity;
 import com.sfxie.component.ui.ResourceList;
 import com.sfxie.component.ui.UIConfiguration;
 import com.sfxie.component.ui.tags.report.ReportClientConfiguration;
+import com.sfxie.core.framework.boot.BaseApplicationConfig;
+import com.sfxie.utils.IpUtil;
+import com.sfxie.web.boot.util.ServerPathUtil;
 
 @ComponentScan(basePackages = { 
 		"com.sfxie.core.framework",
@@ -34,7 +37,7 @@ import com.sfxie.component.ui.tags.report.ReportClientConfiguration;
 		DataSourceTransactionManagerAutoConfiguration.class,
 		XADataSourceAutoConfiguration.class
 })
-public class CenterApplication  {
+public class CenterApplication  extends BaseApplicationConfig{
 	
 	@Autowired  
     private RestTemplateBuilder builder; 
@@ -63,6 +66,13 @@ public class CenterApplication  {
 				CenterApplication.class,
 				ReportClientConfiguration.class,
 				UIConfiguration.class}, args);
+	}
+
+	public void run(String... arg0) throws Exception {
+		String centerServerPath = "http://"+IpUtil.getIpPort(8083);
+		logger.info("centerServerPath: "+centerServerPath);
+		ServerPathUtil.setCenterServerPath(centerServerPath);
+		ServerPathUtil.setEasyuiDataProviderServerPath(centerServerPath);
 	}
 
 }

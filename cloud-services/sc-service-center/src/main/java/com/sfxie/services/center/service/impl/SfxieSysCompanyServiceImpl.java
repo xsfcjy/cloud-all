@@ -1,6 +1,7 @@
 package com.sfxie.services.center.service.impl;
 
 import java.util.List;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 
@@ -40,6 +41,11 @@ public class SfxieSysCompanyServiceImpl extends TransactionService {
      * @param record
      */
     public int insertSelective(SfxieSysCompany record){
+    	String createCompanyId = "";
+    	String createUser = "";
+    	record.setCreateCompanyId(createCompanyId);
+    	record.setCreateUser(createUser);
+    	record.setId(UUID.randomUUID().toString());
     	return sfxieSysCompanyMapper.insertSelective(record);
     }
 

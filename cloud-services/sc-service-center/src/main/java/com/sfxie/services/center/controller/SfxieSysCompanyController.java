@@ -49,18 +49,8 @@ public class SfxieSysCompanyController {
      *
      * @param record
      */
-	@RequestMapping(value = "/company/insert", method = RequestMethod.POST)
+	@RequestMapping(value = "/company", method = RequestMethod.POST)
     public int insert(@RequestBody SfxieSysCompany record){
-    	return sfxieSysCompanyService.insert(record);
-    }
-
-    /**
-     *  动态字段,写入数据库记录,sfxie_sys_company
-     *
-     * @param record
-     */
-	@RequestMapping(value = "/company/insertSelective", method = RequestMethod.POST)
-    public int insertSelective(@RequestBody SfxieSysCompany record){
     	return sfxieSysCompanyService.insertSelective(record);
     }
 
@@ -69,18 +59,8 @@ public class SfxieSysCompanyController {
      *
      * @param record
      */
-	@RequestMapping(value = "/company/updateSelective", method = RequestMethod.PUT)
+	@RequestMapping(value = "/company", method = RequestMethod.PUT)
     public int updateByPrimaryKeySelective(@RequestBody SfxieSysCompany record){
     	return sfxieSysCompanyService.updateByPrimaryKeySelective(record);
-    }
-
-    /**
-     *  根据主键来更新符合条件的数据库记录,sfxie_sys_company
-     *
-     * @param record
-     */
-	@RequestMapping(value = "/company/update", method = RequestMethod.PUT)
-    public int updateByPrimaryKey(@RequestBody SfxieSysCompany record){
-    	return sfxieSysCompanyService.updateByPrimaryKey(record);
     }
 }

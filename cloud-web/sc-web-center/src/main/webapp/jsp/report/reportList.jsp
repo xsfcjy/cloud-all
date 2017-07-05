@@ -27,7 +27,7 @@
         			valueField:'value'
         		}],
 //         		inputList:'inputList'
-				conditionList:[{
+				toolbarConditions:[{
 					type:'textbox',
 					name:'name',
 					id:'conditionName',
@@ -80,6 +80,13 @@
             				formId:'myform',
             				type:'GET',
             				url:loadRoleUrl,
+            				operatedUrl:{
+            					put:'',
+            					post:'',
+            					del:'',
+            					get:''
+            					
+            				},
             				afterFormRender : function (data){
 		            			$('#isValidList').combobox('setValue', data["isMain"]);
 		                    	$('#editWindow').window('open');
@@ -125,7 +132,7 @@
 		    </table>
 	    </div>
     </div>
-	<div id="editWindow" class="easyui-window" title="公司编辑" data-options="modal:true,closed:true,iconCls:'icon-save'" style="width:400px;height:400px;padding:10px;">
+	<div id="editWindow" class="easyui-window" title="公司编辑" data-options="modal:true,closed:true,iconCls:'icon-save'" style="width:400px;height:300px;padding:10px;">
 		<jsp:include page="reportDefinitionEdit.jsp" flush="true"></jsp:include>
 	</div>
   </body>

@@ -62,13 +62,36 @@
 		                    	$('#editWindow').window('open');
             				},
             				parameter:{
-            				},
+            				}
             			});
             		}
             	});
 			}
         }];
-        
+		function submitForm(){
+        	
+    		GoLive.EasyUI.Form.submit({
+    			formId: 'myform',
+    			restfulId:'id',
+    			url:'${centerPath}/company',
+    			onSubmit: function(param){
+    				return true;
+    			},
+    			success: function(data){
+    		    	GoLive.EasyUI.Message.show({
+    		    		timeout:1000,
+    		    		icon:'info',
+    		    		msg:'用户保存成功!'
+    		    	});
+    		    	GoLive.EasyUI.Datagrid.reload({
+    		    		dataGridId: 'dataGrid'
+    		    	}); 
+    		    }
+    		});
+    	}
+    	function resetForm(){
+    		GoLive.EasyUI.Form.reset('myform');
+    	}
     </script>
   </head>
   <body>

@@ -74,7 +74,7 @@
     values (#{id,jdbcType=VARCHAR}, #{companyCode,jdbcType=VARCHAR}, #{companyNameCn,jdbcType=VARCHAR}, 
       #{companyNameEn,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{tel,jdbcType=VARCHAR}, 
       #{fax,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
-      #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, 
+      #{createUser,jdbcType=VARCHAR}, now(), #{updateUser,jdbcType=VARCHAR}, 
       #{updateTime,jdbcType=TIMESTAMP}, #{sequenceNo,jdbcType=DECIMAL}, #{isValid,jdbcType=CHAR}, 
       #{shortNameCn,jdbcType=VARCHAR}, #{shortNameEn,jdbcType=VARCHAR}, #{companyLevel,jdbcType=DECIMAL}, 
       #{createCompanyId,jdbcType=VARCHAR})
@@ -120,9 +120,7 @@
       <if test="createUser != null">
         create_user,
       </if>
-      <if test="createTime != null">
         create_time,
-      </if>
       <if test="updateUser != null">
         update_user,
       </if>
@@ -182,9 +180,7 @@
       <if test="createUser != null">
         #{createUser,jdbcType=VARCHAR},
       </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
+        now(),
       <if test="updateUser != null">
         #{updateUser,jdbcType=VARCHAR},
       </if>
@@ -246,12 +242,6 @@
       <if test="remark != null">
         remark = #{remark,jdbcType=VARCHAR},
       </if>
-      <if test="createUser != null">
-        create_user = #{createUser,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null">
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
       <if test="updateUser != null">
         update_user = #{updateUser,jdbcType=VARCHAR},
       </if>
@@ -295,8 +285,6 @@
       url = #{url,jdbcType=VARCHAR},
       email = #{email,jdbcType=VARCHAR},
       remark = #{remark,jdbcType=VARCHAR},
-      create_user = #{createUser,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
       update_user = #{updateUser,jdbcType=VARCHAR},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       sequence_no = #{sequenceNo,jdbcType=DECIMAL},

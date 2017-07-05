@@ -2,7 +2,7 @@
 <%@ page contentType="text/html; charset=utf-8" %>
 <%@ taglib prefix="mytag" uri="http://www.sfxie.com/tags" %>
    	<div class="golive-easyui-form-div">
-	   	<form id="myform" class="easyui-form" method="post" data-options="novalidate:true" action="${ctx}/systemAjax/system-userModule.action">
+	   	<form id="myform" class="easyui-form" method="post" data-options="novalidate:true" action="#">
 	   		<input type="hidden" name="id">
         	<input name="createTime" id="createTime"  type="hidden">
 	        <div>
@@ -24,7 +24,7 @@
 	        </div>
     	</form>
    	</div>
-   	<div style="text-align:center;padding:5px;height: 10%;">
+   	<div style="text-align:center;">
     	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()">保存</a>
 		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="resetForm()">清除</a>
     </div>

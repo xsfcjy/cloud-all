@@ -141,7 +141,7 @@
     from report_definition
     <where > 
       <if test="name != null">
-        name like '%${name,jdbcType=VARCHAR}%'
+        name like '%${name}%'
       </if>
       <if test="code != null">
        AND code = #{code,jdbcType=VARCHAR}

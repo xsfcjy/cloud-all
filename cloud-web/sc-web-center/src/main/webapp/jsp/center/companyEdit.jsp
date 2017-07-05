@@ -2,8 +2,8 @@
 <%@ page contentType="text/html; charset=utf-8" %>
 <%@ taglib prefix="mytag" uri="http://www.sfxie.com/tags" %>
    	<div class="golive-easyui-form-div">
-	   	<form id="myform" class="easyui-form" method="post" data-options="novalidate:true" action="${ctx}/systemAjax/system-userModule.action">
-	   		<input type="hidden" name="id">
+	   	<form id="myform" class="easyui-form" method="post" data-options="novalidate:true" action="">
+	   		<input type="hidden" name="id" id="id">
 	   		<input name="createUser" id="createUser" type="hidden">
         	<input name="createTime" id="createTime"  type="hidden">
 	        <div>
