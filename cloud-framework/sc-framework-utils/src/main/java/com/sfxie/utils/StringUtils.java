@@ -389,4 +389,5 @@ public class StringUtils extends org.apache.commons.lang.StringUtils{
 	public static String format(String formatStr,Object... arguments){
 		return MessageFormat.format(formatStr,arguments);
 	}
+	
 }

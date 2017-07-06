@@ -1,6 +1,8 @@
 <%@ page language="java" pageEncoding="utf-8"%>
 <%@ page contentType="text/html; charset=utf-8" %>
 <%@ include file="/common/meta.jsp" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <!DOCTYPE html>
 <html>
@@ -81,7 +83,7 @@
     		    	GoLive.EasyUI.Message.show({
     		    		timeout:1000,
     		    		icon:'info',
-    		    		msg:'用户保存成功!'
+    		    		msg:'保存成功!'
     		    	});
     		    	GoLive.EasyUI.Datagrid.reload({
     		    		dataGridId: 'dataGrid'
@@ -117,10 +119,15 @@
 		        <thead>
 		            <tr>
 		            	<th data-options="field:'ck',checkbox:true"></th>
-		                <th field="id" width="1" align="center"  sortable="true" >公司Id</th>
-		                <th field="companyCode" width="1" align="center"  sortable="true">公司编码</th>
-		                <th field="companyNameCn" width="1" align="center">公司名称</th>
-		                <th field="isValid" width="1" align="center" >是否有效</th>
+		                <th field="companyCode" width="1" align="center"  sortable="true">
+		                	<spring:message code="page.companyList.companyCode"></spring:message>
+		                </th>
+		                <th field="companyNameCn" width="1" align="center">
+		                	<spring:message code="page.companyList.companyNameCn"></spring:message>
+						</th>
+		                <th field="isValid" width="1" align="center" >
+		                	<spring:message code="common.isValid"></spring:message>
+		                </th>
 		            </tr>
 		        </thead>
 		    </table>

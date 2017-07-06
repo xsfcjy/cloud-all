@@ -65,7 +65,8 @@ public class CenterApplication  extends BaseApplicationConfig{
 		SpringApplication.run(new Object []{
 				CenterApplication.class,
 				ReportClientConfiguration.class,
-				UIConfiguration.class}, args);
+				UIConfiguration.class
+		}, args);
 	}
 
 	public void run(String... arg0) throws Exception {
