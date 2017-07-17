@@ -21,6 +21,7 @@ import com.sfxie.component.ui.UIConfiguration;
 import com.sfxie.component.ui.tags.report.ReportClientConfiguration;
 import com.sfxie.core.framework.boot.BaseApplicationConfig;
 import com.sfxie.utils.IpUtil;
+import com.sfxie.web.boot.i18n.I18nConfiguration;
 import com.sfxie.web.boot.util.ServerPathUtil;
 
 @ComponentScan(basePackages = { 
@@ -65,10 +66,10 @@ public class CenterApplication  extends BaseApplicationConfig{
 		SpringApplication.run(new Object []{
 				CenterApplication.class,
 				ReportClientConfiguration.class,
-				UIConfiguration.class
+				UIConfiguration.class,
+				I18nConfiguration.class
 		}, args);
 	}
-
 	public void run(String... arg0) throws Exception {
 		String centerServerPath = "http://"+IpUtil.getIpPort(8083);
 		logger.info("centerServerPath: "+centerServerPath);

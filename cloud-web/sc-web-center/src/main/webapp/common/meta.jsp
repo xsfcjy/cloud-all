@@ -2,6 +2,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="mytag" uri="http://www.sfxie.com/tags" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ page language="java" pageEncoding="utf-8" import="com.sfxie.web.boot.util.ServerPathUtil,com.sfxie.web.boot.util.ServerPathUtil.ServiceName" %>
 <%@ page contentType="text/html; charset=utf-8" %>
 
@@ -15,12 +16,13 @@
 <html>
 <head>
 <title>组织架构共享云平台</title>
-<link rel="stylesheet" type="text/css" href="${ctx}/static/js/ui/jquery-easyui-1.4.2/themes/gray/easyui.css">
-<link rel="stylesheet" type="text/css" href="${ctx}/static/js/ui/jquery-easyui-1.4.2/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="${ctx}/static/js/ui/jquery-easyui-1.5.2/themes/gray/easyui.css">
+<link rel="stylesheet" type="text/css" href="${ctx}/static/js/ui/jquery-easyui-1.5.2/themes/icon.css">
 <link rel="stylesheet" type="text/css" href="${ctx}/static/css/sfxie.css">
-<script type="text/javascript" src="${ctx}/static/js/ui/jquery-easyui-1.4.2/jquery.min.js"></script>
-<script type="text/javascript" src="${ctx}/static/js/ui/jquery-easyui-1.4.2/jquery.easyui.min.js"></script>
-<script type="text/javascript" src="${ctx}/static/js/ui/jquery-easyui-1.4.2/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="${ctx}/static/js/ui/jquery-easyui-1.5.2/jquery.min.js"></script>
+<script type="text/javascript" src="${ctx}/static/js/ui/jquery-easyui-1.5.2/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="${ctx}/static/js/ui/jquery-easyui-1.5.2/locale/<spring:message code="easyui.i18n" />"></script>
+
 <script type="text/javascript" src="${ctx}/static/js/common/json2.js"></script>
 <script type="text/javascript" src="${ctx}/static/js/common/common.js"></script>
 <script type="text/javascript" src="${ctx}/static/js/common/EasyUIUtil.js"></script>

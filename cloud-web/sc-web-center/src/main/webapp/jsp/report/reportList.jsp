@@ -31,7 +31,7 @@
 					type:'textbox',
 					name:'name',
 					id:'conditionName',
-					label:'报表名称'
+					label:'<spring:message code="page.center.report.reportList.form.name" />'
 				},{
 					type:'datebox',
 					name:'startTime',
@@ -52,13 +52,13 @@
         	});
         }
         var toolbar = [{
-            text:'查询',
+            text:'<spring:message code="button.query" />',
             iconCls:'golive-icon-query',
             handler:function(){
             	loadGridData();
 			}
         },'-',{
-            text:'添加',
+            text:'<spring:message code="button.add" />',
             iconCls:'golive-icon-add',
             handler:function(){
             	$('#myform').form('clear');
@@ -66,13 +66,13 @@
     			$('#isValidList').combobox('setValue', $('#isValidList').attr("value"));
             }
         },'-',{
-            text:'修改',
+            text:'<spring:message code="button.edit" />',
             iconCls:'golive-icon-modify',
             handler:function(){
             	GoLive.EasyUI.Datagrid.singleSelectedAction({
             		dataGridId :'dataGrid',
-            		notSelectedTip:'请选择记录!',
-            		multySelectedTip:'只能选择一条记录操作!',
+            		notSelectedTip:'<spring:message code="page.datagrid.action.notSelectedTip" />',
+            		multySelectedTip:'<spring:message code="page.datagrid.action.multySelectedTip" />',
             		actionFunc:function(selectRecord){
             			var loadRoleUrl = "${centerPath}/report/definition/{id}".format(selectRecord);
             			GoLive.EasyUI.Form.loadData({
@@ -123,16 +123,21 @@
 		        <thead>
 		            <tr>
 		            	<th data-options="field:'ck',checkbox:true"></th>
-		                <th field="id" width="1" align="center"  sortable="true" >主键</th>
-		                <th field="code" width="1" align="center"  sortable="true">报表编码</th>
-		                <th field="name" width="1" align="center">报表名称</th>
-		                <th field="isMain" width="1" align="center" >是否主报表</th>
+		                <th field="code" width="1" align="center"  sortable="true">
+		                	<spring:message code="page.center.report.reportList.code" />
+						</th>
+		                <th field="name" width="1" align="center">
+		                	<spring:message code="page.center.report.reportList.name" />
+						</th>
+		                <th field="isMain" width="1" align="center" >
+		                	<spring:message code="page.center.report.reportList.isMain" />
+						</th>
 		            </tr>
 		        </thead>
 		    </table>
 	    </div>
     </div>
-	<div id="editWindow" class="easyui-window" title="公司编辑" data-options="modal:true,closed:true,iconCls:'icon-save'" style="width:400px;height:300px;padding:10px;">
+	<div id="editWindow" class="easyui-window" title="<spring:message code="page.center.report.reportList.editwindow" />" data-options="modal:true,closed:true,iconCls:'icon-save'" style="width:400px;height:300px;padding:10px;">
 		<jsp:include page="reportDefinitionEdit.jsp" flush="true"></jsp:include>
 	</div>
   </body>

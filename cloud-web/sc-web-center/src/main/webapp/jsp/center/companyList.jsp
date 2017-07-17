@@ -1,8 +1,6 @@
 <%@ page language="java" pageEncoding="utf-8"%>
 <%@ page contentType="text/html; charset=utf-8" %>
 <%@ include file="/common/meta.jsp" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <!DOCTYPE html>
 <html>
@@ -31,13 +29,13 @@
         	});
         }
         var toolbar = [{
-            text:'查询',
+            text:'<spring:message code="button.query" />',
             iconCls:'golive-icon-query',
             handler:function(){
             	loadGridData();
 			}
         },'-',{
-            text:'添加',
+            text:'<spring:message code="button.add" />',
             iconCls:'golive-icon-add',
             handler:function(){
             	$('#myform').form('clear');
@@ -45,13 +43,13 @@
     			$('#isValidList').combobox('setValue', $('#isValidList').attr("value"));
             }
         },'-',{
-            text:'修改',
+            text:'<spring:message code="button.edit" />',
             iconCls:'golive-icon-modify',
             handler:function(){
             	GoLive.EasyUI.Datagrid.singleSelectedAction({
             		dataGridId :'dataGrid',
-            		notSelectedTip:'请选择记录!',
-            		multySelectedTip:'只能选择一条记录操作!',
+            		notSelectedTip:'<spring:message code="page.datagrid.action.notSelectedTip" />',
+            		multySelectedTip:'<spring:message code="page.datagrid.action.multySelectedTip" />',
             		actionFunc:function(selectRecord){
             			var loadRoleUrl = "${centerPath}/company/{id}".format(selectRecord);
             			GoLive.EasyUI.Form.loadData({
@@ -83,7 +81,7 @@
     		    	GoLive.EasyUI.Message.show({
     		    		timeout:1000,
     		    		icon:'info',
-    		    		msg:'保存成功!'
+    		    		msg:'<spring:message code="page.datagrid.action.save.success" />'
     		    	});
     		    	GoLive.EasyUI.Datagrid.reload({
     		    		dataGridId: 'dataGrid'
@@ -102,7 +100,7 @@
 	    	<form action="#" id="queryForm">
 	  			<table height="90%">
 	  				<tbody>
-	  					<tr><td>公司中文名称：</td><td><input name="companyNameCn" type="text"></td></tr>
+	  					<tr><td><spring:message code="page.center.company.companyNameCn" />：</td><td><input name="companyNameCn" type="text"></td></tr>
 	  				</tbody>
 	  			</table>
 	   		</form>
@@ -120,20 +118,20 @@
 		            <tr>
 		            	<th data-options="field:'ck',checkbox:true"></th>
 		                <th field="companyCode" width="1" align="center"  sortable="true">
-		                	<spring:message code="page.companyList.companyCode"></spring:message>
+		                	<spring:message code="page.center.company.companyCode" />
 		                </th>
 		                <th field="companyNameCn" width="1" align="center">
-		                	<spring:message code="page.companyList.companyNameCn"></spring:message>
+		                	<spring:message code="page.center.company.companyNameCn" />
 						</th>
 		                <th field="isValid" width="1" align="center" >
-		                	<spring:message code="common.isValid"></spring:message>
+		                	<spring:message code="common.isValid" />
 		                </th>
 		            </tr>
 		        </thead>
 		    </table>
 	    </div>
     </div>
-	<div id="editWindow" class="easyui-window" title="公司编辑" data-options="modal:true,closed:true,iconCls:'icon-save'" style="width:400px;height:400px;padding:10px;">
+	<div id="editWindow" class="easyui-window" title="<spring:message code="page.center.company.editwindow" />" data-options="modal:true,closed:true,iconCls:'icon-save'" style="width:400px;height:400px;padding:10px;">
 		<jsp:include page="companyEdit.jsp" flush="true"></jsp:include>
 	</div>
   </body>

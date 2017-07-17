@@ -9,6 +9,7 @@ public class EasyUIMenuDecorator extends NodeDecorator<SfxieSysMenu,ParentNode,L
 
 	@Override
 	public void decorateParentMenu(SfxieSysMenu menu, ParentNode parentNode) {
+		parentNode.setSequenceNo(menu.getSequenceNo());
 	}
 
 	@Override

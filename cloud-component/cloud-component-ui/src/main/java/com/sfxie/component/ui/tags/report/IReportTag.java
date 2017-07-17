@@ -12,9 +12,11 @@ import java.util.Map;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 
+import com.sfxie.component.ui.i18n.I18NUtil;
 import com.sfxie.component.ui.tags.report.netty.ReportWebSocketEntity;
 import com.sfxie.component.ui.tags.report.netty.client.ReportWebSocketClient;
 import com.sfxie.component.ui.tags.report.netty.client.ReportWebSocketClientHandlerCallback;
+import com.sfxie.core.framework.core.SpringContext;
 import com.sfxie.utils.jacson.codehaus.JsonUtil;
 
 
@@ -49,6 +51,8 @@ public class IReportTag extends TagSupport {
 	private String url;
 	/** 导出文件处理url */
 	private String exportUrl;
+	/** 国际化文件名 */
+	private String i18n;
 
 	private String debug = "false";
 	
@@ -90,8 +94,10 @@ public class IReportTag extends TagSupport {
 				jsString = inputStream2String(i);
 			
 			String js = jsString.replaceAll("\\$\\{ctx\\}", contextPath);
+			I18NUtil i18NUtil = SpringContext.getBeanByClass(I18NUtil.class);
 			writer.write(js.replaceAll("\\$\\{queryFormId\\}", queryFormId)
 							.replaceAll("\\$\\{url\\}", url)
+							.replaceAll("\\$\\{i18n\\}", i18NUtil.getMessage(null!=i18n?i18n:"easyui.i18n"))
 							.replaceAll("\\$\\{exportUrl\\}", exportUrl)
 							.replaceAll("\\$\\{easyUIRootPath\\}", easyUIRootPath)
 							.replaceAll("\\$\\{reportEntityMap\\}", getReportEntityMapString())
@@ -296,6 +302,14 @@ public class IReportTag extends TagSupport {
 
 	public void setExportUrl(String exportUrl) {
 		this.exportUrl = exportUrl;
+	}
+
+	public String getI18n() {
+		return i18n;
+	}
+
+	public void setI18n(String i18n) {
+		this.i18n = i18n;
 	}
 	
 	

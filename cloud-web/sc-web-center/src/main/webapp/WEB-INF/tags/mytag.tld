@@ -38,6 +38,12 @@
 			<description>html查询处理url</description>
 		</attribute>
 		<attribute>
+			<name>i18n</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>easyui的国际化属性配置</description>
+		</attribute>
+		<attribute>
 			<name>exportUrl</name>
 			<required>true</required>
 			<rtexprvalue>true</rtexprvalue>

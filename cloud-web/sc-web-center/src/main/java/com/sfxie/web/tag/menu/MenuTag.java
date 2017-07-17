@@ -9,6 +9,7 @@ import javax.servlet.jsp.tagext.TagSupport;
 
 import com.sfxie.component.node.NodeComponent;
 import com.sfxie.component.node.ParentNode;
+import com.sfxie.component.ui.i18n.I18NUtil;
 import com.sfxie.core.framework.core.SpringContext;
 
 
@@ -26,17 +27,18 @@ public class MenuTag extends TagSupport {
 	public int doEndTag() throws JspException {
 		MenuRestClient menuRestClient = SpringContext.getBeanByClass(MenuRestClient.class);
 		List<ParentNode> menus = menuRestClient.getMenus(); 
+		I18NUtil i18NUtil = SpringContext.getBeanByClass(I18NUtil.class);
 		try {
 			StringBuffer level1String = new StringBuffer("");
 			for(int i=0;i<menus.size();i++){
 				NodeComponent menuComponent = menus.get(i);
-				level1String.append(getLevel1Menu(menuComponent.getName(),menuComponent.getUrl(),""));
+				level1String.append(getLevel1Menu(i18NUtil.getMessage(menuComponent.getName()),menuComponent.getUrl(),""));
 				List<NodeComponent> childNodes = menuComponent.getNodes();
 				if(null!=childNodes){
 					int length = childNodes.size();
 					for(int j=0;j<childNodes.size();j++){
 						NodeComponent children = childNodes.get(j);
-						level1String.append(getLevel2Menu(children.getName(),children.getUrl(),""));
+						level1String.append(getLevel2Menu(i18NUtil.getMessage(children.getName()),children.getUrl(),""));
 						if(j==(length-1)){
 							level1String.append("</div>");
 						}

@@ -423,7 +423,13 @@
 				type: _config.type?_config.type:"POST",
 				success : function(data) {
 					dataGrid.datagrid({
-						data : data['data']
+						data : data['data'],
+						onAfterRender:function(target){
+							
+						},
+	                	onSortColumn:function(target){
+	                		decoratedDataGridColumns(_config,datagridId);
+						}
 					});
 					dataGrid.datagrid('getPager').pagination({
 						total : data['total'],
@@ -435,11 +441,7 @@
 					if(_config.afterDataGridRender){
 						_config.afterDataGridRender(_config,dataGrid);
 					}
-					var decoratedColumns = _config.decoratedColumns;
-					if(decoratedColumns && decoratedColumns.length>0){
-						var queryParamArray = getQueryParamArray(decoratedColumns,datagridId);
-						decoratedDataGridColumn(queryParamArray,decoratedColumns,_config);
-					}
+					decoratedDataGridColumns(_config,datagridId);
 					/*if(_config.inputList){
 						var inputListTd = $("#"+_config.inputList).find('td').clone();
 						$('.datagrid-toolbar tr').append(inputListTd);
@@ -454,7 +456,13 @@
 				}
 			});
 		}
-		
+		function decoratedDataGridColumns(_config,datagridId){
+			var decoratedColumns = _config.decoratedColumns;
+			if(decoratedColumns && decoratedColumns.length>0){
+				var queryParamArray = getQueryParamArray(decoratedColumns,datagridId);
+				decoratedDataGridColumn(queryParamArray,decoratedColumns,_config);
+			}
+		}
 		function setConditionParameters(params,toolbarConditions){
 			if(toolbarConditions && toolbarConditions.length>0){
 				for(var i=0;i<toolbarConditions.length;i++){

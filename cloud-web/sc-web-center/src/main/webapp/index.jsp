@@ -65,16 +65,16 @@
 <%-- 			<img src="${ctx}/static/css/images/logo.jpg"> --%>
 		</div>
 		<div class="copyright" data-options="region:'south'" style="height: 25px;text-align: center;">
-			Copyright 2017@ 组织架构共享云平台
+			<spring:message code="page.index.copyright" />
 		</div>
-		<div data-options="region:'west',split:true,border:false" title="导航栏" style="width: 15%;text-align: center;">
+		<div data-options="region:'west',split:true,border:false" title="<spring:message code="page.index.navibar" />" style="width: 15%;text-align: center;">
 			<div id="accordion" class="easyui-accordion" data-options="fit:true" style="width:100%;height:100%;">
 				<mytag:menu></mytag:menu>
 			</div>
 		</div>
 		<div data-options="region:'center',iconCls:'icon-ok'">
 			    <div id="content" class="easyui-tabs" data-options="tools:'#tab-tools',fit:true">
-			        <div title="欢迎" data-options="iconCls:'icon-help',closable:true,fit:true" style="padding:10px">
+			        <div title="<spring:message code="page.index.welcome" />" data-options="iconCls:'icon-help',closable:true,fit:true" style="padding:10px">
 <%-- 			            <iframe height="100%" width="100%" frameborder="no" border="0" framespacing="0" src="${ctx}/cms/common/report.jsp"></iframe>		 --%>
 			            		
 			        </div>
@@ -83,7 +83,7 @@
 			        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'golive-icon-admin',plain:true">
 <%-- 			        	${S_login_userInfo.username} --%>
 			        </a>
-			        <a href="javascript:void(0)" class="easyui-linkbutton"  onclick="exitSystem()" style="color:red;">退出系统</a>
+			        <a href="javascript:void(0)" class="easyui-linkbutton"  onclick="exitSystem()" style="color:red;"><spring:message code="page.index.logout" /></a>
 			    </div>		
 		</div>
 	</div>

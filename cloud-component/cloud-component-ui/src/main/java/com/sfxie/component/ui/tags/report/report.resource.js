@@ -3,7 +3,7 @@
 
 <script type="text/javascript" src="${ctx}${easyUIRootPath}/jquery.min.js"></script>
 <script type="text/javascript" src="${ctx}${easyUIRootPath}/jquery.easyui.min.js"></script>
-<script type="text/javascript" src="${ctx}${easyUIRootPath}/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="${ctx}${easyUIRootPath}/locale/${i18n}"></script>
 <style type="text/css">
 	.report-loading-none{
 		display: none;
