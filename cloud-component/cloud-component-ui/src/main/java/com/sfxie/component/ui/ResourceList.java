@@ -1,5 +1,6 @@
 package com.sfxie.component.ui;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ResourceList {
@@ -14,4 +15,14 @@ public class ResourceList {
 		this.resources = resources;
 	}
 
+	public ResourceList() {
+		this.resources = new ArrayList<ResourceEntity>();
+	}
+	
+	public ResourceList addResourceEntity(ResourceEntity resourceEntity){
+		this.resources.add(resourceEntity);
+		return this;
+	}
+
+	
 }

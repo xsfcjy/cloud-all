@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sfxie.services.center.dao.mapper.OrganizationTreeMapper">
+
+	<select id="selectByUserId" parameterType="map" resultType="com.sfxie.services.center.pojo.tree.OrganizationTreePojo">
+		SELECT sso.company_code id, sso.parent_company_code pid ,ssc2.company_level level,ssc2.company_name_cn name
+			FROM sfxie_sys_company ssc
+			INNER JOIN sfxie_sys_organization sso  ON sso.parent_company_code = ssc.company_code
+			INNER JOIN sfxie_sys_company ssc2 ON ssc2.company_code = sso.company_code
+			WHERE ssc.create_user = #{userId} AND ssc.is_valid = 'Y'
+			
+			UNION
+			SELECT ssd.department_code id,ssd.company_code pid,
+			 null level,ssd.department_name name FROM sfxie_sys_department ssd  
+			 WHERE ssd.create_user = #{userId}  AND ssd.is_valid = 'Y'
+			
+			UNION 
+			SELECT ssp.post_code id,ssd.department_code pid ,null level ,ssp.post_name name
+			 FROM sfxie_sys_post ssp
+			INNER JOIN sfxie_sys_department ssd ON ssd.id_ = ssp.department_id
+			 WHERE ssp.create_user = #{userId} AND ssp.is_valid = 'Y'
+			;
+		
+	</select>
+
+</mapper>

@@ -1,8 +1,5 @@
 package com.sfxie.web.boot;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -15,8 +12,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.client.RestTemplate;
 
-import com.sfxie.component.ui.ResourceEntity;
-import com.sfxie.component.ui.ResourceList;
 import com.sfxie.component.ui.UIConfiguration;
 import com.sfxie.component.ui.tags.report.ReportClientConfiguration;
 import com.sfxie.core.framework.boot.BaseApplicationConfig;
@@ -48,26 +43,14 @@ public class CenterApplication  extends BaseApplicationConfig{
         return builder.build();  
     } 
 	
-	@Bean
-	public ResourceList resourceList(){
-		ResourceList resourceList = new ResourceList();
-		List<ResourceEntity> resources = new ArrayList<ResourceEntity>();
-		resources.add(new ResourceEntity()
-		.addCssPath("/static/js/ui/zTree_v3/css/zTreeStyle/zTreeStyle.css")
-		.addJsPath("/static/js/ui/zTree_v3/js/jquery.ztree.all.min.js")
-		.addDescription("使用ztree")
-		.addPageUri("/jsp/center/companyList.jsp")
-		);
-		resourceList.setResources(resources);
-		return resourceList;
-	}
 
 	public static void main(String[] args) throws Exception {
 		SpringApplication.run(new Object []{
 				CenterApplication.class,
 				ReportClientConfiguration.class,
 				UIConfiguration.class,
-				I18nConfiguration.class
+				I18nConfiguration.class,
+				ClientResourceConfiguration.class
 		}, args);
 	}
 	public void run(String... arg0) throws Exception {

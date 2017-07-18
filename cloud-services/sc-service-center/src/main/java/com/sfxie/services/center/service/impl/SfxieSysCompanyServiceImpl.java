@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import com.sfxie.core.framework.core.TransactionService;
 import com.sfxie.services.center.dao.mapper.SfxieSysCompanyMapper;
 import com.sfxie.services.center.pojo.SfxieSysCompany;
-import com.sfxie.services.center.util.ServiceContext;
+import com.sfxie.services.center.util.ServicesContext;
 
 @Service
 public class SfxieSysCompanyServiceImpl extends TransactionService {
@@ -42,8 +42,8 @@ public class SfxieSysCompanyServiceImpl extends TransactionService {
      * @param record
      */
     public int insertSelective(SfxieSysCompany record){
-    	String createCompanyId = null!=record.getCreateCompanyId()?record.getCreateCompanyId():ServiceContext.getDefaultCreateCompanyId();
-    	String createUser = null!=record.getCreateUser()?record.getCreateUser():ServiceContext.getDefaultCreateUserId();
+    	String createCompanyId = null!=record.getCreateCompanyId()?record.getCreateCompanyId():ServicesContext.getDefaultCreateCompanyId();
+    	String createUser = null!=record.getCreateUser()?record.getCreateUser():ServicesContext.getDefaultCreateUserId();
     	record.setCreateCompanyId(createCompanyId);
     	record.setCreateUser(createUser);
     	record.setId(UUID.randomUUID().toString());
