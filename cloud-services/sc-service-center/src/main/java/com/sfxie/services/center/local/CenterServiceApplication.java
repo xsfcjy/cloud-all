@@ -15,6 +15,7 @@ import com.sfxie.component.ui.tags.report.ReportGlueLoader;
 import com.sfxie.component.ui.tags.report.ReportServerConfiguration;
 import com.sfxie.component.ui.tags.report.netty.server.ReportWebSocketServer;
 import com.sfxie.core.framework.boot.BaseApplicationConfig;
+import com.sfxie.core.framework.mvc.handle.PagerConfigurer;
 import com.sfxie.extension.datasource.mycat.DsMycatConfiguration;
 import com.sfxie.services.center.config.MybatisCenterConfiguration;
 import com.sfxie.services.center.service.impl.ReportGlueServiceImpl;
@@ -33,7 +34,9 @@ import com.sfxie.services.center.service.impl.ReportGlueServiceImpl;
 		"com.sfxie.core.framework",
 		"com.sfxie.core.framework.core",
 		"com.sfxie.core.framework.mvc.controller" ,
-		"com.sfxie.services.center"
+		"com.sfxie.services.center",
+		"com.sfxie.web.tag",
+		"com.sfxie.web.ui"
 		})
 @EnableAutoConfiguration(exclude={
 //		HibernateJpaAutoConfiguration.class,
@@ -81,7 +84,7 @@ public class CenterServiceApplication extends BaseApplicationConfig {
 	public static void main(String[] args) {
 		startServer(new Object[] { 
 				CenterServiceApplication.class,
-//				PagerConfigurer.class,
+				PagerConfigurer.class,
 				ReportServerConfiguration.class,
 				DsMycatConfiguration.class,
 				MybatisCenterConfiguration.class,

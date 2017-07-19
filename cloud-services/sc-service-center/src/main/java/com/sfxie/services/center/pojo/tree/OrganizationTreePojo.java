@@ -15,11 +15,13 @@ public class OrganizationTreePojo extends CustomerNodeEntity {
 
 	private String name;
 
-	private String level;
+	private String companyLevel;
 
 	private boolean isParent;
 
 	private String partitionCompany;
+	
+	private String iconSkin;
 
 	public String getId() {
 		return id;
@@ -68,12 +70,12 @@ public class OrganizationTreePojo extends CustomerNodeEntity {
 		this.name = name;
 	}
 
-	public String getLevel() {
-		return level;
+	public String getCompanyLevel() {
+		return companyLevel;
 	}
 
-	public void setLevel(String level) {
-		this.level = level;
+	public void setCompanyLevel(String companyLevel) {
+		this.companyLevel = companyLevel;
 	}
 
 	public void setPid(String parentId) {
@@ -84,6 +86,14 @@ public class OrganizationTreePojo extends CustomerNodeEntity {
 	public String getParentId() {
 		// TODO Auto-generated method stub
 		return this.pid;
+	}
+
+	public String getIconSkin() {
+		return iconSkin;
+	}
+
+	public void setIconSkin(String iconSkin) {
+		this.iconSkin = iconSkin;
 	}
 
 }

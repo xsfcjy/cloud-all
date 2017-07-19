@@ -19,6 +19,7 @@ DROP TABLE sfxie_sys_user_role;
 DROP TABLE sfxie_sys_role;
 DROP TABLE sfxie_sys_system;
 DROP TABLE sfxie_sys_userinfo;
+DROP TABLE sfxie_ui_skin;
 
 
 
@@ -178,7 +179,7 @@ CREATE TABLE sfxie_sys_company
 	sequence_no decimal(8) COMMENT '排序字段 : 排序字段',
 	-- 是否有效,Y:是;N:否
 	-- 控制是否在公司任职有效
-	is_valid char COMMENT '是否有效 : 是否有效,Y:是;N:否
+	is_valid char DEFAULT 'Y' COMMENT '是否有效 : 是否有效,Y:是;N:否
 控制是否在公司任职有效',
 	-- 公司中文名称简称
 	short_name_cn varchar(50) COMMENT '公司中文名称简称 : 公司中文名称简称',
@@ -189,7 +190,7 @@ CREATE TABLE sfxie_sys_company
 	-- 普通用户: 默认值为 -1
 	-- 
 	-- 作用:用于创建无限级超级管理员
-	company_level decimal(2) COMMENT '公司级别 : 用来控制公司下面管理员的级别。
+	company_level int COMMENT '公司级别 : 用来控制公司下面管理员的级别。
 超级管理员: 值为"上级超级管理的级别+1";
 普通用户: 默认值为 -1
 
@@ -269,9 +270,8 @@ CREATE TABLE sfxie_sys_menu
 	create_user varchar(32) NOT NULL COMMENT '记录创建人 : 记录创建人',
 	-- 是否有效,Y:是;N:否
 	-- 控制是否在公司任职有效
-	is_valid char COMMENT '是否有效 : 是否有效,Y:是;N:否
+	is_valid char DEFAULT 'Y' COMMENT '是否有效 : 是否有效,Y:是;N:否
 控制是否在公司任职有效',
-	all_parent_id char COMMENT 'all_parent_id',
 	-- 分区字段,从用户公司代码字段取值
 	partition_company varchar(8) COMMENT '分区字段 : 分区字段,从用户公司代码字段取值',
 	PRIMARY KEY (id_)
@@ -313,8 +313,6 @@ CREATE TABLE sfxie_sys_post
 	id_ varchar(64) NOT NULL COMMENT '记录主键 : 记录主键',
 	-- 岗位代码
 	post_code varchar(32) NOT NULL UNIQUE COMMENT '岗位代码 : 岗位代码',
-	-- 部门主键
-	department_id varchar(64) NOT NULL COMMENT '部门主键 : 部门主键',
 	-- 岗位名称
 	post_name varchar(50) COMMENT '岗位名称 : 岗位名称',
 	-- 排序字段
@@ -330,7 +328,7 @@ CREATE TABLE sfxie_sys_post
 	-- 最后修改人
 	update_user varchar(32) COMMENT '最后修改人 : 最后修改人',
 	-- 公司主键
-	company_id varchar(32) COMMENT '公司主键 : 公司主键',
+	company_code varchar(32) COMMENT '公司主键 : 公司主键',
 	-- 关联父主键
 	parent_id varchar(32) COMMENT '父主键 : 关联父主键',
 	-- 是否有效,Y:是;N:否
@@ -341,6 +339,8 @@ CREATE TABLE sfxie_sys_post
 	create_company_id varchar(50) COMMENT '创建公司 : 创建公司',
 	-- 分区字段,从用户公司代码字段取值
 	partition_company varchar(8) NOT NULL COMMENT '分区字段 : 分区字段,从用户公司代码字段取值',
+	-- 部门代码
+	department_code varchar(64) NOT NULL UNIQUE COMMENT '部门代码 : 部门代码',
 	PRIMARY KEY (id_)
 ) ENGINE = InnoDB COMMENT = '岗位表' DEFAULT CHARACTER SET utf8;
 
@@ -518,6 +518,7 @@ N-否
 	sex char COMMENT '用户性别 : m-男,f-女',
 	-- 分区字段,从用户公司代码字段取值
 	partition_company varchar(8) NOT NULL COMMENT '分区字段 : 分区字段,从用户公司代码字段取值',
+	create_company_level int COMMENT '创建公司级别',
 	PRIMARY KEY (user_id)
 ) ENGINE = InnoDB COMMENT = '用户表' DEFAULT CHARACTER SET utf8;
 
@@ -603,6 +604,17 @@ CREATE TABLE sfxie_sys_user_role
 ) ENGINE = InnoDB COMMENT = '用户角色关联表' DEFAULT CHARACTER SET utf8;
 
 
+CREATE TABLE sfxie_ui_skin
+(
+	-- 记录主键
+	id_ varchar(64) NOT NULL COMMENT '记录主键 : 记录主键',
+	-- 代码-类型
+	code varchar(16) COMMENT '代码 : 代码-类型',
+	css varchar(50) COMMENT 'css',
+	PRIMARY KEY (id_)
+) ENGINE = InnoDB COMMENT = 'sfxie_ui_skin' DEFAULT CHARACTER SET utf8;
+
+
 
 /* Create Foreign Keys */
 
@@ -631,7 +643,7 @@ ALTER TABLE sfxie_sys_department
 
 
 ALTER TABLE sfxie_sys_organization
-	ADD FOREIGN KEY (company_code)
+	ADD FOREIGN KEY (parent_company_code)
 	REFERENCES sfxie_sys_company (company_code)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
@@ -639,7 +651,7 @@ ALTER TABLE sfxie_sys_organization
 
 
 ALTER TABLE sfxie_sys_organization
-	ADD FOREIGN KEY (parent_company_code)
+	ADD FOREIGN KEY (company_code)
 	REFERENCES sfxie_sys_company (company_code)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
@@ -655,8 +667,8 @@ ALTER TABLE sfxie_sys_user_relation
 
 
 ALTER TABLE sfxie_sys_post
-	ADD FOREIGN KEY (department_id)
-	REFERENCES sfxie_sys_department (id_)
+	ADD FOREIGN KEY (department_code)
+	REFERENCES sfxie_sys_department (department_code)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
 ;

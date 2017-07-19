@@ -28,4 +28,18 @@ public class OrganizationTreeServiceImpl {
 		map.put("userId", userId);
 		return mapper.selectByUserId(map);
 	}
+	
+
+	public List<OrganizationTreePojo> selectByParentCompanyCode(String parentCompanyCode,String parentCompanyLevel){
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("parentCompanyCode", parentCompanyCode);
+		if(parentCompanyLevel.equals("department")){
+			return null;
+		}else if(parentCompanyLevel.equals("post")){
+			return null;
+		}else {
+			map.put("parentCompanyLevel", Integer.valueOf(parentCompanyLevel));
+			return mapper.selectByParentCompanyCode(map);
+		}
+	}
 }

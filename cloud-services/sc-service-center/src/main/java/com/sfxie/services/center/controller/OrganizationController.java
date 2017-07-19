@@ -27,8 +27,13 @@ public class OrganizationController {
 	 * @param userId
 	 * @return
 	 */
-	@RequestMapping(value = "/organization/{userId}", method = RequestMethod.GET)
+	@RequestMapping(value = "/organization/{userId}", method = {RequestMethod.POST})
 	public @ResponseBody Object organizationByUser(@PathVariable String userId ) {
 		return service.selectByUserId(userId);
 	}
+	@RequestMapping(value = "/organization/sub/{parentCompanyCode}/{parentCompanyLevel}", method = {RequestMethod.POST})
+	public @ResponseBody Object organizationByUser(@PathVariable String parentCompanyCode, @PathVariable String parentCompanyLevel) {
+		return service.selectByParentCompanyCode(parentCompanyCode,parentCompanyLevel);
+	}
+		
 }

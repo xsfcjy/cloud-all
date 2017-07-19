@@ -10,7 +10,7 @@
 <c:set var="centerPath" value="<%=com.sfxie.web.boot.util.ServerPathUtil.getServerPath(com.sfxie.web.boot.util.ServerPathUtil.ServiceName.centerServer)%>"/>
 <c:set var="easyuiDataProviderPath" value="<%=com.sfxie.web.boot.util.ServerPathUtil.getServerPath(com.sfxie.web.boot.util.ServerPathUtil.ServiceName.easyuiDataProviderServer)%>"/>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
-<c:set var="ctx" value="${pageContext.request.contextPath}"/>
+<c:set var="userId" value="sfxie"/>
 
 <!DOCTYPE html>
 <html>
@@ -26,10 +26,13 @@
 <script type="text/javascript" src="${ctx}/static/js/common/json2.js"></script>
 <script type="text/javascript" src="${ctx}/static/js/common/common.js"></script>
 <script type="text/javascript" src="${ctx}/static/js/common/EasyUIUtil.js"></script>
+<script type="text/javascript" src="${ctx}/static/js/common/context.js"></script>
 
 <script type="text/javascript">
 	//禁止后退键 作用于Firefox、Opera
 	document.onkeypress=banBackSpace;
 	//禁止后退键  作用于IE、Chrome
 	document.onkeydown=banBackSpace;
+	
+	SfxieContext.userId = '${userId}';
 </script>

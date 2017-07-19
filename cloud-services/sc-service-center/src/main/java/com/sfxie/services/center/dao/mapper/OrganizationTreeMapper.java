@@ -13,4 +13,5 @@ public interface OrganizationTreeMapper {
 	 * @return
 	 */
 	public List<OrganizationTreePojo> selectByUserId(Map<String,String> map);
+	public List<OrganizationTreePojo> selectByParentCompanyCode(Map<String,Object> map);
 }
