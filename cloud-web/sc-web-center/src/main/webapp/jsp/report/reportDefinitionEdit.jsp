@@ -1,6 +1,6 @@
 <%@ page language="java" pageEncoding="utf-8"%>
 <%@ page contentType="text/html; charset=utf-8" %>
-<%@ taglib prefix="mytag" uri="http://www.sfxie.com/tags" %>
+<%@ include file="/common/meta.jsp" %>
    	<div class="golive-easyui-form-div">
 	   	<form id="myform" class="easyui-form" method="post" data-options="novalidate:true" action="#">
 	   		<input type="hidden" name="id">

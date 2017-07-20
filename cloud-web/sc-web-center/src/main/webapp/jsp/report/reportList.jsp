@@ -1,6 +1,7 @@
 <%@ page language="java" pageEncoding="utf-8"%>
 <%@ page contentType="text/html; charset=utf-8" %>
 <%@ include file="/common/meta.jsp" %>
+<%@ include file="/common/resouces.jsp" %>
 
 <!DOCTYPE html>
 <html>

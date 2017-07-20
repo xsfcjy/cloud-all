@@ -16,6 +16,11 @@ public class SfxieSysCompany {
     private String id;
 
     /**
+     *  父公司代码 
+     */
+    private String parentCompanyCode;
+
+    /**
      *  公司代码 : 关联公司代码,表明创建公司,所属表字段为sfxie_sys_company.company_code
      */
     private String companyCode;
@@ -489,4 +494,14 @@ public class SfxieSysCompany {
     public void setCreateCompanyId(String createCompanyId) {
         this.createCompanyId = createCompanyId == null ? null : createCompanyId.trim();
     }
+
+	public String getParentCompanyCode() {
+		return parentCompanyCode;
+	}
+
+	public void setParentCompanyCode(String parentCompanyCode) {
+		this.parentCompanyCode = parentCompanyCode;
+	}
+    
+    
 }

@@ -8,10 +8,35 @@
 	}
 -->
 </style>
+<script type="text/javascript">
+	alert('${centerPath}');
+	function submitForm(){
+	
+		GoLive.EasyUI.Form.submit({
+			formId: 'myform',
+			restfulId:'id',
+			url:'${centerPath}/company',
+			onSubmit: function(param){
+				return true;
+			},
+			success: function(data){
+		    	GoLive.EasyUI.Message.show({
+		    		timeout:1000,
+		    		icon:'info',
+		    		msg:'<spring:message code="page.datagrid.action.save.success" />'
+		    	});
+		    	GoLive.EasyUI.Datagrid.reload({
+		    		dataGridId: 'dataGrid'
+		    	}); 
+		    }
+		});
+	}
+</script>
    	<div class="golive-easyui-form-div">
 	   	<form id="myform" class="easyui-form" method="post" data-options="novalidate:true" action="">
 	   		<input type="hidden" name="id" id="id">
 	   		<input name="createUser" id="createUser" type="hidden">
+	   		<input name="parentCompanyCode" id="parentCompanyCode" type="hidden">
         	<input name="createTime" id="createTime"  type="hidden">
 	        <div>
 	            <label for="companyCode"><font color="#990000">*</font><spring:message code="page.center.company.companyCode" />：</label>

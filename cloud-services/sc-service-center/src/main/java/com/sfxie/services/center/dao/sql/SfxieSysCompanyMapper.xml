@@ -47,7 +47,7 @@
     select 
     <include refid="Base_Column_List" />
     from sfxie_sys_company
-    where id_ = #{id,jdbcType=VARCHAR}
+    where company_code = #{id,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     <!--
@@ -56,7 +56,7 @@
       This element was generated on Thu Jun 08 08:42:00 CST 2017.
     -->
     delete from sfxie_sys_company
-    where id_ = #{id,jdbcType=VARCHAR}
+    where company_code = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.sfxie.services.center.pojo.SfxieSysCompany">
     <!--
