@@ -3,12 +3,14 @@ package com.sfxie.services.center.controller;
 import javax.annotation.Resource;
 
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sfxie.services.center.service.impl.OrganizationTreeServiceImpl;
+import com.sfxie.services.center.vo.SfxieSysCompanyVo;
 
 /**
  * 组织结构管理控制器
@@ -35,5 +37,24 @@ public class OrganizationController {
 	public @ResponseBody Object organizationByUser(@PathVariable String parentCompanyCode, @PathVariable String parentCompanyLevel) {
 		return service.selectByParentCompanyCode(parentCompanyCode,parentCompanyLevel);
 	}
+	
+	/**
+     *  新写入数据库记录,sfxie_sys_company
+     *
+     * @param record
+     */
+	@RequestMapping(value = "/organization/company", method = RequestMethod.POST)
+    public int insertCompany(@RequestBody SfxieSysCompanyVo record){
+    	return service.insertSelective(record);
+    }/**
+     *  新写入数据库记录,sfxie_sys_company
+    *
+    * @param record
+    */
+	@RequestMapping(value = "/organization/department", method = RequestMethod.POST)
+   public int insertDepartment(@RequestBody SfxieSysCompanyVo record){
+   	return service.insertSelective(record);
+   }
+
 		
 }

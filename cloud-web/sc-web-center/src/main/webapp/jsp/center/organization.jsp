@@ -36,17 +36,18 @@
 				beforeRename: beforeRename,
 				onRemove: onRemove,
 				onRename: onRename,
-				beforeAsync: myBeforeCallBack
+				beforeAsync: myBeforeCallBack,
+				onClick: zTreeOnClick
 			}
 		};
-		
+		function zTreeOnClick(event, treeId, treeNode) {
+// 		    alert(treeNode.tId + ", " + treeNode.name);
+		}
 		function myBeforeCallBack(treeId, treeNode) {
 			if(treeNode){
 				var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
-				console.log(treeNode);
 				var levelUrl = "${centerPath}/organization/sub/{id}/{companyLevel}";
 				treeObj.setting.async.url = levelUrl.format(treeNode);
-				console.log(treeObj.setting.async.url);
 			}
 		    return true;
 		}
@@ -79,15 +80,15 @@
 			return false;
 		}
 		function beforeRemove(treeId, treeNode) {
-			var deleteString = '<spring:message code="page.center.center.organization.tree.delete" />';
+			var deleteString = '<spring:message code="page.center.organization.tree.delete" />';
 			className = (className === "dark" ? "":"dark");
 			var zTree = $.fn.zTree.getZTreeObj("treeDemo");
 			zTree.selectNode(treeNode);
-			var type = '<spring:message code="page.center.center.organization.tree.delete.company" />';
+			var type = '<spring:message code="page.center.organization.tree.delete.company" />';
 			if(treeNode.companyLevel == 'department'){
-				type = '<spring:message code="page.center.center.organization.tree.delete.department" />';
+				type = '<spring:message code="page.center.organization.tree.delete.department" />';
 			}else if ( treeNode.companyLevel == 'post' ){
-				type = '<spring:message code="page.center.center.organization.tree.delete.post" />';
+				type = '<spring:message code="page.center.organization.tree.delete.post" />';
 			}
 			return confirm(deleteString.format({type:type,name:treeNode.name}));
 		}
@@ -125,43 +126,161 @@
 		var newCount = 1;
 		function addHoverDom(treeId, treeNode) {
 			var sObj = $("#" + treeNode.tId + "_span");
-			if (treeNode.editNameFlag || $("#addBtn_"+treeNode.tId).length>0) return;
-			var addStr = "<span class='button icon02_ico_docu' id='addBtn_" + treeNode.tId
-				+ "' title='add node' onfocus='this.blur();'></span>";
+			if(treeNode.companyLevel == 'department'){
+				addPostNodeBtn(sObj,treeNode);
+				addDepartmentNodeBtn(sObj,treeNode);
+			}else if ( treeNode.companyLevel == 'post' ){
+// 				addPostNodeBtn(sObj,treeNode);
+			}else{
+				addPostNodeBtn(sObj,treeNode);
+				addDepartmentNodeBtn(sObj,treeNode);
+				addCompanyNodeBtn(sObj,treeNode);
+			}
+			
+		};
+		function addCompanyNodeBtn(sObj,treeNode){
+			if (treeNode.editNameFlag || $("#addCompanyBtn_"+treeNode.tId).length>0) return;
+			var addStr = "<span class='button icon02_ico_docu' id='addCompanyBtn_" + treeNode.tId
+			+ "' title='<spring:message code="page.center.organization.addCompany" />' onfocus='this.blur();'></span>";
 			sObj.after(addStr);
-			var btn = $("#addBtn_"+treeNode.tId);
+			var btn = $("#addCompanyBtn_"+treeNode.tId);
 			if (btn) btn.bind("click", function(){
-				
-				if(treeNode.companyLevel == 'department'){
-				}else if ( treeNode.companyLevel == 'post' ){
-				}else{
-					var loadRoleUrl = "${centerPath}/company/{id}".format({id:treeNode.tId});
-	    			GoLive.EasyUI.Form.loadData({
-	    				prefix:'',
-	    				formId:'myform',
-	    				type:'GET',
-	    				url:loadRoleUrl,
-	    				afterFormRender : function (data){
-	    					if(data){
-		            			$('#isValidList').combobox('setValue', data["isValid"]);
-	    					}
-	                    	$('#editWindow').window('open');
-	    				},
-	    				parameter:{
-	    				}
-	    			});
-				}
-// 				var zTree = $.fn.zTree.getZTreeObj("treeDemo");
-// 				zTree.addNodes(treeNode, {id:(100 + newCount), pId:treeNode.id, name:"new node" + (newCount++)});
+				openEditCompanyWin(treeNode);
+				var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+				zTree.selectNode(treeNode);
 				return false;
 			});
-		};
+		}
+		function addDepartmentNodeBtn(sObj,treeNode){
+			if (treeNode.editNameFlag || $("#addDepartmentBtn_"+treeNode.tId).length>0) return;
+			var addStr = "<span class='button icon02_ico_docu' id='addDepartmentBtn_" + treeNode.tId
+			+ "' title='<spring:message code="page.center.organization.addDepartment" />' onfocus='this.blur();'></span>";
+			sObj.after(addStr);
+			var btn = $("#addDepartmentBtn_"+treeNode.tId);
+			if (btn) btn.bind("click", function(){
+				openEditDepartmentWin(treeNode);
+				var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+				zTree.selectNode(treeNode);
+				return false;
+			});
+		}
+		function addPostNodeBtn(sObj,treeNode){
+			
+			if (treeNode.editNameFlag || $("#addPostBtn_"+treeNode.tId).length>0) return;
+			var addStr = "<span class='button icon02_ico_docu' id='addPostBtn_" + treeNode.tId
+			+ "' title='<spring:message code="page.center.organization.addPost" />' onfocus='this.blur();'></span>";
+			sObj.after(addStr);
+			var btn = $("#addPostBtn_"+treeNode.tId);
+			if (btn) btn.bind("click", function(){
+				openEditPostWin(treeNode);
+				var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+				zTree.selectNode(treeNode);
+				return false;
+			});
+		}
 		function removeHoverDom(treeId, treeNode) {
-			$("#addBtn_"+treeNode.tId).unbind().remove();
+			try{
+				$("#addCompanyBtn_"+treeNode.tId).unbind().remove();
+			}catch(e){
+				;
+			}
+			try{
+				$("#addDepartmentBtn_"+treeNode.tId).unbind().remove();
+			}catch(e){
+				;
+			}
+			try{
+				$("#addPostBtn_"+treeNode.tId).unbind().remove();
+			}catch(e){
+				;
+			}
 		};
 		function selectAll() {
 			var zTree = $.fn.zTree.getZTreeObj("treeDemo");
 			zTree.setting.edit.editNameSelectAll =  $("#selectAll").attr("checked");
+		}
+		
+		function openEditCompanyWin(treeNode){
+			var loadRoleUrl = "${centerPath}/company/{id}".format({id:treeNode.tId});
+			GoLive.EasyUI.Form.loadData({
+				prefix:'',
+				formId:'companyForm',
+				type:'GET',
+				url:loadRoleUrl,
+				afterLoadData: function(data){
+					data['parentCompanyCode'] = treeNode.id;
+					data['parentCompanyLevel'] = treeNode.companyLevel;
+					data['isValid'] = 'Y';
+				},
+				afterFormRender : function (data){
+					if(data){
+            			$('#isValidList').combobox('setValue', data["isValid"]);
+					}
+                	$('#organizationCompanyEdit').window('open');
+				},
+				parameter:{
+				}
+			});
+		}
+		
+		function openEditDepartmentWin(treeNode){
+			var loadRoleUrl = "${centerPath}/department/{id}/{partitionCompany}".format({partitionCompany:treeNode.partitionCompany,id:treeNode.tId});
+			GoLive.EasyUI.Form.loadData({
+				prefix:'',
+				formId:'departmentForm',
+				type:'GET',
+				url:loadRoleUrl,
+				afterLoadData: function(data){
+					data['companyCode'] = treeNode.id;
+					data['partitionCompany'] = treeNode.partitionCompany;
+					data['isValid'] = 'Y';
+					console.log(data);
+				},
+				afterFormRender : function (data){
+					if(data){
+            			$('#isValidList').combobox('setValue', data["isValid"]);
+					}
+                	$('#organizationDepartmentEdit').window('open');
+				},
+				parameter:{
+				}
+			});
+		}
+		
+		function openEditPostWin(treeNode){
+			var loadRoleUrl = "${centerPath}/post/{id}/{partitionCompany}".format({partitionCompany:treeNode.partitionCompany,id:treeNode.tId});
+			GoLive.EasyUI.Form.loadData({
+				prefix:'',
+				formId:'postForm',
+				type:'GET',
+				url:loadRoleUrl,
+				afterLoadData: function(data){
+					if(treeNode.companyLevel == 'department'){						
+						data['departmentCode'] = treeNode.id;
+					}else{
+						data['companyCode'] = treeNode.id;
+					}
+					data['partitionCompany'] = treeNode.partitionCompany;
+					data['isValid'] = 'Y';
+				},
+				afterFormRender : function (data){
+					if(data){
+            			$('#isValidList').combobox('setValue', data["isValid"]);
+					}
+                	$('#organizationPostEdit').window('open');
+				},
+				parameter:{
+				}
+			});
+		}
+		
+		function closeWindow(){
+			var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+			var nodes = treeObj.getSelectedNodes();
+			if (nodes.length>0) { 
+				treeObj.cancelSelectedNode(nodes[0]);
+			}
+			return true;
 		}
 		
 		$(document).ready(function(){
@@ -174,12 +293,34 @@
   <body>
   	<div class="easyui-layout" data-options="fit:true">
 	    <div data-options="region:'center',border:false">
-	    	<ul id="treeDemo" class="ztree"></ul>
 	    </div>
+	    <div class="easyui-layout" style="width: 100%; height: 100%;" data-options="fit:true">
+			<div data-options="region:'west',split:true,border:false" style="width: 30%;text-align: center;">
+		    	<ul id="treeDemo" class="ztree"></ul>
+			</div>
+			<div data-options="region:'center',iconCls:'icon-ok'">
+			</div>
+		</div>
     </div>
-    
-	<div id="editWindow" class="easyui-window" title="<spring:message code="page.center.company.editwindow" />" data-options="modal:true,closed:true,iconCls:'icon-save'" style="width:400px;height:400px;padding:10px;">
-		<jsp:include page="<%= com.sfxie.web.boot.util.ComponentDerector.getComponentPath(\"jsp.center.organization.window.editorganization\")%>" flush="true"></jsp:include>
-	</div>
+    <div style="display: none;">
+		<div id="organizationCompanyEdit" class="easyui-window"
+				title="<spring:message code="page.center.organization.organizationCompanyEdit" />" 
+				data-options="onBeforeClose:closeWindow,modal:true,closed:true,iconCls:'icon-save'" 
+				style="width:400px;height:300px;padding:10px;">
+			<jsp:include page="<%= com.sfxie.web.boot.util.ComponentDerector.getComponentPath(\"jsp.center.organization.window.organizationCompanyEdit\")%>" flush="true"></jsp:include>
+		</div>
+		<div id="organizationDepartmentEdit" class="easyui-window"
+				title="<spring:message code="page.center.organization.organizationDepartmentEdit" />" 
+				data-options="onBeforeClose:closeWindow,modal:true,closed:true,iconCls:'icon-save'" 
+				style="width:400px;height:250px;padding:10px;">
+			<jsp:include page="<%= com.sfxie.web.boot.util.ComponentDerector.getComponentPath(\"jsp.center.organization.window.organizationDepartmentEdit\")%>" flush="true"></jsp:include>
+		</div>
+		<div id="organizationPostEdit" class="easyui-window" 
+				title="<spring:message code="page.center.organization.organizationPostEdit" />" 
+				data-options="onBeforeClose:closeWindow,modal:true,closed:true,iconCls:'icon-save'" 
+				style="width:400px;height:250px;padding:10px;">
+			<jsp:include page="<%= com.sfxie.web.boot.util.ComponentDerector.getComponentPath(\"jsp.center.organization.window.organizationPostEdit\")%>" flush="true"></jsp:include>
+		</div>
+    </div>
   </body>
 </html>

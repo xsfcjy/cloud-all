@@ -9,13 +9,13 @@
 -->
 </style>
 <script type="text/javascript">
-	alert('${centerPath}');
+
 	function submitForm(){
 	
 		GoLive.EasyUI.Form.submit({
-			formId: 'myform',
-			restfulId:'id',
-			url:'${centerPath}/company',
+			formId: 'companyForm',
+			restfulId:'companyId',
+			url:'${centerPath}/organization/company',
 			onSubmit: function(param){
 				return true;
 			},
@@ -25,18 +25,22 @@
 		    		icon:'info',
 		    		msg:'<spring:message code="page.datagrid.action.save.success" />'
 		    	});
-		    	GoLive.EasyUI.Datagrid.reload({
-		    		dataGridId: 'dataGrid'
-		    	}); 
+		    	var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+		    	var parentCode = $('#parentCompanyCode').val();
+		    	var node = treeObj.getNodeByParam("id", parentCode, null);
+		    	treeObj.reAsyncChildNodes(node, "refresh",false);
+		    	GoLive.EasyUI.Form.reset('companyForm');
+            	$('#organizationCompanyEdit').window('close');
 		    }
 		});
 	}
 </script>
    	<div class="golive-easyui-form-div">
-	   	<form id="myform" class="easyui-form" method="post" data-options="novalidate:true" action="">
-	   		<input type="hidden" name="id" id="id">
+	   	<form id="companyForm" class="easyui-form" method="post" data-options="novalidate:true" action="">
+	   		<input type="hidden" name="id" id="companytId">
 	   		<input name="createUser" id="createUser" type="hidden">
 	   		<input name="parentCompanyCode" id="parentCompanyCode" type="hidden">
+	   		<input name="parentCompanyLevel" id="parentCompanyLevel" type="hidden">
         	<input name="createTime" id="createTime"  type="hidden">
 	        <div>
 	            <label for="companyCode"><font color="#990000">*</font><spring:message code="page.center.company.companyCode" />：</label>

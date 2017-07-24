@@ -79,9 +79,7 @@
       <if test="invalidDate != null">
         invalid_date,
       </if>
-      <if test="createTime != null">
         create_time,
-      </if>
       <if test="createUser != null">
         create_user,
       </if>
@@ -111,9 +109,7 @@
       <if test="invalidDate != null">
         #{invalidDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
+        now(),
       <if test="createUser != null">
         #{createUser,jdbcType=VARCHAR},
       </if>

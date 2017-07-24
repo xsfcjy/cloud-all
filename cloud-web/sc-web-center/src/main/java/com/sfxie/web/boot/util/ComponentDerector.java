@@ -15,8 +15,12 @@ public class ComponentDerector {
 	 * @return
 	 */
 	public static String getComponentPath(String componentName) {
-		if (componentName.equals("jsp.center.organization.window.editorganization")) {
+		if (componentName.equals("jsp.center.organization.window.organizationCompanyEdit")) {
 			return "organizationCompanyEdit.jsp";
+		}else if (componentName.equals("jsp.center.organization.window.organizationDepartmentEdit")) {
+			return "organizationDepartmentEdit.jsp";
+		}else if (componentName.equals("jsp.center.organization.window.organizationPostEdit")) {
+			return "organizationPostEdit.jsp";
 		}
 		return "";
 	}

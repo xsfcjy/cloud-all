@@ -42,7 +42,8 @@
 				ssc.company_level companyLevel,
 				ssc.company_name_cn NAME,
 				1 isParent,
-				if(sus.css is not null ,sus.css, 'icon01') iconSkin
+				if(sus.css is not null ,sus.css, 'icon01') iconSkin,
+				NULL partitionCompany
 			FROM
 				sfxie_sys_organization sso
 			INNER JOIN sfxie_sys_company ssc ON ssc.company_code = sso.company_code
@@ -57,7 +58,8 @@
 					'department' companyLevel,
 					ssd.department_name NAME,
 					1 isParent,
-					if(sus.css is not null ,sus.css, 'icon01') iconSkin
+					if(sus.css is not null ,sus.css, 'icon01') iconSkin,
+					ssd.partition_company partitionCompany
 				FROM
 					sfxie_sys_department ssd
 					LEFT JOIN sfxie_ui_skin sus ON sus.id_ = ssd.department_code
@@ -70,7 +72,8 @@
 						'post' companyLevel,
 						ssp.post_name NAME,
 						1 isParent,
-						if(sus.css is not null ,sus.css, 'icon01') iconSkin
+						if(sus.css is not null ,sus.css, 'icon01') iconSkin,
+						ssp.partition_company partitionCompany
 					FROM
 						sfxie_sys_post ssp
 						LEFT JOIN sfxie_ui_skin sus ON sus.id_ = ssp.post_code

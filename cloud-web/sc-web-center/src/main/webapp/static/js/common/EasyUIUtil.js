@@ -325,6 +325,8 @@
 			dataType : "json",
 			type: config.type?config.type:"POST",
 			success : function(data) {
+				if(!data["data"])
+					data["data"] = new Object();
 				if(afterLoadData){
 					afterLoadData(data["data"]);
 				}

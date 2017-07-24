@@ -34,7 +34,7 @@ public class SfxieSysDepartmentController {
 		SfxieSysDepartment sfxieSysDepartment = new SfxieSysDepartment ();
 		sfxieSysDepartment.setId(id);
 		sfxieSysDepartment.setPartitionCompany(partitionCompany);
-		Result<SfxieSysDepartment> result = new Result.BuilderObject<SfxieSysDepartment>(sfxieSysDepartment).build();
+		Result<SfxieSysDepartment> result = new Result.BuilderObject<SfxieSysDepartment>(sfxieSysDepartmentService.selectByPrimaryKey(sfxieSysDepartment)).build();
     	return result;
     }
 	
@@ -66,7 +66,7 @@ public class SfxieSysDepartmentController {
      *
      * @param record
      */
-	@RequestMapping(value = "/department/insertSelective", method = RequestMethod.POST)
+	@RequestMapping(value = "/department", method = RequestMethod.POST)
     public int insertSelective(@RequestBody SfxieSysDepartment record){
     	return sfxieSysDepartmentService.insertSelective(record);
     }
@@ -76,7 +76,7 @@ public class SfxieSysDepartmentController {
      *
      * @param record
      */
-	@RequestMapping(value = "/department/updateSelective", method = RequestMethod.PUT)
+	@RequestMapping(value = "/department", method = RequestMethod.PUT)
     public int updateByPrimaryKeySelective(@RequestBody SfxieSysDepartment record){
     	return sfxieSysDepartmentService.updateByPrimaryKeySelective(record);
     }

@@ -1,6 +1,7 @@
 package com.sfxie.services.center.pojo.tree;
 
 import com.sfxie.component.node.CustomerNodeEntity;
+import com.sfxie.services.center.util.ServicesContext;
 
 /**
  * 组织结构树实体
@@ -40,7 +41,8 @@ public class OrganizationTreePojo extends CustomerNodeEntity {
 	}
 
 	public String getPartitionCompany() {
-		return partitionCompany;
+		return partitionCompany == null ? ServicesContext.getPartitionCompany(pid)
+				: partitionCompany.trim();
 	}
 
 	public void setPartitionCompany(String partitionCompany) {

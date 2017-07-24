@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sfxie.core.framework.mvc.handle.Result;
 import com.sfxie.services.center.pojo.SfxieSysCompany;
 import com.sfxie.services.center.service.impl.SfxieSysCompanyServiceImpl;
+import com.sfxie.services.center.vo.SfxieSysCompanyVo;
 
 @RestController
 public class SfxieSysCompanyController {
@@ -50,7 +51,7 @@ public class SfxieSysCompanyController {
      * @param record
      */
 	@RequestMapping(value = "/company", method = RequestMethod.POST)
-    public int insert(@RequestBody SfxieSysCompany record){
+    public int insert(@RequestBody SfxieSysCompanyVo record){
     	return sfxieSysCompanyService.insertSelective(record);
     }
 
@@ -60,7 +61,7 @@ public class SfxieSysCompanyController {
      * @param record
      */
 	@RequestMapping(value = "/company", method = RequestMethod.PUT)
-    public int updateByPrimaryKeySelective(@RequestBody SfxieSysCompany record){
+    public int updateByPrimaryKeySelective(@RequestBody SfxieSysCompanyVo record){
     	return sfxieSysCompanyService.updateByPrimaryKeySelective(record);
     }
 }
