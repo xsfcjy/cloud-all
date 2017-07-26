@@ -22,7 +22,7 @@ public class ClientResourceConfiguration extends WebMvcConfigurerAdapter {
 		.addCssPath("/static/js/ui/zTree_v3/css/zTreeStyle/zTreeStyle.css")
 		.addJsPath("/static/js/ui/zTree_v3/js/jquery.ztree.all.min.js")
 		.addDescription("使用ztree")
-		.addPageUri("/jsp/center/organization.jsp");
+		.addPageUri("/jsp/center/organization/index.jsp");
 	}
 	
 }

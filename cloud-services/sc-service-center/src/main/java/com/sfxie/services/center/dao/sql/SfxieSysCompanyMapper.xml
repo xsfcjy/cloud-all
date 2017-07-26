@@ -305,5 +305,6 @@
     <include refid="Base_Column_List" />
     from sfxie_sys_company
     where company_name_cn like '%${companyNameCn}%'
+    <include refid="dataSecurityStatement.data_security" />
   </select>
 </mapper>

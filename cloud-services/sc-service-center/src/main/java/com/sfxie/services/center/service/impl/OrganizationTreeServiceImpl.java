@@ -7,12 +7,15 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.sfxie.services.center.dao.mapper.OrganizationTreeMapper;
 import com.sfxie.services.center.dao.mapper.SfxieSysCompanyMapper;
 import com.sfxie.services.center.dao.mapper.SfxieSysOrganizationMapper;
+import com.sfxie.services.center.pojo.PartitionData;
 import com.sfxie.services.center.pojo.SfxieSysCompany;
 import com.sfxie.services.center.pojo.SfxieSysOrganization;
+import com.sfxie.services.center.pojo.SfxieSysUserRelation;
 import com.sfxie.services.center.pojo.tree.OrganizationTreePojo;
 import com.sfxie.services.center.util.ServicesContext;
 import com.sfxie.services.center.vo.SfxieSysCompanyVo;
@@ -32,16 +35,18 @@ public class OrganizationTreeServiceImpl {
 	 * @param map
 	 * @return
 	 */
-	public List<OrganizationTreePojo> selectByUserId(String userId){
-		Map<String,String> map = new HashMap<String,String>();
-		map.put("userId", userId);
-		return mapper.selectByUserId(map);
+	public List<OrganizationTreePojo> selectByUserId(String userId,String partitionCompany){
+		PartitionData record = new PartitionData();
+		record.setCreateUser(userId);
+		record.setPartitionCompany(partitionCompany);
+		return mapper.selectByUserId(record);
 	}
 	
 
-	public List<OrganizationTreePojo> selectByParentCompanyCode(String parentCompanyCode,String parentCompanyLevel){
+	public List<OrganizationTreePojo> selectByParentCompanyCode(String parentCompanyCode,String parentCompanyLevel,String partitionCompany){
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("parentCompanyCode", parentCompanyCode);
+		map.put("partitionCompany", partitionCompany);
 		if(parentCompanyLevel.equals("department")){
 			return null;
 		}else if(parentCompanyLevel.equals("post")){
@@ -74,5 +79,10 @@ public class OrganizationTreeServiceImpl {
     	sfxieSysCompanyMapper.insertSelective(sfxieSysCompanyVo);
     	return sfxieSysOrganizationMapper.insertSelective(sfxieSysOrganization);
     }
+    
+
+	public List<SfxieSysUserRelation> selectUsersByCompanyCode(SfxieSysUserRelation sfxieSysUserRelation){
+		return mapper.selectUsersByCompanyCode(sfxieSysUserRelation);
+	}
 
 }

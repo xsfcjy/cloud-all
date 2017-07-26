@@ -1,4 +1,4 @@
-package com.fasterxml.jackson.databind.ser.std;
+package com.sfxie.services.core.security;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,6 +7,6 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.METHOD,ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface DataAuthField {
+public @interface DataSecurityField {
 
 }

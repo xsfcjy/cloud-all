@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sfxie.services.center.dao.mapper.OrganizationTreeMapper">
 
-	<select id="selectByUserId" parameterType="map" resultType="com.sfxie.services.center.pojo.tree.OrganizationTreePojo">
+	<select id="selectByUserId" parameterType="com.sfxie.services.center.pojo.PartitionData" resultType="com.sfxie.services.center.pojo.tree.OrganizationTreePojo">
 			SELECT sso.company_code id, null pid ,
 					ssc2.company_level companyLevel,
 					ssc2.company_name_cn name,1 isParent,
@@ -11,8 +11,11 @@
 				INNER JOIN sfxie_sys_organization sso  ON sso.parent_company_code = ssc.company_code
 				INNER JOIN sfxie_sys_company ssc2 ON ssc2.company_code = sso.company_code
 				LEFT JOIN sfxie_ui_skin sus ON sus.id_ = ssc2.company_code
-				WHERE ssc.create_user = #{userId} AND ssc.is_valid = 'Y'
-	      		AND ssc2.company_level  = ( SELECT ssu.create_company_level from sfxie_sys_userinfo ssu WHERE ssu.user_id = #{userId})
+				WHERE ssc.create_user = #{createUser} AND ssc.is_valid = 'Y'
+	      		AND ssc2.company_level  = (
+	      			SELECT ssu.create_company_level from sfxie_sys_userinfo ssu WHERE ssu.user_id = #{createUser} 
+	      			AND ssu.partition_company = #{partitionCompany}
+	      		)
 	
 		<!-- SELECT sso.company_code id, sso.parent_company_code pid ,ssc2.company_level level,ssc2.company_name_cn name
 			FROM sfxie_sys_company ssc
@@ -64,21 +67,41 @@
 					sfxie_sys_department ssd
 					LEFT JOIN sfxie_ui_skin sus ON sus.id_ = ssd.department_code
 				WHERE
-					ssd.company_code = #{parentCompanyCode}
-				UNION
-					SELECT
-						ssp.post_code id,
-						ssp.company_code pid,
-						'post' companyLevel,
-						ssp.post_name NAME,
-						1 isParent,
-						if(sus.css is not null ,sus.css, 'icon01') iconSkin,
-						ssp.partition_company partitionCompany
-					FROM
-						sfxie_sys_post ssp
-						LEFT JOIN sfxie_ui_skin sus ON sus.id_ = ssp.post_code
-					WHERE
-						ssp.company_code = #{parentCompanyCode};
+					  ssd.company_code = #{parentCompanyCode}
+				  AND ssd.partition_company = #{partitionCompany} 
+			UNION
+				SELECT
+					ssp.post_code id,
+					ssp.company_code pid,
+					'post' companyLevel,
+					ssp.post_name NAME,
+					1 isParent,
+					if(sus.css is not null ,sus.css, 'icon01') iconSkin,
+					ssp.partition_company partitionCompany
+				FROM
+					sfxie_sys_post ssp
+					LEFT JOIN sfxie_ui_skin sus ON sus.id_ = ssp.post_code
+				WHERE
+					  ssp.company_code = #{parentCompanyCode}
+				  AND ssp.partition_company = #{partitionCompany} 
+					
 
 	</select>
+	
+	<select id="selectUsersByCompanyCode" parameterType="com.sfxie.services.center.pojo.SfxieSysUserRelation" resultType="com.sfxie.services.center.pojo.SfxieSysUserRelation">
+		SELECT
+			ssu.user_id userId,
+			ssur.user_name_cn userNameCn,
+			ssur.is_valid isValid,
+			'company' type
+		FROM
+			sfxie_sys_user_relation ssur
+		INNER JOIN sfxie_sys_userinfo ssu ON ssu.user_id = ssur.user_id
+		WHERE
+				ssur.company_code = #{companyCode}
+			AND ssur.partition_company = #{partitionCompany} 
+	      <if test="userNameCn != null">
+	        AND ssur.user_name_cn like '%${userNameCn}%'
+	      </if>
+	</select>	
 </mapper>

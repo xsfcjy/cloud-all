@@ -27,5 +27,7 @@
 	  <plugin interceptor="com.github.pagehelper.PageHelper">
 	    <property name="dialect" value="mysql"/>
 	  </plugin>
+	  <plugin interceptor="com.sfxie.services.core.security.DataSecurityRecordInterceptor">
+	  </plugin>
 	</plugins>
 </configuration>

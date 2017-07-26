@@ -2,9 +2,9 @@ package com.sfxie.services.center.pojo;
 
 import java.util.Date;
 
-import com.fasterxml.jackson.databind.ser.std.DataAuthField;
 import com.sfxie.services.center.util.ServicesContext;
-import com.sfxie.utils.StringUtils;
+import com.sfxie.services.core.security.DataSecurityField;
+import com.sfxie.services.core.security.DataSecurityRecord;
 
 /**
  *
@@ -13,7 +13,7 @@ import com.sfxie.utils.StringUtils;
  *
  * @mbg.generated do_not_delete_during_merge Thu Jun 08 08:42:00 CST 2017
  */
-public class SfxieSysCompany {
+public class SfxieSysCompany extends DataSecurityRecord{
     /**
      *  记录主键 : 记录主键,所属表字段为sfxie_sys_company.id_
      */
@@ -65,11 +65,6 @@ public class SfxieSysCompany {
     private String remark;
 
     /**
-     *  记录创建人 : 记录创建人,所属表字段为sfxie_sys_company.create_user
-     */
-    private String createUser;
-
-    /**
      *  创建时间 : 创建时间,所属表字段为sfxie_sys_company.create_time
      */
     private Date createTime;
@@ -114,11 +109,6 @@ public class SfxieSysCompany {
     private Short companyLevel;
 
     /**
-     *  创建公司 : 创建公司,所属表字段为sfxie_sys_company.create_company_id
-     */
-    private String createCompanyId;
-
-    /**
      * 获取 记录主键 : 记录主键 字段:sfxie_sys_company.id_
      *
      * @return sfxie_sys_company.id_, 记录主键 : 记录主键
@@ -159,7 +149,7 @@ public class SfxieSysCompany {
      *
      * @return sfxie_sys_company.company_name_cn, 公司中文名称 : 公司中文名称
      */
-    @DataAuthField
+    @DataSecurityField
     public String getCompanyNameCn() {
         return companyNameCn;
     }
@@ -297,24 +287,6 @@ public class SfxieSysCompany {
      */
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
-    }
-
-    /**
-     * 获取 记录创建人 : 记录创建人 字段:sfxie_sys_company.create_user
-     *
-     * @return sfxie_sys_company.create_user, 记录创建人 : 记录创建人
-     */
-    public String getCreateUser() {
-        return createUser;
-    }
-
-    /**
-     * 设置 记录创建人 : 记录创建人 字段:sfxie_sys_company.create_user
-     *
-     * @param createUser sfxie_sys_company.create_user, 记录创建人 : 记录创建人
-     */
-    public void setCreateUser(String createUser) {
-        this.createUser = createUser == null ? null : createUser.trim();
     }
 
     /**
@@ -475,24 +447,6 @@ public class SfxieSysCompany {
      */
     public void setCompanyLevel(Short companyLevel) {
         this.companyLevel = companyLevel;
-    }
-
-    /**
-     * 获取 创建公司 : 创建公司 字段:sfxie_sys_company.create_company_id
-     *
-     * @return sfxie_sys_company.create_company_id, 创建公司 : 创建公司
-     */
-    public String getCreateCompanyId() {
-        return createCompanyId;
-    }
-
-    /**
-     * 设置 创建公司 : 创建公司 字段:sfxie_sys_company.create_company_id
-     *
-     * @param createCompanyId sfxie_sys_company.create_company_id, 创建公司 : 创建公司
-     */
-    public void setCreateCompanyId(String createCompanyId) {
-        this.createCompanyId = createCompanyId == null ? null : createCompanyId.trim();
     }
     
     public String getPartitionCompany(){

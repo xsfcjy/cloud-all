@@ -9,7 +9,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<mytag:resources></mytag:resources>
     <SCRIPT type="text/javascript">
-    	var url = "${centerPath}/organization/${userId}";
+    	var url = "${centerPath}/organization/${userId}/${partitionCompany}";
 		var setting = {
 			async: {
 				enable: true,
@@ -41,12 +41,16 @@
 			}
 		};
 		function zTreeOnClick(event, treeId, treeNode) {
-// 		    alert(treeNode.tId + ", " + treeNode.name);
+			if(treeNode.companyLevel == 'department'){
+			}else if ( treeNode.companyLevel == 'post' ){
+			}else{
+				organizationUserList();
+			}
 		}
 		function myBeforeCallBack(treeId, treeNode) {
 			if(treeNode){
 				var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
-				var levelUrl = "${centerPath}/organization/sub/{id}/{companyLevel}";
+				var levelUrl = "${centerPath}/organization/sub/{id}/{companyLevel}/${partitionCompany}";
 				treeObj.setting.async.url = levelUrl.format(treeNode);
 			}
 		    return true;
@@ -283,8 +287,13 @@
 			return true;
 		}
 		
+		function initTabsDatagrid(){
+			organizationUserList();
+		}
+		
 		$(document).ready(function(){
-			$.fn.zTree.init($("#treeDemo"), setting);
+			treeDemoObj = $.fn.zTree.init($("#treeDemo"), setting);
+			initTabsDatagrid();
 		});
 		
 		
@@ -299,6 +308,11 @@
 		    	<ul id="treeDemo" class="ztree"></ul>
 			</div>
 			<div data-options="region:'center',iconCls:'icon-ok'">
+				<div id="tt" class="easyui-tabs" data-options="fit:true,tabPosition:'right'">
+					<jsp:include page="<%= com.sfxie.web.boot.util.ComponentDerector.getComponentPath(\"jsp.center.organization.list.organizationUserList\")%>" flush="true"></jsp:include>
+					<jsp:include page="<%= com.sfxie.web.boot.util.ComponentDerector.getComponentPath(\"jsp.center.organization.list.organizationRoleList\")%>" flush="true"></jsp:include>
+					<jsp:include page="<%= com.sfxie.web.boot.util.ComponentDerector.getComponentPath(\"jsp.center.organization.list.organizationDataAuthList\")%>" flush="true"></jsp:include>
+			    </div>
 			</div>
 		</div>
     </div>

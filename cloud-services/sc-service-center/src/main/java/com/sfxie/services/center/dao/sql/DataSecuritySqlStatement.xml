@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dataSecurityStatement">
+  <sql id="data_security">
+  	<if test="securitySql != null">
+  		${securitySql}
+  	</if>
+  	<if test="createCompanyId != null">
+  		AND t.create_company_id = #{createCompanyId}
+  	</if>
+  	<if test="createUser != null">
+  		AND t.create_user = #{createUser}
+  	</if>
+  	<if test="partitionCompany != null"> 
+  		AND t.partition_company = #{partitionCompany}
+  	</if>
+  </sql>
+</mapper>

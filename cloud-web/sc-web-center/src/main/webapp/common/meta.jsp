@@ -11,3 +11,4 @@
 <c:set var="easyuiDataProviderPath" value="<%=com.sfxie.web.boot.util.ServerPathUtil.getServerPath(com.sfxie.web.boot.util.ServerPathUtil.ServiceName.easyuiDataProviderServer)%>"/>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <c:set var="userId" value="sfxie"/>
+<c:set var="partitionCompany" value="0"/>

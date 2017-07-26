@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.ser.impl.WritableObjectId;
 import com.fasterxml.jackson.databind.util.ArrayBuilders;
 import com.fasterxml.jackson.databind.util.Converter;
 import com.fasterxml.jackson.databind.util.NameTransformer;
+import com.sfxie.services.core.security.DataSecurityField;
 
 /**
  * Base class both for the standard bean serializer, and couple
@@ -687,8 +688,7 @@ public abstract class BeanSerializerBase
             for (final int len = props.length; i < len; ++i) {
                 BeanPropertyWriter prop = props[i];
                 if (prop != null) { // can have nulls in filtered list
-                	System.out.println(prop.getName());
-                	DataAuthField dataAuthField = prop.getAnnotation(DataAuthField.class);
+                	DataSecurityField dataAuthField = prop.getAnnotation(DataSecurityField.class);
                 	if(null!=dataAuthField)
                 		continue;
                     prop.serializeAsField(bean, gen, provider);

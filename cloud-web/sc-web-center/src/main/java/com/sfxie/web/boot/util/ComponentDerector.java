@@ -21,7 +21,15 @@ public class ComponentDerector {
 			return "organizationDepartmentEdit.jsp";
 		}else if (componentName.equals("jsp.center.organization.window.organizationPostEdit")) {
 			return "organizationPostEdit.jsp";
+		}else if (componentName.equals("jsp.center.organization.list.organizationUserList")) {
+			return "organizationUserList.jsp";
+		}else if (componentName.equals("jsp.center.organization.list.organizationRoleList")) {
+			return "organizationRoleList.jsp";
+		}else if (componentName.equals("jsp.center.organization.list.organizationDataAuthList")) {
+			return "";
 		}
+		
+		
 		return "";
 	}
 
