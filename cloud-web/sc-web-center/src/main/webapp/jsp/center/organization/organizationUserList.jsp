@@ -4,42 +4,35 @@
 <script type="text/javascript">
 	
 	
-	function organizationUserList(){			
-		var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
-		var node;
-		if(treeObj){
-			var nodes = treeObj.getSelectedNodes();
-			if(nodes){
-				node = nodes[0];
-			}
-			var url = '${centerPath}/organization/{id}/userList/{partitionCompany}'.format(node);
-	    	$('#dataGridUserList').easyUILoadData({
-	    		dataGridId: 'dataGridUserList',
-				extractParameter:function(params){
-				},
-	    		url: url ,
-	    		columnDecoratedUrl:'${easyuiDataProviderPath}',
-	    		decoratedColumns:[{
-	    			field:'isValid',
-	    			type:'string',
-	    			dataRegister:'companyGridColumnDataProvider',
-	    			displayField:'text',
-	    			valueField:'value'
-	    		}],
-	    		toolbarConditions:[{
-					type:'textbox',
-					name:'userNameCn',
-					id:'userNameCnId',
-					label:'<spring:message code="page.center.organization.userList.userNameCn" />'
-				}]
-	    	});
-		}
+	function organizationUserList(node){	
+		var url = '${centerPath}/organization/{id}/userList/{partitionCompany}'.format(node);
+    	$('#dataGridUserList').easyUILoadData({
+    		dataGridId: 'dataGridUserList',
+			extractParameter:function(params){
+				
+			},
+    		url: url ,
+    		columnDecoratedUrl:'${easyuiDataProviderPath}',
+    		decoratedColumns:[{
+    			field:'isValid',
+    			type:'string',
+    			dataRegister:'companyGridColumnDataProvider',
+    			displayField:'text',
+    			valueField:'value'
+    		}],
+    		toolbarConditions:[{
+				type:'textbox',
+				name:'userNameCn',
+				id:'userNameCnId',
+				label:'<spring:message code="page.center.organization.userList.userNameCn" />'
+			}]
+    	});
     }
     var toolbarUser = [{
         text:'<spring:message code="button.query" />',
         iconCls:'golive-icon-query',
         handler:function(){
-        	organizationUserList();
+        	organizationUserList(getSelectNode());
 		}
     },'-',{
         text:'<spring:message code="button.add" />',

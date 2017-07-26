@@ -100,7 +100,7 @@
 		WHERE
 				ssur.company_code = #{companyCode}
 			AND ssur.partition_company = #{partitionCompany} 
-	      <if test="userNameCn != null">
+	      <if test="userNameCn != null and userNameCn != ''">
 	        AND ssur.user_name_cn like '%${userNameCn}%'
 	      </if>
 	</select>	

@@ -44,7 +44,7 @@
 			if(treeNode.companyLevel == 'department'){
 			}else if ( treeNode.companyLevel == 'post' ){
 			}else{
-				organizationUserList();
+				organizationUserList(treeNode);
 			}
 		}
 		function myBeforeCallBack(treeId, treeNode) {
@@ -54,6 +54,15 @@
 				treeObj.setting.async.url = levelUrl.format(treeNode);
 			}
 		    return true;
+		}
+		function getSelectNode(){
+			var node;
+			var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+			var nodes = treeObj.getSelectedNodes();
+			if (nodes.length>0) { 
+				node = nodes[0];
+			}
+			return node;
 		}
 
 		function filter(treeId, parentNode, childNodes) {
@@ -288,7 +297,7 @@
 		}
 		
 		function initTabsDatagrid(){
-			organizationUserList();
+			organizationUserList(null);
 		}
 		
 		$(document).ready(function(){
