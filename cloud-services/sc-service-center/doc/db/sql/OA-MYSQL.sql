@@ -62,14 +62,14 @@ CREATE TABLE sfxie_sys_authorization
 (
 	-- 记录主键
 	id_ varchar(64) NOT NULL COMMENT '记录主键 : 记录主键',
-	-- 角色代码
-	role_code varchar(32) COMMENT '角色代码 : 角色代码',
-	-- 关联公司代码,表明创建公司
-	company_code varchar(64) COMMENT '公司代码 : 关联公司代码,表明创建公司',
-	-- 部门代码
-	department_code varchar(64) COMMENT '部门代码 : 部门代码',
-	-- 岗位代码
-	post_code varchar(32) COMMENT '岗位代码 : 岗位代码',
+	-- r-角色,p-人员
+	resource_type char(1) COMMENT '资源类型 : r-角色,p-人员',
+	-- 资源代码
+	resource_code varchar(32) COMMENT '资源代码 : 资源代码',
+	-- c-公司,d-部门,p-岗位,u-用户
+	operator_type char(1) COMMENT '操作者类型 : c-公司,d-部门,p-岗位,u-用户',
+	-- 操作者编码
+	operator_code varchar(32) COMMENT '操作者编码 : 操作者编码',
 	-- 是否有效,Y:是;N:否
 	-- 控制是否在公司任职有效
 	is_valid char COMMENT '是否有效 : 是否有效,Y:是;N:否
@@ -77,13 +77,13 @@ CREATE TABLE sfxie_sys_authorization
 	-- 创建时间
 	create_time datetime COMMENT '创建时间 : 创建时间',
 	-- 创建公司
-	create_company_id varchar(50) COMMENT '创建公司 : 创建公司',
+	create_company_code varchar(50) COMMENT '创建公司 : 创建公司',
 	-- 记录创建人
 	create_user varchar(32) COMMENT '记录创建人 : 记录创建人',
 	-- 分区字段,从用户公司代码字段取值
 	partition_company varchar(8) NOT NULL COMMENT '分区字段 : 分区字段,从用户公司代码字段取值',
 	PRIMARY KEY (id_)
-) ENGINE = InnoDB COMMENT = '角色授权表' DEFAULT CHARACTER SET utf8;
+) ENGINE = InnoDB COMMENT = '授权表' DEFAULT CHARACTER SET utf8;
 
 
 -- 表配置用户获取行层面上的数据权限
@@ -119,7 +119,7 @@ CREATE TABLE sfxie_sys_auth_data
 	-- 用java处理类获取sql或者用户列表
 	dealer_class varchar(200) COMMENT 'java处理类 : 用java处理类获取sql或者用户列表',
 	-- 创建公司
-	create_company_id varchar(50) COMMENT '创建公司 : 创建公司',
+	create_company_code varchar(50) COMMENT '创建公司 : 创建公司',
 	-- 分区字段,从用户公司代码字段取值
 	partition_company varchar(8) NOT NULL COMMENT '分区字段 : 分区字段,从用户公司代码字段取值',
 	PRIMARY KEY (id_)
@@ -196,7 +196,7 @@ CREATE TABLE sfxie_sys_company
 
 作用:用于创建无限级超级管理员',
 	-- 创建公司
-	create_company_id varchar(50) NOT NULL COMMENT '创建公司 : 创建公司',
+	create_company_code varchar(50) NOT NULL COMMENT '创建公司 : 创建公司',
 	PRIMARY KEY (id_)
 ) ENGINE = InnoDB COMMENT = '公司基础信息表' DEFAULT CHARACTER SET utf8;
 
@@ -226,7 +226,7 @@ CREATE TABLE sfxie_sys_department
 	-- 关联父主键
 	parent_id varchar(32) COMMENT '父主键 : 关联父主键',
 	-- 创建公司
-	create_company_id varchar(50) COMMENT '创建公司 : 创建公司',
+	create_company_code varchar(50) COMMENT '创建公司 : 创建公司',
 	-- 关联公司代码,表明创建公司
 	company_code varchar(64) NOT NULL COMMENT '公司代码 : 关联公司代码,表明创建公司',
 	parent_code varchar(64) COMMENT ' 父节点代码',
@@ -336,11 +336,11 @@ CREATE TABLE sfxie_sys_post
 	is_valid char COMMENT '是否有效 : 是否有效,Y:是;N:否
 控制是否在公司任职有效',
 	-- 创建公司
-	create_company_id varchar(50) COMMENT '创建公司 : 创建公司',
+	create_company_code varchar(50) COMMENT '创建公司 : 创建公司',
 	-- 分区字段,从用户公司代码字段取值
 	partition_company varchar(8) NOT NULL COMMENT '分区字段 : 分区字段,从用户公司代码字段取值',
 	-- 部门代码
-	department_code varchar(64) NOT NULL UNIQUE COMMENT '部门代码 : 部门代码',
+	department_code varchar(64) UNIQUE COMMENT '部门代码 : 部门代码',
 	PRIMARY KEY (id_)
 ) ENGINE = InnoDB COMMENT = '岗位表' DEFAULT CHARACTER SET utf8;
 
@@ -393,7 +393,7 @@ CREATE TABLE sfxie_sys_role
 	is_valid char COMMENT '是否有效 : 是否有效,Y:是;N:否
 控制是否在公司任职有效',
 	-- 创建公司
-	create_company_id varchar(50) COMMENT '创建公司 : 创建公司',
+	create_company_code varchar(50) COMMENT '创建公司 : 创建公司',
 	-- 分区字段,从用户公司代码字段取值
 	partition_company varchar(8) NOT NULL COMMENT '分区字段 : 分区字段,从用户公司代码字段取值',
 	PRIMARY KEY (id_)
@@ -437,7 +437,7 @@ CREATE TABLE sfxie_sys_role_menu
 	-- 公司角色关联表id
 	company_role_id varchar(32) COMMENT '公司角色关联表id : 公司角色关联表id',
 	-- 创建公司
-	create_company_id varchar(50) COMMENT '创建公司 : 创建公司',
+	create_company_code varchar(50) COMMENT '创建公司 : 创建公司',
 	-- 继承的角色菜单id，记录此条数据是从哪条角色菜单中继承而来的
 	oraginal_role_menu_id varchar(64) COMMENT '继承的角色菜单id : 继承的角色菜单id，记录此条数据是从哪条角色菜单中继承而来的',
 	-- 角色代码
@@ -513,7 +513,7 @@ N-否
 
 只级超级管理员才可以操作此字段',
 	-- 创建公司
-	create_company_id varchar(50) NOT NULL COMMENT '创建公司 : 创建公司',
+	create_company_code varchar(50) NOT NULL COMMENT '创建公司 : 创建公司',
 	-- m-男,f-女
 	sex char COMMENT '用户性别 : m-男,f-女',
 	-- 分区字段,从用户公司代码字段取值
@@ -544,7 +544,7 @@ CREATE TABLE sfxie_sys_user_relation
 	-- 记录创建人
 	create_user varchar(32) NOT NULL COMMENT '记录创建人 : 记录创建人',
 	-- 创建公司
-	create_company_id varchar(50) NOT NULL COMMENT '创建公司 : 创建公司',
+	create_company_code varchar(50) NOT NULL COMMENT '创建公司 : 创建公司',
 	-- email
 	email varchar(60) NOT NULL COMMENT 'email : email',
 	-- 手机号
@@ -611,6 +611,10 @@ CREATE TABLE sfxie_ui_skin
 	-- 代码-类型
 	code varchar(16) COMMENT '代码 : 代码-类型',
 	css varchar(50) COMMENT 'css',
+	-- 记录创建人
+	create_user varchar(32) COMMENT '记录创建人 : 记录创建人',
+	-- 分区字段,从用户公司代码字段取值
+	partition_company varchar(8) COMMENT '分区字段 : 分区字段,从用户公司代码字段取值',
 	PRIMARY KEY (id_)
 ) ENGINE = InnoDB COMMENT = 'sfxie_ui_skin' DEFAULT CHARACTER SET utf8;
 
@@ -757,14 +761,6 @@ ALTER TABLE sfxie_sys_role_action
 ALTER TABLE sfxie_sys_menu
 	ADD FOREIGN KEY (system_id)
 	REFERENCES sfxie_sys_system (id_)
-	ON UPDATE RESTRICT
-	ON DELETE RESTRICT
-;
-
-
-ALTER TABLE sfxie_sys_user_relation
-	ADD FOREIGN KEY (user_id)
-	REFERENCES sfxie_sys_userinfo (user_id)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
 ;

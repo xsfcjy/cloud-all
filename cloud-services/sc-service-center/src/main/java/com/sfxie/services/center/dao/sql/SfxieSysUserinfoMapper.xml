@@ -16,7 +16,7 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="sequence_no" jdbcType="DECIMAL" property="sequenceNo" />
     <result column="is_superman" jdbcType="CHAR" property="isSuperman" />
-    <result column="create_company_id" jdbcType="VARCHAR" property="createCompanyId" />
+    <result column="create_company_code" jdbcType="VARCHAR" property="createCompanyCode" />
     <result column="sex" jdbcType="CHAR" property="sex" />
     <result column="partition_company" jdbcType="VARCHAR" property="partitionCompany" />
   </resultMap>
@@ -27,7 +27,7 @@
       This element was generated on Thu Jun 08 08:42:00 CST 2017.
     -->
     user_id, user_password, is_valid, create_time, create_user, update_user, update_time, 
-    sequence_no, is_superman, create_company_id, sex, partition_company
+    sequence_no, is_superman, create_company_code, sex, partition_company
   </sql>
   <select id="selectByPrimaryKey" parameterType="com.sfxie.services.center.pojo.SfxieSysUserinfo" resultMap="BaseResultMap">
     <!--
@@ -60,12 +60,12 @@
     insert into sfxie_sys_userinfo (user_id, user_password, is_valid, 
       create_time, create_user, update_user, 
       update_time, sequence_no, is_superman, 
-      create_company_id, sex, partition_company
+      create_company_code, sex, partition_company
       )
     values (#{userId,jdbcType=VARCHAR}, #{userPassword,jdbcType=VARCHAR}, #{isValid,jdbcType=CHAR}, 
       #{createTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR}, #{updateUser,jdbcType=VARCHAR}, 
       #{updateTime,jdbcType=TIMESTAMP}, #{sequenceNo,jdbcType=DECIMAL}, #{isSuperman,jdbcType=CHAR}, 
-      #{createCompanyId,jdbcType=VARCHAR}, #{sex,jdbcType=CHAR}, #{partitionCompany,jdbcType=VARCHAR}
+      #{createCompanyCode,jdbcType=VARCHAR}, #{sex,jdbcType=CHAR}, #{partitionCompany,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.sfxie.services.center.pojo.SfxieSysUserinfo">
@@ -103,8 +103,8 @@
       <if test="isSuperman != null">
         is_superman,
       </if>
-      <if test="createCompanyId != null">
-        create_company_id,
+      <if test="createCompanyCode != null">
+        create_company_code,
       </if>
       <if test="sex != null">
         sex,
@@ -141,8 +141,8 @@
       <if test="isSuperman != null">
         #{isSuperman,jdbcType=CHAR},
       </if>
-      <if test="createCompanyId != null">
-        #{createCompanyId,jdbcType=VARCHAR},
+      <if test="createCompanyCode != null">
+        #{createCompanyCode,jdbcType=VARCHAR},
       </if>
       <if test="sex != null">
         #{sex,jdbcType=CHAR},
@@ -184,8 +184,8 @@
       <if test="isSuperman != null">
         is_superman = #{isSuperman,jdbcType=CHAR},
       </if>
-      <if test="createCompanyId != null">
-        create_company_id = #{createCompanyId,jdbcType=VARCHAR},
+      <if test="createCompanyCode != null">
+        create_company_code = #{createCompanyCode,jdbcType=VARCHAR},
       </if>
       <if test="sex != null">
         sex = #{sex,jdbcType=CHAR},
@@ -212,7 +212,7 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       sequence_no = #{sequenceNo,jdbcType=DECIMAL},
       is_superman = #{isSuperman,jdbcType=CHAR},
-      create_company_id = #{createCompanyId,jdbcType=VARCHAR},
+      create_company_code = #{createCompanyCode,jdbcType=VARCHAR},
       sex = #{sex,jdbcType=CHAR},
       partition_company = #{partitionCompany,jdbcType=VARCHAR}
     where user_id = #{userId,jdbcType=VARCHAR}

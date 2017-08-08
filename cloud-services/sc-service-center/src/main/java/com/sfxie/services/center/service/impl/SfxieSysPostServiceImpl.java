@@ -46,9 +46,9 @@ public class SfxieSysPostServiceImpl extends TransactionService {
     	if(StringUtils.isEmpty(record.getPartitionCompany())){
     		record.setPartitionCompany(ServicesContext.getPartitionCompany(record.getCompanyCode()));
     	}
-    	String createCompanyId = StringUtils.isNotEmpty(record.getCreateCompanyId())?record.getCreateCompanyId():ServicesContext.getDefaultCreateCompanyId();
+    	String createCompanyCode = StringUtils.isNotEmpty(record.getCreateCompanyCode())?record.getCreateCompanyCode():ServicesContext.getDefaultCreateCompanyCode();
     	String createUser = StringUtils.isNotEmpty(record.getCreateUser())?record.getCreateUser():ServicesContext.getDefaultCreateUserId();
-    	record.setCreateCompanyId(createCompanyId);
+    	record.setCreateCompanyCode(createCompanyCode);
     	record.setCreateUser(createUser);
     	record.setId(UUID.randomUUID().toString());
     	return sfxieSysPostMapper.insertSelective(record);

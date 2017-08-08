@@ -21,7 +21,7 @@
     <result column="sql_" jdbcType="VARCHAR" property="sql" />
     <result column="role_menu_id" jdbcType="VARCHAR" property="roleMenuId" />
     <result column="dealer_class" jdbcType="VARCHAR" property="dealerClass" />
-    <result column="create_company_id" jdbcType="VARCHAR" property="createCompanyId" />
+    <result column="create_company_code" jdbcType="VARCHAR" property="createCompanyCode" />
     <result column="partition_company" jdbcType="VARCHAR" property="partitionCompany" />
   </resultMap>
   <sql id="Base_Column_List">
@@ -32,7 +32,7 @@
     -->
     id_, role_id, resource_name, resource_code, sequence_no, create_time, create_user, 
     update_time, update_user, is_valid, owner_company_code, sql_, role_menu_id, dealer_class, 
-    create_company_id, partition_company
+    create_company_code, partition_company
   </sql>
   <select id="selectByPrimaryKey" parameterType="com.sfxie.services.center.pojo.SfxieSysAuthData" resultMap="BaseResultMap">
     <!--
@@ -66,13 +66,13 @@
       resource_code, sequence_no, create_time, 
       create_user, update_time, update_user, 
       is_valid, owner_company_code, sql_, 
-      role_menu_id, dealer_class, create_company_id, 
+      role_menu_id, dealer_class, create_company_code, 
       partition_company)
     values (#{id,jdbcType=VARCHAR}, #{roleId,jdbcType=VARCHAR}, #{resourceName,jdbcType=VARCHAR}, 
       #{resourceCode,jdbcType=VARCHAR}, #{sequenceNo,jdbcType=DECIMAL}, #{createTime,jdbcType=TIMESTAMP}, 
       #{createUser,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, 
       #{isValid,jdbcType=CHAR}, #{ownerCompanyCode,jdbcType=VARCHAR}, #{sql,jdbcType=VARCHAR}, 
-      #{roleMenuId,jdbcType=VARCHAR}, #{dealerClass,jdbcType=VARCHAR}, #{createCompanyId,jdbcType=VARCHAR}, 
+      #{roleMenuId,jdbcType=VARCHAR}, #{dealerClass,jdbcType=VARCHAR}, #{createCompanyCode,jdbcType=VARCHAR}, 
       #{partitionCompany,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.sfxie.services.center.pojo.SfxieSysAuthData">
@@ -125,8 +125,8 @@
       <if test="dealerClass != null">
         dealer_class,
       </if>
-      <if test="createCompanyId != null">
-        create_company_id,
+      <if test="createCompanyCode != null">
+        create_company_code,
       </if>
       <if test="partitionCompany != null">
         partition_company,
@@ -175,8 +175,8 @@
       <if test="dealerClass != null">
         #{dealerClass,jdbcType=VARCHAR},
       </if>
-      <if test="createCompanyId != null">
-        #{createCompanyId,jdbcType=VARCHAR},
+      <if test="createCompanyCode != null">
+        #{createCompanyCode,jdbcType=VARCHAR},
       </if>
       <if test="partitionCompany != null">
         #{partitionCompany,jdbcType=VARCHAR},
@@ -230,8 +230,8 @@
       <if test="dealerClass != null">
         dealer_class = #{dealerClass,jdbcType=VARCHAR},
       </if>
-      <if test="createCompanyId != null">
-        create_company_id = #{createCompanyId,jdbcType=VARCHAR},
+      <if test="createCompanyCode != null">
+        create_company_code = #{createCompanyCode,jdbcType=VARCHAR},
       </if>
       <if test="partitionCompany != null">
         partition_company = #{partitionCompany,jdbcType=VARCHAR},
@@ -260,7 +260,7 @@
       sql_ = #{sql,jdbcType=VARCHAR},
       role_menu_id = #{roleMenuId,jdbcType=VARCHAR},
       dealer_class = #{dealerClass,jdbcType=VARCHAR},
-      create_company_id = #{createCompanyId,jdbcType=VARCHAR},
+      create_company_code = #{createCompanyCode,jdbcType=VARCHAR},
       partition_company = #{partitionCompany,jdbcType=VARCHAR}
     where id_ = #{id,jdbcType=VARCHAR}
       and partition_company = #{partitionCompany,jdbcType=VARCHAR}

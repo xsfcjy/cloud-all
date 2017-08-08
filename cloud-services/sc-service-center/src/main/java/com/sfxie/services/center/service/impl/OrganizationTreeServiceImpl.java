@@ -64,9 +64,9 @@ public class OrganizationTreeServiceImpl {
      */
     public int insertSelective(SfxieSysCompany record){
     	SfxieSysCompanyVo sfxieSysCompanyVo = (SfxieSysCompanyVo) record;
-    	String createCompanyId = StringUtils.isNotEmpty(sfxieSysCompanyVo.getCreateCompanyId())?sfxieSysCompanyVo.getCreateCompanyId():ServicesContext.getDefaultCreateCompanyId();
+    	String createCompanyCode = StringUtils.isNotEmpty(sfxieSysCompanyVo.getCreateCompanyCode())?sfxieSysCompanyVo.getCreateCompanyCode():ServicesContext.getDefaultCreateCompanyCode();
     	String createUser = StringUtils.isNotEmpty(sfxieSysCompanyVo.getCreateUser())?sfxieSysCompanyVo.getCreateUser():ServicesContext.getDefaultCreateUserId();
-    	sfxieSysCompanyVo.setCreateCompanyId(createCompanyId);
+    	sfxieSysCompanyVo.setCreateCompanyCode(createCompanyCode);
     	sfxieSysCompanyVo.setCreateUser(createUser);
     	sfxieSysCompanyVo.setId(StringUtils.getUUID());
     	sfxieSysCompanyVo.setCompanyLevel((short) (sfxieSysCompanyVo.getParentCompanyLevel()+1));
@@ -79,10 +79,14 @@ public class OrganizationTreeServiceImpl {
     	sfxieSysCompanyMapper.insertSelective(sfxieSysCompanyVo);
     	return sfxieSysOrganizationMapper.insertSelective(sfxieSysOrganization);
     }
-    
+
 
 	public List<SfxieSysUserRelation> selectUsersByCompanyCode(SfxieSysUserRelation sfxieSysUserRelation){
 		return mapper.selectUsersByCompanyCode(sfxieSysUserRelation);
+	}
+
+	public List<SfxieSysUserRelation> selectUsersByCompanyCodeOnAuth(SfxieSysUserRelation sfxieSysUserRelation){
+		return mapper.selectUsersByCompanyCodeOnAuth(sfxieSysUserRelation);
 	}
 
 }

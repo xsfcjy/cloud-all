@@ -5,8 +5,8 @@
   	<if test="securitySql != null">
   		${securitySql}
   	</if>
-  	<if test="createCompanyId != null">
-  		AND t.create_company_id = #{createCompanyId}
+  	<if test="createCompanyCode != null">
+  		AND t.create_company_code = #{createCompanyCode}
   	</if>
   	<if test="createUser != null">
   		AND t.create_user = #{createUser}

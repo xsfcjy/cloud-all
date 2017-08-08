@@ -20,7 +20,7 @@
     <result column="company_code" jdbcType="VARCHAR" property="companyCode" />
     <result column="parent_id" jdbcType="VARCHAR" property="parentId" />
     <result column="is_valid" jdbcType="CHAR" property="isValid" />
-    <result column="create_company_id" jdbcType="VARCHAR" property="createCompanyId" />
+    <result column="create_company_code" jdbcType="VARCHAR" property="createCompanyCode" />
     <result column="partition_company" jdbcType="VARCHAR" property="partitionCompany" />
   </resultMap>
   <sql id="Base_Column_List">
@@ -30,7 +30,7 @@
       This element was generated on Thu Jun 08 08:42:00 CST 2017.
     -->
     id_, post_code, department_code, post_name, sequence_no, post_level, create_time, create_user, 
-    update_time, update_user, company_code, parent_id, is_valid, create_company_id, partition_company
+    update_time, update_user, company_code, parent_id, is_valid, create_company_code, partition_company
   </sql>
   <select id="selectByPrimaryKey" parameterType="com.sfxie.services.center.pojo.SfxieSysPost" resultMap="BaseResultMap">
     <!--
@@ -64,13 +64,13 @@
       post_name, sequence_no, post_level, 
       create_time, create_user, update_time, 
       update_user, company_code, parent_id, 
-      is_valid, create_company_id, partition_company
+      is_valid, create_company_code, partition_company
       )
     values (#{id,jdbcType=VARCHAR}, #{postCode,jdbcType=VARCHAR}, #{departmentCode,jdbcType=VARCHAR}, 
       #{postName,jdbcType=VARCHAR}, #{sequenceNo,jdbcType=DECIMAL}, #{postLevel,jdbcType=CHAR}, 
       #{createTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
       #{updateUser,jdbcType=VARCHAR}, #{companyCode,jdbcType=VARCHAR}, #{parentId,jdbcType=VARCHAR}, 
-      #{isValid,jdbcType=CHAR}, #{createCompanyId,jdbcType=VARCHAR}, #{partitionCompany,jdbcType=VARCHAR}
+      #{isValid,jdbcType=CHAR}, #{createCompanyCode,jdbcType=VARCHAR}, #{partitionCompany,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.sfxie.services.center.pojo.SfxieSysPost">
@@ -118,8 +118,8 @@
       <if test="isValid != null">
         is_valid,
       </if>
-      <if test="createCompanyId != null">
-        create_company_id,
+      <if test="createCompanyCode != null">
+        create_company_code,
       </if>
       <if test="partitionCompany != null">
         partition_company,
@@ -163,8 +163,8 @@
       <if test="isValid != null">
         #{isValid,jdbcType=CHAR},
       </if>
-      <if test="createCompanyId != null">
-        #{createCompanyId,jdbcType=VARCHAR},
+      <if test="createCompanyCode != null">
+        #{createCompanyCode,jdbcType=VARCHAR},
       </if>
       <if test="partitionCompany != null">
         #{partitionCompany,jdbcType=VARCHAR},
@@ -215,8 +215,8 @@
       <if test="isValid != null">
         is_valid = #{isValid,jdbcType=CHAR},
       </if>
-      <if test="createCompanyId != null">
-        create_company_id = #{createCompanyId,jdbcType=VARCHAR},
+      <if test="createCompanyCode != null">
+        create_company_code = #{createCompanyCode,jdbcType=VARCHAR},
       </if>
       <if test="partitionCompany != null">
         partition_company = #{partitionCompany,jdbcType=VARCHAR},
@@ -244,7 +244,7 @@
       company_code = #{companyCode,jdbcType=VARCHAR},
       parent_id = #{parentId,jdbcType=VARCHAR},
       is_valid = #{isValid,jdbcType=CHAR},
-      create_company_id = #{createCompanyId,jdbcType=VARCHAR},
+      create_company_code = #{createCompanyCode,jdbcType=VARCHAR},
       partition_company = #{partitionCompany,jdbcType=VARCHAR}
     where id_ = #{id,jdbcType=VARCHAR}
       and partition_company = #{partitionCompany,jdbcType=VARCHAR}

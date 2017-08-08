@@ -15,7 +15,7 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="update_user" jdbcType="VARCHAR" property="updateUser" />
     <result column="create_user" jdbcType="VARCHAR" property="createUser" />
-    <result column="create_company_id" jdbcType="VARCHAR" property="createCompanyId" />
+    <result column="create_company_code" jdbcType="VARCHAR" property="createCompanyCode" />
     <result column="email" jdbcType="VARCHAR" property="email" />
     <result column="phone" jdbcType="VARCHAR" property="phone" />
     <result column="user_name_cn" jdbcType="VARCHAR" property="userNameCn" />
@@ -35,7 +35,7 @@
       This element was generated on Thu Jun 08 08:42:00 CST 2017.
     -->
     id_, user_id, user_title, is_valid, create_time, update_time, update_user, create_user, 
-    create_company_id, email, phone, user_name_cn, user_name_en, sequence_no, user_type, 
+    create_company_code, email, phone, user_name_cn, user_name_en, sequence_no, user_type, 
     is_default, company_code, post_code, department_code, partition_company
   </sql>
   <select id="selectByPrimaryKey" parameterType="com.sfxie.services.center.pojo.SfxieSysUserRelation" resultMap="BaseResultMap">
@@ -68,14 +68,14 @@
     -->
     insert into sfxie_sys_user_relation (id_, user_id, user_title, 
       is_valid, create_time, update_time, 
-      update_user, create_user, create_company_id, 
+      update_user, create_user, create_company_code, 
       email, phone, user_name_cn, 
       user_name_en, sequence_no, user_type, 
       is_default, company_code, post_code, 
       department_code, partition_company)
     values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{userTitle,jdbcType=CHAR}, 
       #{isValid,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
-      #{updateUser,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, #{createCompanyId,jdbcType=VARCHAR}, 
+      #{updateUser,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, #{createCompanyCode,jdbcType=VARCHAR}, 
       #{email,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{userNameCn,jdbcType=VARCHAR}, 
       #{userNameEn,jdbcType=VARCHAR}, #{sequenceNo,jdbcType=DECIMAL}, #{userType,jdbcType=CHAR}, 
       #{isDefault,jdbcType=CHAR}, #{companyCode,jdbcType=VARCHAR}, #{postCode,jdbcType=VARCHAR}, 
@@ -113,8 +113,8 @@
       <if test="createUser != null">
         create_user,
       </if>
-      <if test="createCompanyId != null">
-        create_company_id,
+      <if test="createCompanyCode != null">
+        create_company_code,
       </if>
       <if test="email != null">
         email,
@@ -175,8 +175,8 @@
       <if test="createUser != null">
         #{createUser,jdbcType=VARCHAR},
       </if>
-      <if test="createCompanyId != null">
-        #{createCompanyId,jdbcType=VARCHAR},
+      <if test="createCompanyCode != null">
+        #{createCompanyCode,jdbcType=VARCHAR},
       </if>
       <if test="email != null">
         #{email,jdbcType=VARCHAR},
@@ -242,8 +242,8 @@
       <if test="createUser != null">
         create_user = #{createUser,jdbcType=VARCHAR},
       </if>
-      <if test="createCompanyId != null">
-        create_company_id = #{createCompanyId,jdbcType=VARCHAR},
+      <if test="createCompanyCode != null">
+        create_company_code = #{createCompanyCode,jdbcType=VARCHAR},
       </if>
       <if test="email != null">
         email = #{email,jdbcType=VARCHAR},
@@ -296,7 +296,7 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       update_user = #{updateUser,jdbcType=VARCHAR},
       create_user = #{createUser,jdbcType=VARCHAR},
-      create_company_id = #{createCompanyId,jdbcType=VARCHAR},
+      create_company_code = #{createCompanyCode,jdbcType=VARCHAR},
       email = #{email,jdbcType=VARCHAR},
       phone = #{phone,jdbcType=VARCHAR},
       user_name_cn = #{userNameCn,jdbcType=VARCHAR},

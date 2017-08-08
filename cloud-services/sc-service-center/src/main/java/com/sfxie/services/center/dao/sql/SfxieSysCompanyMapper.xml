@@ -26,7 +26,7 @@
     <result column="short_name_cn" jdbcType="VARCHAR" property="shortNameCn" />
     <result column="short_name_en" jdbcType="VARCHAR" property="shortNameEn" />
     <result column="company_level" jdbcType="DECIMAL" property="companyLevel" />
-    <result column="create_company_id" jdbcType="VARCHAR" property="createCompanyId" />
+    <result column="create_company_code" jdbcType="VARCHAR" property="createCompanyCode" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
@@ -36,7 +36,7 @@
     -->
     id_, company_code, company_name_cn, company_name_en, address, tel, fax, url, email, 
     remark, create_user, create_time, update_user, update_time, sequence_no, is_valid, 
-    short_name_cn, short_name_en, company_level, create_company_id
+    short_name_cn, short_name_en, company_level, create_company_code
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     <!--
@@ -70,14 +70,14 @@
       create_user, create_time, update_user, 
       update_time, sequence_no, is_valid, 
       short_name_cn, short_name_en, company_level, 
-      create_company_id)
+      create_company_code)
     values (#{id,jdbcType=VARCHAR}, #{companyCode,jdbcType=VARCHAR}, #{companyNameCn,jdbcType=VARCHAR}, 
       #{companyNameEn,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{tel,jdbcType=VARCHAR}, 
       #{fax,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
       #{createUser,jdbcType=VARCHAR}, now(), #{updateUser,jdbcType=VARCHAR}, 
       #{updateTime,jdbcType=TIMESTAMP}, #{sequenceNo,jdbcType=DECIMAL}, #{isValid,jdbcType=CHAR}, 
       #{shortNameCn,jdbcType=VARCHAR}, #{shortNameEn,jdbcType=VARCHAR}, #{companyLevel,jdbcType=DECIMAL}, 
-      #{createCompanyId,jdbcType=VARCHAR})
+      #{createCompanyCode,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.sfxie.services.center.pojo.SfxieSysCompany">
     <!--
@@ -142,8 +142,8 @@
       <if test="companyLevel != null">
         company_level,
       </if>
-      <if test="createCompanyId != null">
-        create_company_id,
+      <if test="createCompanyCode != null">
+        create_company_code,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -202,8 +202,8 @@
       <if test="companyLevel != null">
         #{companyLevel,jdbcType=DECIMAL},
       </if>
-      <if test="createCompanyId != null">
-        #{createCompanyId,jdbcType=VARCHAR},
+      <if test="createCompanyCode != null">
+        #{createCompanyCode,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -263,8 +263,8 @@
       <if test="companyLevel != null">
         company_level = #{companyLevel,jdbcType=DECIMAL},
       </if>
-      <if test="createCompanyId != null">
-        create_company_id = #{createCompanyId,jdbcType=VARCHAR},
+      <if test="createCompanyCode != null">
+        create_company_code = #{createCompanyCode,jdbcType=VARCHAR},
       </if>
     </set>
     where id_ = #{id,jdbcType=VARCHAR}
@@ -292,7 +292,7 @@
       short_name_cn = #{shortNameCn,jdbcType=VARCHAR},
       short_name_en = #{shortNameEn,jdbcType=VARCHAR},
       company_level = #{companyLevel,jdbcType=DECIMAL},
-      create_company_id = #{createCompanyId,jdbcType=VARCHAR}
+      create_company_code = #{createCompanyCode,jdbcType=VARCHAR}
     where id_ = #{id,jdbcType=VARCHAR}
   </update>
   <select id="selectByCondition" parameterType="com.sfxie.services.center.pojo.SfxieSysCompany" resultMap="BaseResultMap">

@@ -17,7 +17,7 @@
     <result column="is_valid" jdbcType="CHAR" property="isValid" />
     <result column="sequence_no" jdbcType="DECIMAL" property="sequenceNo" />
     <result column="parent_id" jdbcType="VARCHAR" property="parentId" />
-    <result column="create_company_id" jdbcType="VARCHAR" property="createCompanyId" />
+    <result column="create_company_code" jdbcType="VARCHAR" property="createCompanyCode" />
     <result column="company_code" jdbcType="VARCHAR" property="companyCode" />
     <result column="parent_code" jdbcType="VARCHAR" property="parentCode" />
     <result column="partition_company" jdbcType="VARCHAR" property="partitionCompany" />
@@ -29,7 +29,7 @@
       This element was generated on Thu Jun 08 08:42:00 CST 2017.
     -->
     id_, department_code, department_name, create_user, create_time, update_user, update_time, 
-    is_valid, sequence_no, parent_id, create_company_id, company_code, parent_code, partition_company
+    is_valid, sequence_no, parent_id, create_company_code, company_code, parent_code, partition_company
   </sql>
   <select id="selectByPrimaryKey" parameterType="com.sfxie.services.center.pojo.SfxieSysDepartment" resultMap="BaseResultMap">
     <!--
@@ -62,12 +62,12 @@
     insert into sfxie_sys_department (id_, department_code, department_name, 
       create_user, create_time, update_user, 
       update_time, is_valid, sequence_no, 
-      parent_id, create_company_id, company_code, 
+      parent_id, create_company_code, company_code, 
       parent_code, partition_company)
     values (#{id,jdbcType=VARCHAR}, #{departmentCode,jdbcType=VARCHAR}, #{departmentName,jdbcType=VARCHAR}, 
       #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, 
       #{updateTime,jdbcType=TIMESTAMP}, #{isValid,jdbcType=CHAR}, #{sequenceNo,jdbcType=DECIMAL}, 
-      #{parentId,jdbcType=VARCHAR}, #{createCompanyId,jdbcType=VARCHAR}, #{companyCode,jdbcType=VARCHAR}, 
+      #{parentId,jdbcType=VARCHAR}, #{createCompanyCode,jdbcType=VARCHAR}, #{companyCode,jdbcType=VARCHAR}, 
       #{parentCode,jdbcType=VARCHAR}, #{partitionCompany,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.sfxie.services.center.pojo.SfxieSysDepartment">
@@ -106,8 +106,8 @@
       <if test="parentId != null">
         parent_id,
       </if>
-      <if test="createCompanyId != null">
-        create_company_id,
+      <if test="createCompanyCode != null">
+        create_company_code,
       </if>
       <if test="companyCode != null">
         company_code,
@@ -148,8 +148,8 @@
       <if test="parentId != null">
         #{parentId,jdbcType=VARCHAR},
       </if>
-      <if test="createCompanyId != null">
-        #{createCompanyId,jdbcType=VARCHAR},
+      <if test="createCompanyCode != null">
+        #{createCompanyCode,jdbcType=VARCHAR},
       </if>
       <if test="companyCode != null">
         #{companyCode,jdbcType=VARCHAR},
@@ -197,8 +197,8 @@
       <if test="parentId != null">
         parent_id = #{parentId,jdbcType=VARCHAR},
       </if>
-      <if test="createCompanyId != null">
-        create_company_id = #{createCompanyId,jdbcType=VARCHAR},
+      <if test="createCompanyCode != null">
+        create_company_code = #{createCompanyCode,jdbcType=VARCHAR},
       </if>
       <if test="companyCode != null">
         company_code = #{companyCode,jdbcType=VARCHAR},
@@ -229,7 +229,7 @@
       is_valid = #{isValid,jdbcType=CHAR},
       sequence_no = #{sequenceNo,jdbcType=DECIMAL},
       parent_id = #{parentId,jdbcType=VARCHAR},
-      create_company_id = #{createCompanyId,jdbcType=VARCHAR},
+      create_company_code = #{createCompanyCode,jdbcType=VARCHAR},
       company_code = #{companyCode,jdbcType=VARCHAR},
       parent_code = #{parentCode,jdbcType=VARCHAR},
       partition_company = #{partitionCompany,jdbcType=VARCHAR}

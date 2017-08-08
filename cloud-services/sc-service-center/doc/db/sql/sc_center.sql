@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50624
 File Encoding         : 65001
 
-Date: 2017-07-26 16:21:16
+Date: 2017-08-08 17:52:34
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -169,21 +169,22 @@ CREATE TABLE `sfxie_sys_action` (
 DROP TABLE IF EXISTS `sfxie_sys_authorization`;
 CREATE TABLE `sfxie_sys_authorization` (
   `id_` varchar(64) NOT NULL COMMENT '记录主键 : 记录主键',
-  `role_code` varchar(32) DEFAULT NULL COMMENT '角色代码 : 角色代码',
-  `company_code` varchar(64) DEFAULT NULL COMMENT '公司代码 : 关联公司代码,表明创建公司',
-  `department_code` varchar(64) DEFAULT NULL COMMENT '部门代码 : 部门代码',
-  `post_code` varchar(32) DEFAULT NULL COMMENT '岗位代码 : 岗位代码',
+  `resource_type` char(1) DEFAULT NULL COMMENT '资源类型 : r-角色,p-人员',
+  `resource_code` varchar(32) DEFAULT NULL COMMENT '资源代码 : 资源代码',
+  `operator_type` char(1) DEFAULT NULL COMMENT '操作者类型 : c-公司,d-部门,p-岗位,u-用户',
+  `operator_code` varchar(32) DEFAULT NULL COMMENT '操作者编码 : 操作者编码',
   `is_valid` char(1) DEFAULT NULL COMMENT '是否有效 : 是否有效,Y:是;N:否\r\n控制是否在公司任职有效',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间 : 创建时间',
-  `create_company_id` varchar(50) DEFAULT NULL COMMENT '创建公司 : 创建公司',
+  `create_company_code` varchar(50) DEFAULT NULL COMMENT '创建公司 : 创建公司',
   `create_user` varchar(32) DEFAULT NULL COMMENT '记录创建人 : 记录创建人',
   `partition_company` varchar(8) NOT NULL COMMENT '分区字段 : 分区字段,从用户公司代码字段取值',
   PRIMARY KEY (`id_`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='角色授权表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='授权表';
 
 -- ----------------------------
 -- Records of sfxie_sys_authorization
 -- ----------------------------
+INSERT INTO `sfxie_sys_authorization` VALUES ('1112121', 'p', 'sfxie', 'c', 'test_company3', 'Y', '2017-08-07 14:27:03', null, null, '0');
 
 -- ----------------------------
 -- Table structure for sfxie_sys_auth_data
@@ -204,7 +205,7 @@ CREATE TABLE `sfxie_sys_auth_data` (
   `sql_` varchar(2000) DEFAULT NULL COMMENT '数据权限sql查询语句',
   `role_menu_id` varchar(32) DEFAULT NULL COMMENT '角色菜单关联表id : 关联角色菜单关联表id',
   `dealer_class` varchar(200) DEFAULT NULL COMMENT 'java处理类 : 用java处理类获取sql或者用户列表',
-  `create_company_id` varchar(50) DEFAULT NULL COMMENT '创建公司 : 创建公司',
+  `create_company_code` varchar(50) DEFAULT NULL COMMENT '创建公司 : 创建公司',
   `partition_company` varchar(8) NOT NULL COMMENT '分区字段 : 分区字段,从用户公司代码字段取值',
   PRIMARY KEY (`id_`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='数据权限表 : 表配置用户获取行层面上的数据权限';
@@ -260,7 +261,7 @@ CREATE TABLE `sfxie_sys_company` (
   `short_name_cn` varchar(50) DEFAULT NULL COMMENT '公司中文名称简称 : 公司中文名称简称',
   `short_name_en` varchar(50) DEFAULT NULL COMMENT '公司英文名称简称 : 公司英文名称简称',
   `company_level` int(11) DEFAULT NULL COMMENT '公司级别 : 用来控制公司下面管理员的级别。\r\n超级管理员: 值为"上级超级管理的级别+1";\r\n普通用户: 默认值为 -1\r\n\r\n作用:用于创建无限级超级管理员',
-  `create_company_id` varchar(50) NOT NULL COMMENT '创建公司 : 创建公司',
+  `create_company_code` varchar(50) NOT NULL COMMENT '创建公司 : 创建公司',
   PRIMARY KEY (`id_`),
   UNIQUE KEY `company_code` (`company_code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='公司基础信息表';
@@ -268,15 +269,15 @@ CREATE TABLE `sfxie_sys_company` (
 -- ----------------------------
 -- Records of sfxie_sys_company
 -- ----------------------------
-INSERT INTO `sfxie_sys_company` VALUES ('00000000000000000000000000000000', 'test_company', '测试公司', 'test', null, null, null, null, null, null, 'sfxie', '2017-07-13 15:29:15', null, null, '1', 'Y', null, null, '0', '00000000000000000000000000000000');
-INSERT INTO `sfxie_sys_company` VALUES ('1', 'test_sfxie', '测试公司1', 'testcompany1', 'test', null, null, null, null, '222', 'sfxie', '2017-05-01 17:21:06', null, null, '1', 'Y', null, null, '1', '00000000000000000000000000000000');
-INSERT INTO `sfxie_sys_company` VALUES ('2', 'test_sfxie2', '测试公司112', 'testcompany2', 'test', null, null, null, null, '11', 'sfxie', '2017-05-01 19:11:41', null, null, '2', 'Y', null, null, '1', '00000000000000000000000000000000');
-INSERT INTO `sfxie_sys_company` VALUES ('3', 'test_company2', '测试公司新增', null, null, null, null, null, null, '测试公司新增', 'sfxie', '2017-07-05 15:21:21', null, null, null, 'Y', null, null, '1', '00000000000000000000000000000000');
-INSERT INTO `sfxie_sys_company` VALUES ('4AA69E9FF0C34C4C81FC7BFFCFF02E06', 'test_organization4', '测试新增组织结构4', null, null, null, null, null, null, '测试新增组织结构4', 'sfxie', '2017-07-21 15:01:28', null, null, null, 'Y', null, null, '3', '00000000000000000000000000000000');
-INSERT INTO `sfxie_sys_company` VALUES ('B47774E312E348648ADB167FCEEE14C6', 'test_organization2', '测试新增组织结构2', null, null, null, null, null, null, '测试新增组织结构2', 'sfxie', '2017-07-21 14:42:22', null, null, null, 'Y', null, null, '3', '00000000000000000000000000000000');
-INSERT INTO `sfxie_sys_company` VALUES ('BA259EDACA984E1D8B153819C1F31F37', 'test_organization3', '测试新增组织结构3', null, null, null, null, null, null, '测试新增组织结构3', 'sfxie', '2017-07-21 14:58:39', null, null, null, 'Y', null, null, '3', '00000000000000000000000000000000');
-INSERT INTO `sfxie_sys_company` VALUES ('caaa750f-b3d5-425d-b7b6-04e6b634b13b', 'test_company3', '测试公司322', null, null, null, null, null, null, 'ew1', 'sfxie', '2017-07-05 15:24:32', null, null, null, 'Y', null, null, '2', '00000000000000000000000000000000');
-INSERT INTO `sfxie_sys_company` VALUES ('CBA3E0AEB02C4D69BD16AFF265237B6A', 'test_organization1', '测试新增组织结构1', null, null, null, null, null, null, '测试新增组织结构1', 'sfxie', '2017-07-21 14:39:18', null, null, null, 'Y', null, null, '2', '00000000000000000000000000000000');
+INSERT INTO `sfxie_sys_company` VALUES ('00000000000000000000000000000000', 'test_company', '测试公司', 'test', null, null, null, null, null, null, 'sfxie', '2017-07-13 15:29:15', null, null, '1', 'Y', null, null, '0', 'test_company');
+INSERT INTO `sfxie_sys_company` VALUES ('1', 'test_sfxie', '测试公司1', 'testcompany1', 'test', null, null, null, null, '222', 'sfxie', '2017-05-01 17:21:06', null, null, '1', 'Y', null, null, '1', 'test_company');
+INSERT INTO `sfxie_sys_company` VALUES ('2', 'test_sfxie2', '测试公司112', 'testcompany2', 'test', null, null, null, null, '11', 'sfxie', '2017-05-01 19:11:41', null, null, '2', 'Y', null, null, '1', 'test_company');
+INSERT INTO `sfxie_sys_company` VALUES ('3', 'test_company2', '测试公司新增', null, null, null, null, null, null, '测试公司新增', 'sfxie', '2017-07-05 15:21:21', null, null, null, 'Y', null, null, '1', 'test_company');
+INSERT INTO `sfxie_sys_company` VALUES ('4AA69E9FF0C34C4C81FC7BFFCFF02E06', 'test_organization4', '测试新增组织结构4', null, null, null, null, null, null, '测试新增组织结构4', 'sfxie', '2017-07-21 15:01:28', null, null, null, 'Y', null, null, '3', 'test_company');
+INSERT INTO `sfxie_sys_company` VALUES ('B47774E312E348648ADB167FCEEE14C6', 'test_organization2', '测试新增组织结构2', null, null, null, null, null, null, '测试新增组织结构2', 'sfxie', '2017-07-21 14:42:22', null, null, null, 'Y', null, null, '3', 'test_company');
+INSERT INTO `sfxie_sys_company` VALUES ('BA259EDACA984E1D8B153819C1F31F37', 'test_organization3', '测试新增组织结构3', null, null, null, null, null, null, '测试新增组织结构3', 'sfxie', '2017-07-21 14:58:39', null, null, null, 'Y', null, null, '3', 'test_company');
+INSERT INTO `sfxie_sys_company` VALUES ('caaa750f-b3d5-425d-b7b6-04e6b634b13b', 'test_company3', '测试公司322', null, null, null, null, null, null, 'ew1', 'sfxie', '2017-07-05 15:24:32', null, null, null, 'Y', null, null, '2', 'test_company');
+INSERT INTO `sfxie_sys_company` VALUES ('CBA3E0AEB02C4D69BD16AFF265237B6A', 'test_organization1', '测试新增组织结构1', null, null, null, null, null, null, '测试新增组织结构1', 'sfxie', '2017-07-21 14:39:18', null, null, null, 'Y', null, null, '2', 'test_company');
 
 -- ----------------------------
 -- Table structure for sfxie_sys_department
@@ -293,7 +294,7 @@ CREATE TABLE `sfxie_sys_department` (
   `is_valid` char(1) DEFAULT NULL COMMENT '是否有效 : 是否有效,Y:是;N:否\r\n控制是否在公司任职有效',
   `sequence_no` decimal(8,0) DEFAULT NULL COMMENT '排序字段 : 排序字段',
   `parent_id` varchar(32) DEFAULT NULL COMMENT '父主键 : 关联父主键',
-  `create_company_id` varchar(50) DEFAULT NULL COMMENT '创建公司 : 创建公司',
+  `create_company_code` varchar(50) DEFAULT NULL COMMENT '创建公司 : 创建公司',
   `company_code` varchar(64) NOT NULL COMMENT '公司代码 : 关联公司代码,表明创建公司',
   `parent_code` varchar(64) DEFAULT NULL COMMENT ' 父节点代码',
   `partition_company` varchar(8) NOT NULL COMMENT '分区字段 : 分区字段,从用户公司代码字段取值',
@@ -306,8 +307,8 @@ CREATE TABLE `sfxie_sys_department` (
 -- ----------------------------
 -- Records of sfxie_sys_department
 -- ----------------------------
-INSERT INTO `sfxie_sys_department` VALUES ('1qwqwe', 'test_department', '测试部门', 'sfxie', '2017-05-01 19:04:16', null, null, 'Y', '1', null, '00000000000000000000000000000000', 'test_company2', null, '0');
-INSERT INTO `sfxie_sys_department` VALUES ('2qwqw', 'test_addDepartment1', '测试新增部门1', 'sfxie', '2017-07-24 14:28:29', null, null, 'Y', '2', null, '00000000000000000000000000000000', 'test_company2', null, '0');
+INSERT INTO `sfxie_sys_department` VALUES ('1qwqwe', 'test_department', '测试部门', 'sfxie', '2017-05-01 19:04:16', null, null, 'Y', '1', null, 'test_company', 'test_company2', null, '0');
+INSERT INTO `sfxie_sys_department` VALUES ('2qwqw', 'test_addDepartment1', '测试新增部门1', 'sfxie', '2017-07-24 14:28:29', null, null, 'Y', '2', null, 'test_company', 'test_company2', null, '0');
 
 -- ----------------------------
 -- Table structure for sfxie_sys_menu
@@ -332,6 +333,7 @@ CREATE TABLE `sfxie_sys_menu` (
   `is_valid` char(1) DEFAULT 'Y' COMMENT '是否有效 : 是否有效,Y:是;N:否\r\n控制是否在公司任职有效',
   `all_parent_id` char(1) DEFAULT NULL COMMENT 'all_parent_id',
   `partition_company` varchar(8) DEFAULT NULL COMMENT '分区字段 : 分区字段,从用户公司代码字段取值',
+  `menu_type` char(1) DEFAULT 'U' COMMENT '菜单类型: U-url类型, M-mybatis的sql id数据类型',
   PRIMARY KEY (`id_`),
   UNIQUE KEY `menu_code` (`menu_code`),
   KEY `system_id` (`system_id`),
@@ -341,12 +343,12 @@ CREATE TABLE `sfxie_sys_menu` (
 -- ----------------------------
 -- Records of sfxie_sys_menu
 -- ----------------------------
-INSERT INTO `sfxie_sys_menu` VALUES ('1', 'sys_org', '1', null, 'system.menu.organization', null, '组织架构管理', null, null, '1', null, null, null, '2017-05-05 08:51:05', 'sfxie', 'Y', null, '0');
-INSERT INTO `sfxie_sys_menu` VALUES ('2', 'sys_center_company', '1', null, 'system.menu.organization.company', '/jsp/center/companyList.jsp', '公司管理', null, null, '1', '1', null, null, '2017-05-05 08:57:28', 'sfxie', 'Y', null, '0');
-INSERT INTO `sfxie_sys_menu` VALUES ('3', 'sys_report', '1', null, 'system.menu.report', null, '报表', null, null, '2', null, null, null, '2017-05-20 19:24:58', 'sfxie', 'Y', null, '0');
-INSERT INTO `sfxie_sys_menu` VALUES ('4', 'sys_report_manager', '1', null, 'system.menu.report.manager', '/jsp/report/reportList.jsp', '报表管理', null, null, '1', '3', null, null, '2017-06-07 08:38:06', 'sfxie', 'Y', null, '0');
-INSERT INTO `sfxie_sys_menu` VALUES ('5', 'sys_report_display', '1', null, 'system.menu.report.display', '/jsp/report/report.jsp', '报表展示', null, null, '2', '3', null, null, '2017-07-07 13:43:59', 'sfxie', 'Y', null, '0');
-INSERT INTO `sfxie_sys_menu` VALUES ('6', 'sys_center_organization', '1', null, 'system.menu.organization.organization', '/jsp/center/organization/index.jsp', '组织结构管理', null, null, '1', '1', null, null, '2017-05-05 08:57:28', 'sfxie', 'Y', null, '0');
+INSERT INTO `sfxie_sys_menu` VALUES ('1', 'sys_org', '1', null, 'system.menu.organization', null, '组织架构管理', null, null, '1', null, null, null, '2017-05-05 08:51:05', 'sfxie', 'Y', null, '0', 'U');
+INSERT INTO `sfxie_sys_menu` VALUES ('2', 'sys_center_company', '1', null, 'system.menu.organization.company', '/jsp/center/companyList.jsp', '公司管理', null, null, '1', '1', null, null, '2017-05-05 08:57:28', 'sfxie', 'Y', null, '0', 'U');
+INSERT INTO `sfxie_sys_menu` VALUES ('3', 'sys_report', '1', null, 'system.menu.report', null, '报表', null, null, '2', null, null, null, '2017-05-20 19:24:58', 'sfxie', 'Y', null, '0', 'U');
+INSERT INTO `sfxie_sys_menu` VALUES ('4', 'sys_report_manager', '1', null, 'system.menu.report.manager', '/jsp/report/reportList.jsp', '报表管理', null, null, '1', '3', null, null, '2017-06-07 08:38:06', 'sfxie', 'Y', null, '0', 'U');
+INSERT INTO `sfxie_sys_menu` VALUES ('5', 'sys_report_display', '1', null, 'system.menu.report.display', '/jsp/report/report.jsp', '报表展示', null, null, '2', '3', null, null, '2017-07-07 13:43:59', 'sfxie', 'Y', null, '0', 'U');
+INSERT INTO `sfxie_sys_menu` VALUES ('6', 'sys_center_organization', '1', null, 'system.menu.organization.organization', '/jsp/center/organization/index.jsp', '组织结构管理', null, null, '1', '1', null, null, '2017-05-05 08:57:28', 'sfxie', 'Y', null, '0', 'U');
 
 -- ----------------------------
 -- Table structure for sfxie_sys_organization
@@ -401,7 +403,7 @@ CREATE TABLE `sfxie_sys_post` (
   `company_code` varchar(32) DEFAULT NULL COMMENT '公司主键 : 公司主键',
   `parent_id` varchar(32) DEFAULT NULL COMMENT '父主键 : 关联父主键',
   `is_valid` char(1) DEFAULT NULL COMMENT '是否有效 : 是否有效,Y:是;N:否\r\n控制是否在公司任职有效',
-  `create_company_id` varchar(50) DEFAULT NULL COMMENT '创建公司 : 创建公司',
+  `create_company_code` varchar(50) DEFAULT NULL COMMENT '创建公司 : 创建公司',
   `partition_company` varchar(8) NOT NULL COMMENT '分区字段 : 分区字段,从用户公司代码字段取值',
   PRIMARY KEY (`id_`),
   UNIQUE KEY `post_code` (`post_code`),
@@ -411,9 +413,9 @@ CREATE TABLE `sfxie_sys_post` (
 -- ----------------------------
 -- Records of sfxie_sys_post
 -- ----------------------------
-INSERT INTO `sfxie_sys_post` VALUES ('1', 'test_post', 'test_department', '测试岗位', '1', null, '2017-07-15 12:30:56', 'sfxie', null, null, 'test_company2', null, 'Y', '00000000000000000000000000000000', '0');
-INSERT INTO `sfxie_sys_post` VALUES ('72ec0a39-678a-440a-babc-ba9271c1551e', 'test_addDepartmentPost1', 'test_department', '测试添加部门岗位1', null, null, '2017-07-24 17:27:36', 'sfxie', null, null, '', null, 'Y', '00000000000000000000000000000000', '0');
-INSERT INTO `sfxie_sys_post` VALUES ('c49f1c66-c0b9-48b9-83c3-fd1e5d1ab0f5', 'test_addPost1', '', '添加测试岗位1', null, null, '2017-07-24 17:24:21', 'sfxie', null, null, 'test_company2', null, 'Y', '00000000000000000000000000000000', '0');
+INSERT INTO `sfxie_sys_post` VALUES ('1', 'test_post', 'test_department', '测试岗位', '1', null, '2017-07-15 12:30:56', 'sfxie', null, null, 'test_company2', null, 'Y', 'test_company', '0');
+INSERT INTO `sfxie_sys_post` VALUES ('72ec0a39-678a-440a-babc-ba9271c1551e', 'test_addDepartmentPost1', 'test_department', '测试添加部门岗位1', null, null, '2017-07-24 17:27:36', 'sfxie', null, null, '', null, 'Y', 'test_company', '0');
+INSERT INTO `sfxie_sys_post` VALUES ('c49f1c66-c0b9-48b9-83c3-fd1e5d1ab0f5', 'test_addPost1', '', '添加测试岗位1', null, null, '2017-07-24 17:24:21', 'sfxie', null, null, 'test_company2', null, 'Y', 'test_company', '0');
 
 -- ----------------------------
 -- Table structure for sfxie_sys_post_role
@@ -442,7 +444,7 @@ CREATE TABLE `sfxie_sys_post_role` (
 -- ----------------------------
 DROP TABLE IF EXISTS `sfxie_sys_role`;
 CREATE TABLE `sfxie_sys_role` (
-  `id_` varchar(64) NOT NULL COMMENT '记录主键 : 记录主键',
+  `id_` varchar(64) NOT NULL DEFAULT '' COMMENT '记录主键 : 记录主键',
   `role_code` varchar(32) NOT NULL COMMENT '角色代码 : 角色代码',
   `role_name` varchar(50) DEFAULT NULL COMMENT '角色名称 : 角色名称',
   `description` varchar(200) DEFAULT NULL COMMENT '描述 : 描述',
@@ -452,9 +454,10 @@ CREATE TABLE `sfxie_sys_role` (
   `create_time` datetime NOT NULL COMMENT '创建时间 : 创建时间',
   `create_user` varchar(32) NOT NULL COMMENT '记录创建人 : 记录创建人',
   `sequence_no` decimal(8,0) DEFAULT NULL COMMENT '排序字段 : 排序字段',
-  `is_valid` char(1) DEFAULT NULL COMMENT '是否有效 : 是否有效,Y:是;N:否\r\n控制是否在公司任职有效',
-  `create_company_id` varchar(50) DEFAULT NULL COMMENT '创建公司 : 创建公司',
+  `is_valid` char(1) DEFAULT 'Y' COMMENT '是否有效 : 是否有效,Y:是;N:否\r\n控制是否在公司任职有效',
+  `create_company_code` varchar(50) DEFAULT NULL COMMENT '创建公司 : 创建公司',
   `partition_company` varchar(8) NOT NULL COMMENT '分区字段 : 分区字段,从用户公司代码字段取值',
+  `role_type` char(1) DEFAULT 'R' COMMENT '角色类型,R- 资源类型, D-数据类型',
   PRIMARY KEY (`id_`),
   UNIQUE KEY `role_code` (`role_code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='角色表';
@@ -462,6 +465,7 @@ CREATE TABLE `sfxie_sys_role` (
 -- ----------------------------
 -- Records of sfxie_sys_role
 -- ----------------------------
+INSERT INTO `sfxie_sys_role` VALUES ('R1000', 'test_role1', '测试角色1', null, null, null, null, '2017-08-08 13:52:57', 'sfxie', '1', 'Y', 'test_company2', '0', 'R');
 
 -- ----------------------------
 -- Table structure for sfxie_sys_role_action
@@ -496,7 +500,7 @@ CREATE TABLE `sfxie_sys_role_menu` (
   `owner_company_code` varchar(64) DEFAULT NULL COMMENT '上一级公司 : 上上一级公司，也就是这一级的上一级公司',
   `is_valid` char(1) DEFAULT 'Y' COMMENT '是否有效 : 是否有效,Y:是;N:否\r\n控制是否在公司任职有效',
   `company_role_id` varchar(32) DEFAULT NULL COMMENT '公司角色关联表id : 公司角色关联表id',
-  `create_company_id` varchar(50) DEFAULT NULL COMMENT '创建公司 : 创建公司',
+  `create_company_code` varchar(50) DEFAULT NULL COMMENT '创建公司 : 创建公司',
   `oraginal_role_menu_id` varchar(64) DEFAULT NULL COMMENT '继承的角色菜单id : 继承的角色菜单id，记录此条数据是从哪条角色菜单中继承而来的',
   `role_code` varchar(32) NOT NULL COMMENT '角色代码 : 角色代码',
   `menu_code` varchar(32) NOT NULL COMMENT '菜单代码 : 菜单代码',
@@ -554,7 +558,7 @@ CREATE TABLE `sfxie_sys_userinfo` (
   `update_time` datetime DEFAULT NULL COMMENT '最后修改时间 : 最后修改时间',
   `sequence_no` int(11) DEFAULT NULL COMMENT '排序字段 : 排序字段',
   `is_superman` char(1) NOT NULL DEFAULT 'N' COMMENT '是否为超级管理员 : 是否为超级管理员，默认为否\r\nY-是\r\nN-否\r\n\r\n只级超级管理员才可以操作此字段',
-  `create_company_id` varchar(50) NOT NULL COMMENT '创建公司 : 创建公司',
+  `create_company_code` varchar(50) NOT NULL COMMENT '创建公司 : 创建公司',
   `sex` char(1) DEFAULT NULL COMMENT '用户性别 : m-男,f-女',
   `partition_company` varchar(8) NOT NULL COMMENT '分区字段 : 分区字段,从用户公司代码字段取值',
   `create_company_level` int(11) DEFAULT NULL COMMENT '创建公司级别',
@@ -564,7 +568,7 @@ CREATE TABLE `sfxie_sys_userinfo` (
 -- ----------------------------
 -- Records of sfxie_sys_userinfo
 -- ----------------------------
-INSERT INTO `sfxie_sys_userinfo` VALUES ('sfxie', '', null, '2017-07-18 14:10:54', '', null, null, null, 'Y', '00000000000000000000000000000000', null, '0', '1');
+INSERT INTO `sfxie_sys_userinfo` VALUES ('sfxie', '', null, '2017-07-18 14:10:54', '', null, null, null, 'Y', 'test_company', null, '0', '1');
 
 -- ----------------------------
 -- Table structure for sfxie_sys_user_relation
@@ -579,7 +583,7 @@ CREATE TABLE `sfxie_sys_user_relation` (
   `update_time` datetime DEFAULT NULL COMMENT '最后修改时间 : 最后修改时间',
   `update_user` varchar(32) DEFAULT NULL COMMENT '最后修改人 : 最后修改人',
   `create_user` varchar(32) NOT NULL COMMENT '记录创建人 : 记录创建人',
-  `create_company_id` varchar(50) NOT NULL COMMENT '创建公司 : 创建公司',
+  `create_company_code` varchar(50) NOT NULL COMMENT '创建公司 : 创建公司',
   `email` varchar(60) NOT NULL COMMENT 'email : email',
   `phone` varchar(20) DEFAULT NULL COMMENT '手机号 : 手机号',
   `user_name_cn` varchar(60) NOT NULL COMMENT '用户中文名 : 用户中文名',
@@ -598,14 +602,14 @@ CREATE TABLE `sfxie_sys_user_relation` (
   KEY `user_id` (`user_id`),
   CONSTRAINT `sfxie_sys_user_relation_ibfk_1` FOREIGN KEY (`company_code`) REFERENCES `sfxie_sys_company` (`company_code`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `sfxie_sys_user_relation_ibfk_2` FOREIGN KEY (`department_code`) REFERENCES `sfxie_sys_department` (`department_code`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `sfxie_sys_user_relation_ibfk_3` FOREIGN KEY (`post_code`) REFERENCES `sfxie_sys_post` (`post_code`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `sfxie_sys_user_relation_ibfk_4` FOREIGN KEY (`user_id`) REFERENCES `sfxie_sys_userinfo` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `sfxie_sys_user_relation_ibfk_3` FOREIGN KEY (`post_code`) REFERENCES `sfxie_sys_post` (`post_code`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='人员档案-关系表';
 
 -- ----------------------------
 -- Records of sfxie_sys_user_relation
 -- ----------------------------
-INSERT INTO `sfxie_sys_user_relation` VALUES ('111', 'sfxie', '', 'Y', '2017-07-26 14:49:28', null, null, '', '00000000000000000000000000000000', '', null, '谢声锋', null, null, null, null, 'test_company2', null, null, '0');
+INSERT INTO `sfxie_sys_user_relation` VALUES ('111', 'sfxie', '', 'Y', '2017-07-26 14:49:28', null, null, '', 'test_company2', '', null, '谢声锋', null, null, null, null, 'test_company2', null, null, '0');
+INSERT INTO `sfxie_sys_user_relation` VALUES ('1112', '', '', 'Y', '2017-07-26 14:49:28', null, null, '', 'test_company3', '', null, '张三', null, null, null, null, 'test_company3', null, null, '0');
 
 -- ----------------------------
 -- Table structure for sfxie_sys_user_role

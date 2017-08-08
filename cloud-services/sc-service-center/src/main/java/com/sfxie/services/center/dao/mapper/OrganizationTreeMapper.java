@@ -17,4 +17,7 @@ public interface OrganizationTreeMapper {
 	public List<OrganizationTreePojo> selectByUserId(PartitionData partitionData);
 	public List<OrganizationTreePojo> selectByParentCompanyCode(Map<String,Object> map);
 	public List<SfxieSysUserRelation> selectUsersByCompanyCode(SfxieSysUserRelation sfxieSysUserRelation);
+	public List<SfxieSysUserRelation> selectUsersByCompanyCodeOnAuth(SfxieSysUserRelation sfxieSysUserRelation);
+	
+	
 }

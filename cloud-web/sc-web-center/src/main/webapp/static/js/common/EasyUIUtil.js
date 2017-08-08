@@ -186,6 +186,7 @@
 	
 	GoLive.EasyUI.Message = new Object();
 	GoLive.EasyUI.Message.show = _$showMessage;
+	GoLive.EasyUI.Message.confirm = _$confirm;
 	function _$showMessage(config){
 //		var title = config.title;
 		var _config = {
@@ -210,6 +211,12 @@
 					'	<div style="clear: both;"></div>'+
 					' </div>';
 		return string.format(icon,msg);
+	}
+	
+	function _$confirm(config){
+		$.messager.confirm(config['title'], config['tip'], function(r){
+			config['callback'](r);
+        });
 	}
 	
 	GoLive.EasyUI.Form = new Object();
@@ -453,7 +460,7 @@
 						decoratedSelects(selectList);
 						
 					}*/
-					generatedConditions(_config.toolbarConditions);
+					generatedConditions(_config,_config.toolbarConditions);
 					setConditionParameters(params,_config.toolbarConditions);
 				}
 			});
@@ -504,9 +511,12 @@
 				}
 			}
 		}
-		function generatedConditions(toolbarConditions){
+		function generatedConditions(config,toolbarConditions){
 			if(toolbarConditions && toolbarConditions.length>0){
-				var toolbarTr = $('.datagrid-toolbar tr');
+//				var toolbarTr = $('.datagrid-toolbar tr');
+				console.log($('#'+config.dataGridId).parent().prevAll());
+				var toolbarTr = $('#'+config.dataGridId).parent().prevAll().find("tr");
+				console.log(toolbarTr);
 				for(var i=0;i<toolbarConditions.length;i++){
 					var condition = toolbarConditions[i];
 					var type = condition['type'];

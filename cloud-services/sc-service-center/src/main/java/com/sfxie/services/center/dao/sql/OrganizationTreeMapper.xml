@@ -88,20 +88,52 @@
 
 	</select>
 	
+	<!-- 	获取本公司的用户 		-->
 	<select id="selectUsersByCompanyCode" parameterType="com.sfxie.services.center.pojo.SfxieSysUserRelation" resultType="com.sfxie.services.center.pojo.SfxieSysUserRelation">
 		SELECT
 			ssu.user_id userId,
 			ssur.user_name_cn userNameCn,
 			ssur.is_valid isValid,
-			'company' type
+			'company' type,
+      		ssur.company_code companyCode,
+      		ssur.create_company_code createCompanyCode
 		FROM
 			sfxie_sys_user_relation ssur
-		INNER JOIN sfxie_sys_userinfo ssu ON ssu.user_id = ssur.user_id
+		
+		LEFT JOIN sfxie_sys_userinfo ssu ON ssu.user_id = ssur.user_id
 		WHERE
-				ssur.company_code = #{companyCode}
-			AND ssur.partition_company = #{partitionCompany} 
-	      <if test="userNameCn != null and userNameCn != ''">
-	        AND ssur.user_name_cn like '%${userNameCn}%'
-	      </if>
+				
+			 ssur.partition_company = #{partitionCompany} 
+			
+		<if test="companyCode != null and companyCode != ''">
+			AND (ssur.create_company_code = #{companyCode}  or ssur.company_code = #{companyCode})
+		</if>
+      	<if test="userNameCn != null and userNameCn != ''">
+        AND ssur.user_name_cn like '%${userNameCn}%'
+      	</if>
 	</select>	
+	
+	<!-- 	获取下放人事权限的用户 		-->
+	<select id="selectUsersByCompanyCodeOnAuth" parameterType="com.sfxie.services.center.pojo.SfxieSysUserRelation" resultType="com.sfxie.services.center.pojo.SfxieSysUserRelation">
+		SELECT
+			ssu.user_id userId,
+			ssur.user_name_cn userNameCn,
+			ssur.is_valid isValid,
+			'company' type,
+      		ssur.company_code companyCode,
+      		ssur.create_company_code createCompanyCode
+		FROM
+			sfxie_sys_user_relation ssur
+		
+		INNER JOIN sfxie_sys_authorization ssat 
+			ON ssat.operator_code = #{companyCode} AND ssat.operator_type = 'c' 
+			AND ssat.resource_type = 'p' AND ssat.resource_code = ssur.user_id
+		LEFT JOIN sfxie_sys_userinfo ssu ON ssu.user_id = ssur.user_id
+		WHERE
+			 ssur.partition_company = #{partitionCompany} 
+      	<if test="userNameCn != null and userNameCn != ''">
+        AND ssur.user_name_cn like '%${userNameCn}%'
+      	</if>
+	</select>
+	      
 </mapper>

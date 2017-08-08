@@ -61,9 +61,9 @@ N-否
     private String isSuperman;
 
     /**
-     *  创建公司 : 创建公司,所属表字段为sfxie_sys_userinfo.create_company_id
+     *  创建公司 : 创建公司,所属表字段为sfxie_sys_userinfo.create_company_code
      */
-    private String createCompanyId;
+    private String createCompanyCode;
 
     /**
      *  用户性别 : m-男,f-女,所属表字段为sfxie_sys_userinfo.sex
@@ -258,21 +258,21 @@ N-否
     }
 
     /**
-     * 获取 创建公司 : 创建公司 字段:sfxie_sys_userinfo.create_company_id
+     * 获取 创建公司 : 创建公司 字段:sfxie_sys_userinfo.create_company_code
      *
-     * @return sfxie_sys_userinfo.create_company_id, 创建公司 : 创建公司
+     * @return sfxie_sys_userinfo.create_company_code, 创建公司 : 创建公司
      */
-    public String getCreateCompanyId() {
-        return createCompanyId;
+    public String getCreateCompanyCode() {
+        return createCompanyCode;
     }
 
     /**
-     * 设置 创建公司 : 创建公司 字段:sfxie_sys_userinfo.create_company_id
+     * 设置 创建公司 : 创建公司 字段:sfxie_sys_userinfo.create_company_code
      *
-     * @param createCompanyId sfxie_sys_userinfo.create_company_id, 创建公司 : 创建公司
+     * @param createCompanyCode sfxie_sys_userinfo.create_company_code, 创建公司 : 创建公司
      */
-    public void setCreateCompanyId(String createCompanyId) {
-        this.createCompanyId = createCompanyId == null ? null : createCompanyId.trim();
+    public void setCreateCompanyCode(String createCompanyCode) {
+        this.createCompanyCode = createCompanyCode == null ? null : createCompanyCode.trim();
     }
 
     /**

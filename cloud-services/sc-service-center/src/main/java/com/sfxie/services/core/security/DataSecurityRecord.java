@@ -35,7 +35,7 @@ public class DataSecurityRecord {
     /**
      *  创建公司 : 创建公司
      */
-    private String createCompanyId;
+    private String createCompanyCode;
 
 	public String getSecuritySql() {
 		return securitySql;
@@ -63,16 +63,16 @@ public class DataSecurityRecord {
      * 获取 创建公司 
      *
      */
-    public String getCreateCompanyId() {
-        return createCompanyId;
+    public String getCreateCompanyCode() {
+        return createCompanyCode;
     }
 
     /**
      * 设置 创建公司
      *
      */
-    public void setCreateCompanyId(String createCompanyId) {
-        this.createCompanyId = createCompanyId == null ? null : createCompanyId.trim();
+    public void setCreateCompanyCode(String createCompanyCode) {
+        this.createCompanyCode = createCompanyCode == null ? null : createCompanyCode.trim();
     }
 	
 }

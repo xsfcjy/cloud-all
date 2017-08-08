@@ -82,9 +82,9 @@ public class SfxieSysAuthData {
     private String dealerClass;
 
     /**
-     *  创建公司 : 创建公司,所属表字段为sfxie_sys_auth_data.create_company_id
+     *  创建公司 : 创建公司,所属表字段为sfxie_sys_auth_data.create_company_code
      */
-    private String createCompanyId;
+    private String createCompanyCode;
 
     /**
      *  分区字段 : 分区字段,从用户公司代码字段取值,所属表字段为sfxie_sys_auth_data.partition_company
@@ -348,21 +348,21 @@ public class SfxieSysAuthData {
     }
 
     /**
-     * 获取 创建公司 : 创建公司 字段:sfxie_sys_auth_data.create_company_id
+     * 获取 创建公司 : 创建公司 字段:sfxie_sys_auth_data.create_company_code
      *
-     * @return sfxie_sys_auth_data.create_company_id, 创建公司 : 创建公司
+     * @return sfxie_sys_auth_data.create_company_code, 创建公司 : 创建公司
      */
-    public String getCreateCompanyId() {
-        return createCompanyId;
+    public String getCreateCompanyCode() {
+        return createCompanyCode;
     }
 
     /**
-     * 设置 创建公司 : 创建公司 字段:sfxie_sys_auth_data.create_company_id
+     * 设置 创建公司 : 创建公司 字段:sfxie_sys_auth_data.create_company_code
      *
-     * @param createCompanyId sfxie_sys_auth_data.create_company_id, 创建公司 : 创建公司
+     * @param createCompanyCode sfxie_sys_auth_data.create_company_code, 创建公司 : 创建公司
      */
-    public void setCreateCompanyId(String createCompanyId) {
-        this.createCompanyId = createCompanyId == null ? null : createCompanyId.trim();
+    public void setCreateCompanyCode(String createCompanyCode) {
+        this.createCompanyCode = createCompanyCode == null ? null : createCompanyCode.trim();
     }
 
     /**

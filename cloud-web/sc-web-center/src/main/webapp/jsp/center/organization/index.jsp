@@ -41,11 +41,11 @@
 			}
 		};
 		function zTreeOnClick(event, treeId, treeNode) {
-			if(treeNode.companyLevel == 'department'){
-			}else if ( treeNode.companyLevel == 'post' ){
-			}else{
+// 			if(treeNode.companyLevel == 'department'){
+// 			}else if ( treeNode.companyLevel == 'post' ){
+// 			}else{
 				organizationUserList(treeNode);
-			}
+// 			}
 		}
 		function myBeforeCallBack(treeId, treeNode) {
 			if(treeNode){
@@ -58,13 +58,21 @@
 		function getSelectNode(){
 			var node;
 			var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
-			var nodes = treeObj.getSelectedNodes();
-			if (nodes.length>0) { 
-				node = nodes[0];
+			if(treeObj){
+				var nodes = treeObj.getSelectedNodes();
+				if (nodes.length>0) { 
+					node = nodes[0];
+				}
 			}
 			return node;
 		}
 
+		function getParentNodeCurs(node,callback){
+			if(node.getParentNode()){
+				getParentNodeCurs(node.getParentNode(),callback);
+			}
+			callback(node.getParentNode());
+		}
 		function filter(treeId, parentNode, childNodes) {
 			if (!childNodes) return null;
 			for (var i=0, l=childNodes.length; i<l; i++) {

@@ -56,7 +56,18 @@ document.onkeydown=banBackSpace;
 
 GoLive = new Object();
 (function($){
-	
+	/**
+	 * 阻止事件冒泡
+	 */
+	GoLive.stopPropagation = function(){
+		var e = window.event; 
+		if ( e.stopPropagation ){ //如果提供了事件对象，则这是一个非IE浏览器 
+			e.stopPropagation(); 
+		}else{ 
+		//兼容IE的方式来取消事件冒泡 
+			window.event.cancelBubble = true; 
+		} 
+	};
 	GoLive.DomUtil = new Object();
 	GoLive.DomUtil.getJSONObjectFromForm = _getJSONObjectFromForm;
 	/**

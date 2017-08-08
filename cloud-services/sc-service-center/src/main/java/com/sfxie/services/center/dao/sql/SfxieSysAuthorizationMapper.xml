@@ -14,7 +14,7 @@
     <result column="post_code" jdbcType="VARCHAR" property="postCode" />
     <result column="is_valid" jdbcType="CHAR" property="isValid" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="create_company_id" jdbcType="VARCHAR" property="createCompanyId" />
+    <result column="create_company_code" jdbcType="VARCHAR" property="createCompanyCode" />
     <result column="create_user" jdbcType="VARCHAR" property="createUser" />
     <result column="partition_company" jdbcType="VARCHAR" property="partitionCompany" />
   </resultMap>
@@ -25,7 +25,7 @@
       This element was generated on Thu Jun 08 08:42:00 CST 2017.
     -->
     id_, role_code, company_code, department_code, post_code, is_valid, create_time, 
-    create_company_id, create_user, partition_company
+    create_company_code, create_user, partition_company
   </sql>
   <select id="selectByPrimaryKey" parameterType="com.sfxie.services.center.pojo.SfxieSysAuthorization" resultMap="BaseResultMap">
     <!--
@@ -57,11 +57,11 @@
     -->
     insert into sfxie_sys_authorization (id_, role_code, company_code, 
       department_code, post_code, is_valid, 
-      create_time, create_company_id, create_user, 
+      create_time, create_company_code, create_user, 
       partition_company)
     values (#{id,jdbcType=VARCHAR}, #{roleCode,jdbcType=VARCHAR}, #{companyCode,jdbcType=VARCHAR}, 
       #{departmentCode,jdbcType=VARCHAR}, #{postCode,jdbcType=VARCHAR}, #{isValid,jdbcType=CHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{createCompanyId,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{createCompanyCode,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, 
       #{partitionCompany,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.sfxie.services.center.pojo.SfxieSysAuthorization">
@@ -93,8 +93,8 @@
       <if test="createTime != null">
         create_time,
       </if>
-      <if test="createCompanyId != null">
-        create_company_id,
+      <if test="createCompanyCode != null">
+        create_company_code,
       </if>
       <if test="createUser != null">
         create_user,
@@ -125,8 +125,8 @@
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="createCompanyId != null">
-        #{createCompanyId,jdbcType=VARCHAR},
+      <if test="createCompanyCode != null">
+        #{createCompanyCode,jdbcType=VARCHAR},
       </if>
       <if test="createUser != null">
         #{createUser,jdbcType=VARCHAR},
@@ -162,8 +162,8 @@
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="createCompanyId != null">
-        create_company_id = #{createCompanyId,jdbcType=VARCHAR},
+      <if test="createCompanyCode != null">
+        create_company_code = #{createCompanyCode,jdbcType=VARCHAR},
       </if>
       <if test="createUser != null">
         create_user = #{createUser,jdbcType=VARCHAR},
@@ -188,7 +188,7 @@
       post_code = #{postCode,jdbcType=VARCHAR},
       is_valid = #{isValid,jdbcType=CHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      create_company_id = #{createCompanyId,jdbcType=VARCHAR},
+      create_company_code = #{createCompanyCode,jdbcType=VARCHAR},
       create_user = #{createUser,jdbcType=VARCHAR},
       partition_company = #{partitionCompany,jdbcType=VARCHAR}
     where id_ = #{id,jdbcType=VARCHAR}

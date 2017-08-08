@@ -14,6 +14,10 @@ public class SfxieSysCompanyVo extends SfxieSysCompany {
      */
     private Integer parentCompanyLevel;
     
+    private String code;
+    private String level;
+	private String partitionCompany;
+    
 
 
 	public String getParentCompanyCode() {
@@ -31,5 +35,30 @@ public class SfxieSysCompanyVo extends SfxieSysCompany {
 	public void setParentCompanyLevel(Integer parentCompanyLevel) {
 		this.parentCompanyLevel = parentCompanyLevel;
 	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public String getLevel() {
+		return level;
+	}
+
+	public void setLevel(String level) {
+		this.level = level;
+	}
+
+	public String getPartitionCompany() {
+		return partitionCompany;
+	}
+
+	public void setPartitionCompany(String partitionCompany) {
+		this.partitionCompany = partitionCompany;
+	}
+	
 	
 }
