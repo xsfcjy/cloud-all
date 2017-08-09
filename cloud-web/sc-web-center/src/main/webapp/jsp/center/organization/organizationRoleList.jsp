@@ -38,9 +38,10 @@
         text:'<spring:message code="button.add.role" />',
         iconCls:'golive-icon-add',
         handler:function(){
-        	$('#myform').form('clear');
-        	$('#editWindow').window('open');
+        	$('#roleform').form('clear');
+        	$('#editRoleWindow').window('open');
 			$('#isValidList').combobox('setValue', $('#isValidList').attr("value"));
+			$('#roleTypeList').combobox('setValue', $('#roleTypeList').attr("value"));
         }
     },'-',{
         text:'<spring:message code="button.edit" />',
@@ -98,9 +99,6 @@
 		    		}else{
 		    			organizationOperateText = '角色引进';
 		    		}
-		    		console.log('222222222');
-		    		console.log(selectedNode);
-		    		console.log(row);
 		    		if(row['createCompanyCode'] == selectedNode['id']){
 		    			authUserToSub = '下放角色';
 		    		}

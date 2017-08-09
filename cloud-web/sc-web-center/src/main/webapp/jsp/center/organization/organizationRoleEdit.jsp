@@ -34,6 +34,7 @@
 	   	<form id="roleForm" class="easyui-form" method="post" data-options="novalidate:true" action="">
 	   		<input type="hidden" name="id" id="roleId">
 	   		<input name="createUser" id="createUser" type="hidden">
+	   		<input name="createCompanyCode" id="createCompanyCode" type="hidden">
 	   		<input name="partitionCompany" id="partitionCompany" type="hidden">
         	<input name="createTime" id="createTime"  type="hidden">
 	        <div>
@@ -63,8 +64,8 @@
 	            ></mytag:select>
 	        </div>
 	        <div>
-	            <label for="remark"><spring:message code="common.description" />：</label>
-	            <input class="easyui-textbox" style="width:200px;" type="text" name="remark"></input>
+	            <label for="description"><spring:message code="common.description" />：</label>
+	            <input class="easyui-textbox" style="width:200px;" type="text" name="description"></input>
 	        </div>
     	</form>
    	</div>
