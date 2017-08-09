@@ -5,6 +5,8 @@ import java.util.List;
 public class SfxieSysOrganizationVo {
 	
 	private String userNameCn;
+	
+	private String roleName;
 
     public List<SfxieSysCompanyVo> data;
 
@@ -22,6 +24,14 @@ public class SfxieSysOrganizationVo {
 
 	public void setUserNameCn(String userNameCn) {
 		this.userNameCn = userNameCn;
+	}
+
+	public String getRoleName() {
+		return roleName;
+	}
+
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
 	}
     
     

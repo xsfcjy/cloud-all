@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import com.sfxie.core.framework.core.TransactionService;
 import com.sfxie.services.center.dao.mapper.SfxieSysUserRelationMapper;
 import com.sfxie.services.center.pojo.SfxieSysUserRelation;
+import com.sfxie.services.center.util.ServicesContext;
+import com.sfxie.utils.StringUtils;
 
 @Service
 public class SfxieSysUserRelationServiceImpl extends TransactionService {
@@ -40,6 +42,13 @@ public class SfxieSysUserRelationServiceImpl extends TransactionService {
      * @param record
      */
     public int insertSelective(SfxieSysUserRelation record){
+    	String createCompanyCode = StringUtils.isNotEmpty(record.getCreateCompanyCode())?record.getCreateCompanyCode():ServicesContext.getDefaultCreateCompanyCode();
+    	String createUser = StringUtils.isNotEmpty(record.getCreateUser())?record.getCreateUser():ServicesContext.getDefaultCreateUserId();
+    	String partitionCompany = ServicesContext.getPartitionCompany(record.getCompanyCode());
+    	record.setPartitionCompany(partitionCompany);
+    	record.setCreateUser(createUser);
+    	record.setCreateCompanyCode(createCompanyCode);
+    	record.setId(StringUtils.getUUID());
     	return sfxieSysUserRelationMapper.insertSelective(record);
     }
 

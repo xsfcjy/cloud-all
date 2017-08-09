@@ -30,4 +30,14 @@
 			<text>是</text>
 		</record>
 	</select>
+	<select name="roleType" state="1" description="角色类型 ">
+		<record>
+			<value>R</value>
+			<text>资源类型</text>
+		</record>
+		<record>
+			<value>D</value>
+			<text>数据类型</text>
+		</record>
+	</select>
 </selects> 

@@ -276,7 +276,7 @@ public class SfxieSysUserRelation {
      * @return sfxie_sys_user_relation.create_company_code, 创建公司 : 创建公司
      */
     public String getCreateCompanyCode() {
-        return createCompanyCode;
+        return null==createCompanyCode?companyCode:createCompanyCode;
     }
 
     /**

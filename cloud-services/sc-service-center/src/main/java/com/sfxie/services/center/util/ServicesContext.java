@@ -6,7 +6,7 @@ import com.sfxie.services.core.security.SecurityUser;
 public class ServicesContext {
 	
 	public static String getDefaultCreateCompanyCode(){
-		return "00000000000000000000000000000000";
+		return "test_company2";
 	}
 	public static String getDefaultCreateUserId(){
 		return "sfxie";

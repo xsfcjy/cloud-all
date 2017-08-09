@@ -50,4 +50,8 @@ public interface SfxieSysRoleMapper {
      *  根据条件查询数据库记录,sfxie_sys_role
      */
     List<SfxieSysRole> selectByCondition(SfxieSysRole record);
+    
+    List<SfxieSysRole> selectRolesByCompanyCodeOnAuth(SfxieSysRole record);
+    
+    
 }

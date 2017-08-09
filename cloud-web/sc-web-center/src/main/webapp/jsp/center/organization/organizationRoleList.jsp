@@ -24,7 +24,7 @@
 				type:'textbox',
 				name:'roleName',
 				id:'roleNameId',
-				label:'<spring:message code="page.center.organization.userList.userNameCn" />'
+				label:'<spring:message code="page.center.organization.roleList.roleName" />'
 			}]
     	});
     }
@@ -32,10 +32,10 @@
         text:'<spring:message code="button.query" />',
         iconCls:'golive-icon-query',
         handler:function(){
-        	organizationUserList(getSelectNode());
+        	organizationRoleList(getSelectNode());
 		}
     },'-',{
-        text:'<spring:message code="button.add.archives" />',
+        text:'<spring:message code="button.add.role" />',
         iconCls:'golive-icon-add',
         handler:function(){
         	$('#myform').form('clear');
@@ -79,30 +79,30 @@
     	if(selectedNode){
 	    	if(selectedNode.companyLevel == 'department'){
 				if(!row['departmentCode']){
-		    		organizationOperateText = '档案引进';	
+		    		organizationOperateText = '角色引进';	
 		    	}else{
 		    		organizationOperateText = '移除';	
 		    	}
 			}else if ( selectedNode.companyLevel == 'post' ){
 				if(!row['postCode']){
-		    		organizationOperateText = '档案引进';	
+		    		organizationOperateText = '角色引进';	
 		    	}else{
 		    		organizationOperateText = '移除';	
 		    	}
 			}else{
-		    	if(!row['companyCode']){
-		    		organizationOperateText = '档案引进';	
+		    	if(!row['createCompanyCode']){
+		    		organizationOperateText = '角色引进';	
 		    	}else{
-		    		if(row['companyCode'] == selectedNode['id']){
+		    		if(row['createCompanyCode'] == selectedNode['id']){
 			    		organizationOperateText = '移除';	
 		    		}else{
-		    			organizationOperateText = '档案引进';
+		    			organizationOperateText = '角色引进';
 		    		}
 		    		console.log('222222222');
 		    		console.log(selectedNode);
 		    		console.log(row);
 		    		if(row['createCompanyCode'] == selectedNode['id']){
-		    			authUserToSub = '下放人事';
+		    			authUserToSub = '下放角色';
 		    		}
 		    	}
 			}
@@ -113,9 +113,6 @@
     	}
     	
     	var relatedUserString =  '';
-    	if(!row.userId){
-    		relatedUserString = ' <a href="#" onclick="operateRoleCellClick(\''+row.userId+'\');" data-options="iconCls:\'icon-add\'">'+'<span  class="golive-icon-add" stype="width:16px;height:16px;display: block;"></span>'+'关联用户'+'</a>';
-    	}
     	
     	var organizationOperateString = '  <a href="#" onclick="'+oUserFunc+'(\''+row.userId+'\');" data-options="iconCls:\'icon-add\'">'+'<span  class="golive-icon-add" stype="width:16px;height:16px;display: block;"></span>'+organizationOperateText+'</a>';
     	
@@ -132,11 +129,11 @@
     }
     function introductionRoleCellClick(userId){
     	GoLive.EasyUI.Message.confirm({
-    		title:'档案引进',
-    		tip:'档案引进后，原档案关系将会无效，请确认是否引进该档案关系？',
+    		title:'角色引进',
+    		tip:'角色引进后，原角色关系还存在，请确认是否引进该角色关系？',
     		callback: function(r){
     			if(r){
-    				alert('执行档案引进');
+    				alert('执行角色引进');
     			}
     		}
     	});
@@ -144,18 +141,18 @@
     }
     function removeRoleCellClick(userId){
     	GoLive.EasyUI.Message.confirm({
-    		title:'档案移除',
-    		tip:'档案移除后，原档案关系将会无效，请确认是否移除该档案关系？',
+    		title:'角色移除',
+    		tip:'角色移除后，原角色关系将会无效，请确认是否移除该角色关系？',
     		callback: function(r){
     			if(r){
-    				alert('执行档案移除');
+    				alert('执行角色移除');
     			}
     		}
     	});
     	GoLive.stopPropagation();
     }
     function authRoleToSubFunc(userId){
-		alert('下放人事');
+		alert('下放角色');
     	GoLive.stopPropagation();
     }
 </script>
@@ -172,15 +169,15 @@
             <tr>
             	<th data-options="field:'ck',checkbox:true"></th>
                 <th field="roleCode" width="2" align="center"  sortable="true">
-                	<spring:message code="page.center.organization.userList.userId" />
+                	<spring:message code="page.center.organization.roleList.roleCode" />
                 </th>
                 <th field="roleName" width="2" align="center">
-                	<spring:message code="page.center.organization.userList.userNameCn" />
+                	<spring:message code="page.center.organization.roleList.roleName" />
 				</th>
                 <th field="isValid" width="1" align="center" >
                 	<spring:message code="common.isValid" />
                 </th>
-                <th field="operate" width="3" align="center" data-options="formatter:operateCellFormat">
+                <th field="operate" width="3" align="center" data-options="formatter:operateRoleCellFormat">
                 	<spring:message code="common.operate" />
                 </th>
             </tr>

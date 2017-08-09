@@ -75,6 +75,10 @@ public class SfxieSysRole {
      *  分区字段 : 分区字段,从用户公司代码字段取值,所属表字段为sfxie_sys_role.partition_company
      */
     private String partitionCompany;
+    /**
+     * 角色类型
+     */
+    private String roleType;
 
     /**
      * 获取 记录主键 : 记录主键 字段:sfxie_sys_role.id_
@@ -313,4 +317,13 @@ public class SfxieSysRole {
     public void setPartitionCompany(String partitionCompany) {
         this.partitionCompany = partitionCompany == null ? null : partitionCompany.trim();
     }
+
+	public String getRoleType() {
+		return roleType;
+	}
+
+	public void setRoleType(String roleType) {
+		this.roleType = roleType;
+	}
+    
 }

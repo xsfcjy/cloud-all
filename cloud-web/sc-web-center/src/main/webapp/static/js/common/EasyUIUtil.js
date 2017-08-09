@@ -514,9 +514,7 @@
 		function generatedConditions(config,toolbarConditions){
 			if(toolbarConditions && toolbarConditions.length>0){
 //				var toolbarTr = $('.datagrid-toolbar tr');
-				console.log($('#'+config.dataGridId).parent().prevAll());
 				var toolbarTr = $('#'+config.dataGridId).parent().prevAll().find("tr");
-				console.log(toolbarTr);
 				for(var i=0;i<toolbarConditions.length;i++){
 					var condition = toolbarConditions[i];
 					var type = condition['type'];

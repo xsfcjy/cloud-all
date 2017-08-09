@@ -85,9 +85,7 @@
       <if test="isValid != null">
         is_valid,
       </if>
-      <if test="createTime != null">
         create_time,
-      </if>
       <if test="createUser != null">
         create_user,
       </if>
@@ -123,9 +121,7 @@
       <if test="isValid != null">
         #{isValid,jdbcType=CHAR},
       </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
+        now(),
       <if test="createUser != null">
         #{createUser,jdbcType=VARCHAR},
       </if>

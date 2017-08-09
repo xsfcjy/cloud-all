@@ -25,10 +25,13 @@ public class ComponentDerector {
 			return "organizationUserList.jsp";
 		}else if (componentName.equals("jsp.center.organization.list.organizationRoleList")) {
 			return "organizationRoleList.jsp";
+		}else if (componentName.equals("jsp.center.organization.list.organizationUserrelationEdit")) {
+			return "organizationUserrelationEdit.jsp";
+		}else if (componentName.equals("jsp.center.organization.list.organizationRoleEdit")) {
+			return "organizationRoleEdit.jsp";
 		}else if (componentName.equals("jsp.center.organization.list.organizationDataAuthList")) {
 			return "";
 		}
-		
 		
 		return "";
 	}

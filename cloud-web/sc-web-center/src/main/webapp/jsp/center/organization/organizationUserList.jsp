@@ -54,8 +54,15 @@
         text:'<spring:message code="button.add.archives" />',
         iconCls:'golive-icon-add',
         handler:function(){
-        	$('#myform').form('clear');
-        	$('#editWindow').window('open');
+        	if(!getSelectNode()){
+				GoLive.EasyUI.Message.show({timeout:2000,icon:'warn',msg:'请选择组织结构！'});
+				return ;
+        	}
+//         	department_code
+			var orgObj = getOrganizationObj();
+        	$('#userForm').form('clear');
+			$('#userForm').form('load', orgObj);
+        	$('#editUserWindow').window('open');
 			$('#isValidList').combobox('setValue', $('#isValidList').attr("value"));
         }
     },'-',{
@@ -190,7 +197,7 @@
                 <th field="userId" width="2" align="center"  sortable="true">
                 	<spring:message code="page.center.organization.userList.userId" />
                 </th>
-                <th field="userNameCn" width="2" align="center">
+                <th field="userNameCn" width="3" align="center">
                 	<spring:message code="page.center.organization.userList.userNameCn" />
 				</th>
                 <th field="isValid" width="1" align="center" >

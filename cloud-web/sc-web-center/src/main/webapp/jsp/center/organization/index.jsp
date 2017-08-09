@@ -40,11 +40,16 @@
 				onClick: zTreeOnClick
 			}
 		};
+
+    	function resetForm(formId){
+    		GoLive.EasyUI.Form.reset(formId);
+    	}
 		function zTreeOnClick(event, treeId, treeNode) {
 // 			if(treeNode.companyLevel == 'department'){
 // 			}else if ( treeNode.companyLevel == 'post' ){
 // 			}else{
 				organizationUserList(treeNode);
+				organizationRoleList(treeNode);
 // 			}
 		}
 		function myBeforeCallBack(treeId, treeNode) {
@@ -66,7 +71,31 @@
 			}
 			return node;
 		}
-
+		function getOrganizationObj(){
+			var obj = {};
+			var node;
+			var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+			if(treeObj){
+				var nodes = treeObj.getSelectedNodes();
+				if (nodes.length>0) { 
+					node = nodes[0];
+					if(node.companyLevel == 'department'){
+						obj['departmentCode'] = node['id'];
+						var parentNodeCompany = node.getParentNode();
+						obj['companyCode'] = parentNodeCompany['id'];
+					}else if ( node.companyLevel == 'post' ){
+						obj['postCode'] = node['id'];
+						var parentNodeDepartment = node.getParentNode();
+						obj['departmentCode'] = parentNodeDepartment['id'];
+						var parentNodeCompany = parentNodeDepartment.getParentNode();
+						obj['companyCode'] = parentNodeCompany['id'];
+					}else{
+						obj['companyCode'] = node['id'];
+					}
+				}
+			}
+			return obj;
+		}
 		function getParentNodeCurs(node,callback){
 			if(node.getParentNode()){
 				getParentNodeCurs(node.getParentNode(),callback);
@@ -352,6 +381,19 @@
 				style="width:400px;height:250px;padding:10px;">
 			<jsp:include page="<%= com.sfxie.web.boot.util.ComponentDerector.getComponentPath(\"jsp.center.organization.window.organizationPostEdit\")%>" flush="true"></jsp:include>
 		</div>
+		<div id="editUserWindow" class="easyui-window" 
+				title="<spring:message code="page.center.organization.organizationUserrelationEdit" />" 
+				data-options="onBeforeClose:closeWindow,modal:true,closed:true,iconCls:'icon-save'" 
+				style="width:400px;height:250px;padding:10px;">
+			<jsp:include page="<%= com.sfxie.web.boot.util.ComponentDerector.getComponentPath(\"jsp.center.organization.list.organizationUserrelationEdit\")%>" flush="true"></jsp:include>
+		</div>
+		<div id="editRoleWindow" class="easyui-window" 
+				title="<spring:message code="page.center.organization.organizationRoleEdit" />" 
+				data-options="onBeforeClose:closeWindow,modal:true,closed:true,iconCls:'icon-save'" 
+				style="width:400px;height:250px;padding:10px;">
+			<jsp:include page="<%= com.sfxie.web.boot.util.ComponentDerector.getComponentPath(\"jsp.center.organization.list.organizationRoleEdit\")%>" flush="true"></jsp:include>
+		</div>
+		
     </div>
   </body>
 </html>

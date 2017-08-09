@@ -14,8 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.github.pagehelper.PageHelper;
 import com.sfxie.core.framework.mvc.handle.Result;
+import com.sfxie.services.center.pojo.SfxieSysRole;
 import com.sfxie.services.center.pojo.SfxieSysUserRelation;
 import com.sfxie.services.center.service.impl.OrganizationTreeServiceImpl;
+import com.sfxie.services.center.service.impl.SfxieSysRoleServiceImpl;
+import com.sfxie.services.center.service.impl.SfxieSysUserRelationServiceImpl;
 import com.sfxie.services.center.vo.SfxieSysCompanyVo;
 import com.sfxie.services.center.vo.SfxieSysOrganizationVo;
 
@@ -29,6 +32,10 @@ public class OrganizationController {
 
 	@Resource
 	private OrganizationTreeServiceImpl service;
+	@Resource
+	private SfxieSysRoleServiceImpl sfxieSysRoleServiceImpl;
+	@Resource
+	private SfxieSysUserRelationServiceImpl sfxieSysUserRelationServiceImpl;
 	
 	
 	/**
@@ -54,7 +61,8 @@ public class OrganizationController {
 	@RequestMapping(value = "/organization/company", method = RequestMethod.POST)
     public int insertCompany(@RequestBody SfxieSysCompanyVo record){
     	return service.insertSelective(record);
-    }/**
+    }
+	/**
      *  新写入数据库记录,sfxie_sys_company
     *
     * @param record
@@ -98,12 +106,63 @@ public class OrganizationController {
 				sfxieSysUserRelation.setCompanyCode(code);
 				sfxieSysUserRelation.setUserNameCn(sfxieSysOrganizationVo.getUserNameCn());
 				List<SfxieSysUserRelation>  listTemp =service.selectUsersByCompanyCode(sfxieSysUserRelation);
-				list.addAll(listTemp);
+				if(null!=listTemp && listTemp.size()>0)
+					list.addAll(listTemp);
 				listTemp =service.selectUsersByCompanyCodeOnAuth(sfxieSysUserRelation);
-				list.addAll(listTemp);
+				if(null!=listTemp && listTemp.size()>0)
+					list.addAll(listTemp);
 //			}
 //		}
 		Result<List<SfxieSysUserRelation>> result = new Result.BuilderArray<List<SfxieSysUserRelation>>(list).build();
 		return result;
     }
+	
+	/**
+	 * 
+	 * @param code
+	 * @param partitionCompany
+	 * @param sfxieSysOrganizationVo
+	 * @return
+	 */
+	@RequestMapping(value = "/organization/{code}/{partitionCompany}/roleList", method = RequestMethod.POST)
+   public Object queryRoles(@PathVariable String code,@PathVariable String partitionCompany
+   		,@RequestBody SfxieSysOrganizationVo sfxieSysOrganizationVo
+   		){
+		PageHelper.ignorePaged();
+		List<SfxieSysRole>  list = new ArrayList<SfxieSysRole> ();
+		SfxieSysRole entity = new SfxieSysRole();
+		entity.setPartitionCompany(partitionCompany);
+		entity.setCreateCompanyCode(code);
+		entity.setRoleName(sfxieSysOrganizationVo.getRoleName());
+		List<SfxieSysRole>  listTemp =sfxieSysRoleServiceImpl.selectByCondition(entity);
+		if(null!=listTemp && listTemp.size()>0)
+			list.addAll(listTemp);
+
+		PageHelper.ignorePaged();
+		listTemp =sfxieSysRoleServiceImpl.selectRolesByCompanyCodeOnAuth(entity);
+		if(null!=listTemp && listTemp.size()>0)
+			list.addAll(listTemp);
+		Result<List<SfxieSysRole>> result = new Result.BuilderArray<List<SfxieSysRole>>(list).build();
+		return result;
+   }
+	
+
+	/**
+     *  新写入数据库记录,sfxie_sys_userrelation
+     *
+     * @param record
+     */
+	@RequestMapping(value = "/organization/user", method = RequestMethod.POST)
+    public int insertUserRelation(@RequestBody SfxieSysUserRelation record){
+    	return sfxieSysUserRelationServiceImpl.insertSelective(record);
+    }
+	/**
+     *  新写入数据库记录,sfxie_sys_company
+     *
+     * @param record
+     */
+	@RequestMapping(value = "/organization/role", method = RequestMethod.POST)
+   public int insertRole(@RequestBody SfxieSysRole record){
+   	return sfxieSysRoleServiceImpl.insertSelective(record);
+   }
 }
