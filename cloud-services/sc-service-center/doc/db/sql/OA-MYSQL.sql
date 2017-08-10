@@ -8,10 +8,10 @@ DROP TABLE sfxie_sys_authorization;
 DROP TABLE sfxie_sys_auth_role_menu;
 DROP TABLE sfxie_sys_auth_data;
 DROP TABLE sfxie_sys_post_role;
-DROP TABLE sfxie_sys_user_relation;
 DROP TABLE sfxie_sys_post;
 DROP TABLE sfxie_sys_department;
 DROP TABLE sfxie_sys_organization;
+DROP TABLE sfxie_sys_user_relation;
 DROP TABLE sfxie_sys_company;
 DROP TABLE sfxie_sys_role_menu;
 DROP TABLE sfxie_sys_menu;
@@ -274,6 +274,8 @@ CREATE TABLE sfxie_sys_menu
 控制是否在公司任职有效',
 	-- 分区字段,从用户公司代码字段取值
 	partition_company varchar(8) COMMENT '分区字段 : 分区字段,从用户公司代码字段取值',
+	-- U-url类型, D-数据类型
+	menu_type char(1) DEFAULT 'U' COMMENT '菜单类型 : U-url类型, D-数据类型',
 	PRIMARY KEY (id_)
 ) ENGINE = InnoDB COMMENT = '菜单表' DEFAULT CHARACTER SET utf8;
 
@@ -396,7 +398,10 @@ CREATE TABLE sfxie_sys_role
 	create_company_code varchar(50) COMMENT '创建公司 : 创建公司',
 	-- 分区字段,从用户公司代码字段取值
 	partition_company varchar(8) NOT NULL COMMENT '分区字段 : 分区字段,从用户公司代码字段取值',
-	PRIMARY KEY (id_)
+	-- R- 资源类型, D-数据类型
+	role_type char(1) DEFAULT 'R' COMMENT '角色类型 : R- 资源类型, D-数据类型',
+	PRIMARY KEY (id_),
+	CONSTRAINT uni_role_company UNIQUE (role_code, create_company_code)
 ) ENGINE = InnoDB COMMENT = '角色表' DEFAULT CHARACTER SET utf8;
 
 
@@ -678,14 +683,6 @@ ALTER TABLE sfxie_sys_post
 ;
 
 
-ALTER TABLE sfxie_sys_user_relation
-	ADD FOREIGN KEY (department_code)
-	REFERENCES sfxie_sys_department (department_code)
-	ON UPDATE RESTRICT
-	ON DELETE RESTRICT
-;
-
-
 ALTER TABLE sfxie_sys_action
 	ADD FOREIGN KEY (menu_code)
 	REFERENCES sfxie_sys_menu (menu_code)
@@ -703,14 +700,6 @@ ALTER TABLE sfxie_sys_role_menu
 
 
 ALTER TABLE sfxie_sys_post_role
-	ADD FOREIGN KEY (post_code)
-	REFERENCES sfxie_sys_post (post_code)
-	ON UPDATE RESTRICT
-	ON DELETE RESTRICT
-;
-
-
-ALTER TABLE sfxie_sys_user_relation
 	ADD FOREIGN KEY (post_code)
 	REFERENCES sfxie_sys_post (post_code)
 	ON UPDATE RESTRICT

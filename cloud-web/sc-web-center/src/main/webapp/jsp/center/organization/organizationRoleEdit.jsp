@@ -20,10 +20,7 @@
 		    		icon:'info',
 		    		msg:'<spring:message code="page.datagrid.action.save.success" />'
 		    	});
-		    	var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
-		    	var parentCode = $('#parentCompanyCode').val();
-		    	var node = treeObj.getNodeByParam("id", parentCode, null);
-		    	treeObj.reAsyncChildNodes(node, "refresh",false);
+		    	selectAndClickNode();
 		    	GoLive.EasyUI.Form.reset('roleForm');
             	$('#editRoleWindow').window('close');
 		    }
@@ -34,7 +31,7 @@
 	   	<form id="roleForm" class="easyui-form" method="post" data-options="novalidate:true" action="">
 	   		<input type="hidden" name="id" id="roleId">
 	   		<input name="createUser" id="createUser" type="hidden">
-	   		<input name="createCompanyCode" id="createCompanyCode" type="hidden">
+	   		<input name="createCompanyCode" id="createCompanyCodeRole" type="hidden">
 	   		<input name="partitionCompany" id="partitionCompany" type="hidden">
         	<input name="createTime" id="createTime"  type="hidden">
 	        <div>
@@ -48,10 +45,10 @@
 	        <div>
 	            <label for="isValid" ><font color="#990000">*</font><spring:message code="common.isValid" />：</label>
 	            <mytag:select  	dataOptions="required:true,valueField:'value',textField:'text'" 
-	            				selectId ="isValidList" selectName="isValid"
+	            				selectId ="isValidListRole" selectName="isValid"
 	            				className="easyui-combobox"  style="width:200px;" 
 				            	dataProvider="commonStateValidationDataProvider" displayField="text" valueField="value"
-				            	value="N"
+				            	value="Y"
 	            ></mytag:select>
 	        </div>
 	        <div>

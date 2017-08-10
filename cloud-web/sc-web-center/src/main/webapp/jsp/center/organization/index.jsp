@@ -85,9 +85,14 @@
 						obj['companyCode'] = parentNodeCompany['id'];
 					}else if ( node.companyLevel == 'post' ){
 						obj['postCode'] = node['id'];
-						var parentNodeDepartment = node.getParentNode();
-						obj['departmentCode'] = parentNodeDepartment['id'];
-						var parentNodeCompany = parentNodeDepartment.getParentNode();
+						var parentNode = node.getParentNode();
+						if(parentNode['companyLevel'] != 'department'){
+							obj['departmentCode'] = '';
+							obj['companyCode'] = parentNode['id'];
+							return obj;
+						}
+						obj['departmentCode'] = parentNode['id'];
+						var parentNodeCompany = parentNode.getParentNode();
 						obj['companyCode'] = parentNodeCompany['id'];
 					}else{
 						obj['companyCode'] = node['id'];
@@ -284,7 +289,6 @@
 					data['companyCode'] = treeNode.id;
 					data['partitionCompany'] = treeNode.partitionCompany;
 					data['isValid'] = 'Y';
-					console.log(data);
 				},
 				afterFormRender : function (data){
 					if(data){
@@ -325,14 +329,24 @@
 		}
 		
 		function closeWindow(){
-			var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
-			var nodes = treeObj.getSelectedNodes();
-			if (nodes.length>0) { 
-				treeObj.cancelSelectedNode(nodes[0]);
-			}
-			return true;
+// 			var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+// 			var node = treeObj.getSelectedNodes()[0];
+// 			if (nodes.length>0) { 
+// 				treeObj.cancelSelectedNode(nodes[0]);
+// 			}
+// 			GoLive.ZTree.refreshAndSelectAndClickNode(treeObj,node,500);
+// 			return true;
 		}
-		
+		function refreshAndSelectAndClickNode(){
+			var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+			var node = treeObj.getSelectedNodes()[0];
+			GoLive.ZTree.refreshAndSelectAndClickNode(treeObj,node,500);
+		}
+		function selectAndClickNode(){
+			var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+			var node = treeObj.getSelectedNodes()[0];
+			GoLive.ZTree.selectAndClickNode(treeObj,node);
+		}
 		function initTabsDatagrid(){
 			organizationUserList(null);
 		}

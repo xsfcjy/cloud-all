@@ -38,9 +38,19 @@
         text:'<spring:message code="button.add.role" />',
         iconCls:'golive-icon-add',
         handler:function(){
-        	$('#roleform').form('clear');
+        	var orgObj = getOrganizationObj();
+        	if(orgObj['postCode'] || orgObj['departmentCode']){
+		    	GoLive.EasyUI.Message.show({
+		    		timeout:2000,
+		    		icon:'warn',
+		    		msg:orgObj['departmentCode']?'部门不可以添加角色':'岗位不可以添加角色'
+		    	});
+		    	return ;
+        	}
+        	$('#roleForm').form('clear');
+        	GoLive.EasyUI.Form.loadData({createCompanyCode:orgObj['companyCode']},'roleForm');
         	$('#editRoleWindow').window('open');
-			$('#isValidList').combobox('setValue', $('#isValidList').attr("value"));
+			$('#isValidListRole').combobox('setValue', $('#isValidListRole').attr("value"));
 			$('#roleTypeList').combobox('setValue', $('#roleTypeList').attr("value"));
         }
     },'-',{
@@ -70,8 +80,6 @@
 		}
     }];
     function operateRoleCellFormat(val,row){
-    	console.log(row);
-    	
     	var organizationOperateText = "";
     	var userOperateText = "";
     	var resultString = '';

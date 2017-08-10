@@ -1,5 +1,20 @@
 (function(win){
 	
+
+	if(!GoLive.ZTree)
+		GoLive.ZTree = new Object();
+	GoLive.ZTree.selectAndClickNode = _$selectAndClickNode;
+	GoLive.ZTree.refreshAndSelectAndClickNode = _$refreshAndSelectAndClickNode;
+
+	function _$selectAndClickNode(treeObj,node){
+		treeObj.setting.callback.onClick(null, treeObj.setting.treeId, node);//触发函数
+		treeObj.selectNode(node);
+	}
+	function _$refreshAndSelectAndClickNode(treeObj,node,timeout){
+		treeObj.reAsyncChildNodes(node, "refresh",false);
+    	setTimeout(GoLive.ZTree.selectAndClickNode,timeout?timeout:500,treeObj,node);
+	}
+	
 	if(!GoLive.EasyUI)
 		GoLive.EasyUI = new Object();
 	GoLive.EasyUI.settings = new Object();
@@ -317,10 +332,21 @@
 				'role.id':selectRecord.id
 			},
 		});
+		
+		or
+		
+		GoLive.EasyUI.Form.loadData({
+			name:'sfxie',
+			age:31
+		},'myform');
 	 */
-	function _$formLoadData(config){
-		var prefix = config.prefix?(config.prefix+"."):"";
+	function _$formLoadData(config,fId){
+		if(!config.url && fId){
+			$('#'+fId).form('load', config);
+			return ;
+		}
 		var formId = config.formId;
+		var prefix = config.prefix?(config.prefix+"."):"";
 		var url = config.url;
 		var parameter = config.parameter;
 		var afterLoadData = config.afterLoadData;

@@ -60,10 +60,11 @@
         	}
 //         	department_code
 			var orgObj = getOrganizationObj();
+			console.log(orgObj);
         	$('#userForm').form('clear');
 			$('#userForm').form('load', orgObj);
         	$('#editUserWindow').window('open');
-			$('#isValidList').combobox('setValue', $('#isValidList').attr("value"));
+			$('#isValidListUser').combobox('setValue', $('#isValidListUser').attr("value"));
         }
     },'-',{
         text:'<spring:message code="button.edit" />',
@@ -81,7 +82,7 @@
         				type:'GET',
         				url:loadRoleUrl,
         				afterFormRender : function (data){
-	            			$('#isValidList').combobox('setValue', data["isValid"]);
+	            			$('#isValidListUser').combobox('setValue', data["isValid"]);
 	                    	$('#editWindow').window('open');
         				},
         				parameter:{
@@ -92,8 +93,6 @@
 		}
     }];
     function operateCellFormat(val,row){
-    	console.log(row);
-    	
     	var organizationOperateText = "";
     	var userOperateText = "";
     	var resultString = '';
@@ -121,9 +120,6 @@
 		    		}else{
 		    			organizationOperateText = '档案引进';
 		    		}
-		    		console.log('222222222');
-		    		console.log(selectedNode);
-		    		console.log(row);
 		    		if(row['createCompanyCode'] == selectedNode['id']){
 		    			authUserToSub = '下放人事';
 		    		}

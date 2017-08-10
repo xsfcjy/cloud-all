@@ -20,10 +20,11 @@
 		    		icon:'info',
 		    		msg:'<spring:message code="page.datagrid.action.save.success" />'
 		    	});
-		    	var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
-		    	var parentCode = $('#parentCompanyCode').val();
-		    	var node = treeObj.getNodeByParam("id", parentCode, null);
-		    	treeObj.reAsyncChildNodes(node, "refresh",false);
+// 		    	var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+// 		    	var parentCode = $('#parentCompanyCode').val();
+// 		    	var node = treeObj.getNodeByParam("id", parentCode, null);
+// 		    	treeObj.reAsyncChildNodes(node, "refresh",false);
+		    	selectAndClickNode();
 		    	GoLive.EasyUI.Form.reset('userForm');
             	$('#editUserWindow').window('close');
 		    }
@@ -51,10 +52,10 @@
 	        <div>
 	            <label for="isValid" ><font color="#990000">*</font><spring:message code="common.isValid" />：</label>
 	            <mytag:select  	dataOptions="required:true,valueField:'value',textField:'text'" 
-	            				selectId ="isValidList" selectName="isValid"
+	            				selectId ="isValidListUser" selectName="isValid"
 	            				className="easyui-combobox"  style="width:200px;" 
 				            	dataProvider="commonStateValidationDataProvider" displayField="text" valueField="value"
-				            	value="N"
+				            	value="Y"
 	            ></mytag:select>
 	        </div>
 	        <div>

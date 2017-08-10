@@ -18,10 +18,11 @@
 		    		icon:'info',
 		    		msg:'<spring:message code="page.datagrid.action.save.success" />'
 		    	});
-		    	var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
-		    	var parentCode = $('#companyCode').val();
-		    	var node = treeObj.getNodeByParam("id", parentCode, null);
-		    	treeObj.reAsyncChildNodes(node, "refresh",false);
+// 		    	var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+// 		    	var parentCode = $('#companyCode').val();
+// 		    	var node = treeObj.getNodeByParam("id", parentCode, null);
+// 		    	treeObj.reAsyncChildNodes(node, "refresh",false);
+				refreshAndSelectAndClickNode();
 		    	GoLive.EasyUI.Form.reset('departmentForm');
             	$('#organizationDepartmentEdit').window('close');
 		    }
