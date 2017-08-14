@@ -14,6 +14,7 @@ import com.sfxie.component.ui.tags.report.netty.server.ReportWebSocketServer;
 import com.sfxie.core.framework.boot.BaseApplicationConfig;
 import com.sfxie.core.framework.mvc.handle.PagerConfigurer;
 import com.sfxie.extension.datasource.mycat.DsMycatConfiguration;
+import com.sfxie.services.center.config.I18nConfiguration;
 import com.sfxie.services.center.config.MybatisCenterConfiguration;
 
 /**
@@ -38,6 +39,7 @@ import com.sfxie.services.center.config.MybatisCenterConfiguration;
 //		HibernateJpaAutoConfiguration.class,
 		DataSourceAutoConfiguration.class,
 		DataSourceTransactionManagerAutoConfiguration.class,
+		I18nConfiguration.class,
 		XADataSourceAutoConfiguration.class/*,
 		EurekaClientAutoConfiguration.class,
 		EurekaClientConfigServerAutoConfiguration.class,

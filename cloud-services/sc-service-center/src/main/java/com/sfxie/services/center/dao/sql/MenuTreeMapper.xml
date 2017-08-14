@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sfxie.services.center.dao.mapper.MenuTreeMapper">
+
+	<select id="selectByUserId" parameterType="com.sfxie.services.center.pojo.PartitionData" resultType="com.sfxie.services.center.pojo.tree.MenuTreePojo">
+		SELECT sss.system_code id, null pid,
+		'system' menuLevel, sss.system_name name , 1 isParent ,
+							if(sus.css is not null ,sus.css, 'icon01') iconSkin
+		FROM sfxie_sys_system sss 
+		LEFT JOIN sfxie_ui_skin sus ON sus.id_ = sss.system_code
+		WHERE sss.create_user = 'sfxie'
+	</select>
+
+	<select id="selectByParentCode" parameterType="map" resultType="com.sfxie.services.center.pojo.tree.MenuTreePojo">
+	  	SELECT
+			ssm.menu_code id,
+			sss.system_code pid,
+			'menu' menuLevel,
+			ssm.menu_name NAME,
+			ssm.menu_type menuType,
+			IF (ssmsub.count > 0, 1, 0) isParent
+		FROM
+			sfxie_sys_menu ssm
+		INNER JOIN sfxie_sys_system sss ON ssm.system_id = sss.id_
+		LEFT JOIN (
+			SELECT
+				count(1) count,
+				ssmsub.parent_id
+			FROM
+				sfxie_sys_menu ssmsub
+			GROUP BY
+				ssmsub.parent_id
+		) ssmsub ON ssmsub.parent_id = ssm.id_
+		WHERE sss.system_code = #{parentCode} 
+	  	AND ssm.partition_company = #{partitionCompany} 
+		AND ssm.menu_type = #{menuType} 
+		UNION 
+		
+		SELECT
+			ssm.menu_code id,
+			sss.menu_code pid,
+			'menu' menuLevel,
+			ssm.menu_name NAME,
+			ssm.menu_type menuType,
+			IF (ssmsub.count > 0, 1, 0) isParent
+		FROM
+			sfxie_sys_menu ssm
+		INNER JOIN sfxie_sys_menu sss ON ssm.parent_id = sss.id_
+		LEFT JOIN (
+			SELECT
+				count(1) count,
+				ssmsub.parent_id
+			FROM
+				sfxie_sys_menu ssmsub
+			GROUP BY
+				ssmsub.parent_id
+		) ssmsub ON ssmsub.parent_id = ssm.id_
+		WHERE sss.menu_code = #{parentCode} 
+	  	AND sss.partition_company = #{partitionCompany}  
+		AND ssm.menu_type = #{menuType} 
+			  	
+	</select>
+</mapper>

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50624
 File Encoding         : 65001
 
-Date: 2017-08-08 17:52:34
+Date: 2017-08-14 17:00:40
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -144,16 +144,16 @@ DROP TABLE IF EXISTS `sfxie_sys_action`;
 CREATE TABLE `sfxie_sys_action` (
   `id_` varchar(64) NOT NULL COMMENT '记录主键 : 记录主键',
   `action_name` varchar(50) DEFAULT NULL COMMENT '动作名称 : 动作名称',
-  `action_url` varchar(100) DEFAULT NULL COMMENT '动作资源 : 动作资源',
+  `action_code` varchar(100) DEFAULT NULL COMMENT '动作资源 : 动作资源',
   `sequence_no` decimal(8,0) DEFAULT NULL COMMENT '排序字段 : 排序字段',
   `create_time` datetime NOT NULL COMMENT '创建时间 : 创建时间',
   `create_user` varchar(32) NOT NULL COMMENT '记录创建人 : 记录创建人',
   `update_time` datetime DEFAULT NULL COMMENT '最后修改时间 : 最后修改时间',
   `update_user` varchar(32) DEFAULT NULL COMMENT '最后修改人 : 最后修改人',
   `is_valid` char(1) DEFAULT NULL COMMENT '是否有效 : 是否有效,Y:是;N:否\r\n控制是否在公司任职有效',
-  `param_flag` varchar(100) DEFAULT NULL COMMENT '置参数标记 : 如果链接中有参数，则设置参数标记。如:businessType=modify',
   `menu_code` varchar(32) DEFAULT NULL COMMENT '菜单代码 : 菜单代码',
   `partition_company` varchar(8) DEFAULT NULL COMMENT '分区字段 : 分区字段,从用户公司代码字段取值',
+  `description` varchar(200) DEFAULT NULL COMMENT '描述',
   PRIMARY KEY (`id_`),
   KEY `menu_code` (`menu_code`),
   CONSTRAINT `sfxie_sys_action_ibfk_1` FOREIGN KEY (`menu_code`) REFERENCES `sfxie_sys_menu` (`menu_code`) ON DELETE NO ACTION ON UPDATE NO ACTION
@@ -185,6 +185,7 @@ CREATE TABLE `sfxie_sys_authorization` (
 -- Records of sfxie_sys_authorization
 -- ----------------------------
 INSERT INTO `sfxie_sys_authorization` VALUES ('1112121', 'p', 'sfxie', 'c', 'test_company3', 'Y', '2017-08-07 14:27:03', null, null, '0');
+INSERT INTO `sfxie_sys_authorization` VALUES ('a11212112', 'r', 'test_role1', 'c', 'test_company3', 'Y', '2017-08-09 09:54:40', null, null, '0');
 
 -- ----------------------------
 -- Table structure for sfxie_sys_auth_data
@@ -270,6 +271,7 @@ CREATE TABLE `sfxie_sys_company` (
 -- Records of sfxie_sys_company
 -- ----------------------------
 INSERT INTO `sfxie_sys_company` VALUES ('00000000000000000000000000000000', 'test_company', '测试公司', 'test', null, null, null, null, null, null, 'sfxie', '2017-07-13 15:29:15', null, null, '1', 'Y', null, null, '0', 'test_company');
+INSERT INTO `sfxie_sys_company` VALUES ('0DFE20FF707142069A38DD7A647328C6', 'test_company110', '测试公司110', null, null, null, null, null, null, '', 'sfxie', '2017-08-10 11:39:04', null, null, null, 'Y', null, null, '2', 'test_company2');
 INSERT INTO `sfxie_sys_company` VALUES ('1', 'test_sfxie', '测试公司1', 'testcompany1', 'test', null, null, null, null, '222', 'sfxie', '2017-05-01 17:21:06', null, null, '1', 'Y', null, null, '1', 'test_company');
 INSERT INTO `sfxie_sys_company` VALUES ('2', 'test_sfxie2', '测试公司112', 'testcompany2', 'test', null, null, null, null, '11', 'sfxie', '2017-05-01 19:11:41', null, null, '2', 'Y', null, null, '1', 'test_company');
 INSERT INTO `sfxie_sys_company` VALUES ('3', 'test_company2', '测试公司新增', null, null, null, null, null, null, '测试公司新增', 'sfxie', '2017-07-05 15:21:21', null, null, null, 'Y', null, null, '1', 'test_company');
@@ -344,11 +346,14 @@ CREATE TABLE `sfxie_sys_menu` (
 -- Records of sfxie_sys_menu
 -- ----------------------------
 INSERT INTO `sfxie_sys_menu` VALUES ('1', 'sys_org', '1', null, 'system.menu.organization', null, '组织架构管理', null, null, '1', null, null, null, '2017-05-05 08:51:05', 'sfxie', 'Y', null, '0', 'U');
-INSERT INTO `sfxie_sys_menu` VALUES ('2', 'sys_center_company', '1', null, 'system.menu.organization.company', '/jsp/center/companyList.jsp', '公司管理', null, null, '1', '1', null, null, '2017-05-05 08:57:28', 'sfxie', 'Y', null, '0', 'U');
+INSERT INTO `sfxie_sys_menu` VALUES ('2', 'sys_center_company', null, null, 'system.menu.organization.company', '/jsp/center/companyList.jsp', '公司管理', null, null, '1', '1', null, null, '2017-05-05 08:57:28', 'sfxie', 'Y', null, '0', 'U');
 INSERT INTO `sfxie_sys_menu` VALUES ('3', 'sys_report', '1', null, 'system.menu.report', null, '报表', null, null, '2', null, null, null, '2017-05-20 19:24:58', 'sfxie', 'Y', null, '0', 'U');
-INSERT INTO `sfxie_sys_menu` VALUES ('4', 'sys_report_manager', '1', null, 'system.menu.report.manager', '/jsp/report/reportList.jsp', '报表管理', null, null, '1', '3', null, null, '2017-06-07 08:38:06', 'sfxie', 'Y', null, '0', 'U');
-INSERT INTO `sfxie_sys_menu` VALUES ('5', 'sys_report_display', '1', null, 'system.menu.report.display', '/jsp/report/report.jsp', '报表展示', null, null, '2', '3', null, null, '2017-07-07 13:43:59', 'sfxie', 'Y', null, '0', 'U');
-INSERT INTO `sfxie_sys_menu` VALUES ('6', 'sys_center_organization', '1', null, 'system.menu.organization.organization', '/jsp/center/organization/index.jsp', '组织结构管理', null, null, '1', '1', null, null, '2017-05-05 08:57:28', 'sfxie', 'Y', null, '0', 'U');
+INSERT INTO `sfxie_sys_menu` VALUES ('4', 'sys_report_manager', null, null, 'system.menu.report.manager', '/jsp/report/reportList.jsp', '报表管理', null, null, '1', '3', null, null, '2017-06-07 08:38:06', 'sfxie', 'Y', null, '0', 'U');
+INSERT INTO `sfxie_sys_menu` VALUES ('5', 'sys_report_display', null, null, 'system.menu.report.display', '/jsp/report/report.jsp', '报表展示', null, null, '2', '3', null, null, '2017-07-07 13:43:59', 'sfxie', 'Y', null, '0', 'U');
+INSERT INTO `sfxie_sys_menu` VALUES ('6', 'sys_center_organization', null, null, 'system.menu.organization.organization', '/jsp/center/organization/index.jsp', '组织结构管理', null, null, '1', '1', null, null, '2017-05-05 08:57:28', 'sfxie', 'Y', null, '0', 'U');
+INSERT INTO `sfxie_sys_menu` VALUES ('resource', 'resource', '1', null, 'system.menu.resource', null, '资源管理', null, null, '1', null, null, null, '2017-08-11 08:51:05', 'sfxie', 'Y', null, '0', 'U');
+INSERT INTO `sfxie_sys_menu` VALUES ('sys_center_data', 'sys_center_data', null, null, 'system.menu.resource.data', '/jsp/center/menu/indexData.jsp', '数据权限管理', null, null, '1', 'resource', null, null, '2017-08-14 11:18:43', 'sfxie', 'Y', null, '0', 'D');
+INSERT INTO `sfxie_sys_menu` VALUES ('sys_center_resource', 'sys_center_resource', null, null, 'system.menu.resource.menu', '/jsp/center/menu/indexAction.jsp', '菜单操作管理', null, null, '1', 'resource', null, null, '2017-08-11 08:57:28', 'sfxie', 'Y', null, '0', 'U');
 
 -- ----------------------------
 -- Table structure for sfxie_sys_organization
@@ -384,6 +389,7 @@ INSERT INTO `sfxie_sys_organization` VALUES ('4', 'test_company2', 'test_company
 INSERT INTO `sfxie_sys_organization` VALUES ('4F37D3B0863B4F52875E1F06A7F97D52', 'test_organization1', 'test_organization4', 'Y', null, null, '2017-07-21 15:01:28', 'sfxie', null, null);
 INSERT INTO `sfxie_sys_organization` VALUES ('9C81BE70B97443748F8734F8848A2B2C', 'test_organization1', 'test_organization2', 'Y', null, null, '2017-07-21 14:42:22', 'sfxie', null, null);
 INSERT INTO `sfxie_sys_organization` VALUES ('9E7D63A4452340D1AD89B1F8E0654B31', 'test_company2', 'test_organization1', 'Y', null, null, '2017-07-21 14:39:18', 'sfxie', null, null);
+INSERT INTO `sfxie_sys_organization` VALUES ('A4B4B1BC8EBF495CADC2D4BDEC53EB52', 'test_company2', 'test_company110', 'Y', null, null, '2017-08-10 11:39:04', 'sfxie', null, null);
 
 -- ----------------------------
 -- Table structure for sfxie_sys_post
@@ -459,12 +465,33 @@ CREATE TABLE `sfxie_sys_role` (
   `partition_company` varchar(8) NOT NULL COMMENT '分区字段 : 分区字段,从用户公司代码字段取值',
   `role_type` char(1) DEFAULT 'R' COMMENT '角色类型,R- 资源类型, D-数据类型',
   PRIMARY KEY (`id_`),
-  UNIQUE KEY `role_code` (`role_code`)
+  UNIQUE KEY `role_code` (`role_code`,`create_company_code`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='角色表';
 
 -- ----------------------------
 -- Records of sfxie_sys_role
 -- ----------------------------
+INSERT INTO `sfxie_sys_role` VALUES ('20C5E52CAA414920B4F9D2A6DB87FA21', 'test_role3', '测试角色3', '测试角色3', null, null, null, '2017-08-09 17:30:55', 'sfxie', null, 'Y', 'test_company2', '0', 'R');
+INSERT INTO `sfxie_sys_role` VALUES ('2ACA0B0F9217415C817FE4B71043FF04', 'test_role16', '测试角色16', '', null, null, null, '2017-08-10 11:01:54', 'sfxie', null, 'Y', 'test_organization4', '0', 'R');
+INSERT INTO `sfxie_sys_role` VALUES ('46B442B806604BBFB54A5013F4F74819', 'test_role19', '测试角色19', '', null, null, null, '2017-08-10 11:05:20', 'sfxie', null, 'Y', 'test_sfxie', '0', 'R');
+INSERT INTO `sfxie_sys_role` VALUES ('4E2BA11FBF524C8E9744980F2A82CB2B', 'test_role15', '测试角色15', '', null, null, null, '2017-08-10 11:00:56', 'sfxie', null, 'Y', 'test_organization4', '0', 'R');
+INSERT INTO `sfxie_sys_role` VALUES ('5939898FC0734C37BC926D82A7413975', 'test_role17', '测试角色17', '', null, null, null, '2017-08-10 11:03:11', 'sfxie', null, 'Y', 'test_organization4', '0', 'R');
+INSERT INTO `sfxie_sys_role` VALUES ('5D18AEA352C148FA9B4723777DBBDD13', 'test_role8', '测试角色8', '', null, null, null, '2017-08-10 10:38:39', 'sfxie', null, 'Y', 'test_organization3', '0', 'R');
+INSERT INTO `sfxie_sys_role` VALUES ('63B9484C3FEB4A0DABA6B86B51A31D50', 'test_role14', '测试角色14', '', null, null, null, '2017-08-10 10:56:43', 'sfxie', null, 'Y', 'test_organization4', '0', 'R');
+INSERT INTO `sfxie_sys_role` VALUES ('6B25CEF5A7864B8DB960D8BF6F8EAFD4', 'test_role21', '测试角色21', '', null, null, null, '2017-08-10 11:06:43', 'sfxie', null, 'Y', 'test_sfxie', '0', 'R');
+INSERT INTO `sfxie_sys_role` VALUES ('7E66D22E919D480DA5CD6FB940306208', 'test_role20', '测试角色20', '', null, null, null, '2017-08-10 11:06:09', 'sfxie', null, 'Y', 'test_sfxie', '0', 'R');
+INSERT INTO `sfxie_sys_role` VALUES ('9029DD2D641F4D1FB5CF464AF8BABD15', 'test_role5', '测试角色5', '测试角色5', null, null, null, '2017-08-10 10:29:20', 'sfxie', null, 'Y', 'test_organization3', '0', 'R');
+INSERT INTO `sfxie_sys_role` VALUES ('A4D195D7B2B54078802AF23CCBB1CC63', 'test_18', '测试角色18', '', null, null, null, '2017-08-10 11:04:02', 'sfxie', null, 'Y', 'test_organization4', '0', 'R');
+INSERT INTO `sfxie_sys_role` VALUES ('AB2BAD8B87654123990878ABA38B8C58', 'test_role4', '测试角色4', '测试角色4', null, null, null, '2017-08-10 10:27:25', 'sfxie', null, 'Y', 'test_organization1', '0', 'R');
+INSERT INTO `sfxie_sys_role` VALUES ('CD2D0FC11B8A40B18647108866762DD0', 'test_role13', '测试角色13', '', null, null, null, '2017-08-10 10:54:49', 'sfxie', null, 'Y', 'test_organization4', '0', 'R');
+INSERT INTO `sfxie_sys_role` VALUES ('D0DE95DE21D543938F32E228DBD41CD9', 'test_role12', '测试角色12', '', null, null, null, '2017-08-10 10:51:59', 'sfxie', null, 'Y', 'test_organization4', '0', 'R');
+INSERT INTO `sfxie_sys_role` VALUES ('D58F7FED2EE942F49453B0783BA7F6DC', 'test_role10', '测试角色10', '', null, null, null, '2017-08-10 10:46:42', 'sfxie', null, 'Y', 'test_organization3', '0', 'R');
+INSERT INTO `sfxie_sys_role` VALUES ('D5BB459855F9471286370C5B94E73F10', 'test_role9', '测试角色9', '', null, null, null, '2017-08-10 10:41:48', 'sfxie', null, 'Y', 'test_organization3', '0', 'R');
+INSERT INTO `sfxie_sys_role` VALUES ('D7C9E4A0E0AA4552BE9E8927F75A4881', 'test_role2', '测试角色2', '', null, null, null, '2017-08-10 11:38:18', 'sfxie', null, 'Y', 'test_company3', '0', 'R');
+INSERT INTO `sfxie_sys_role` VALUES ('E402868D5529475FABFF458FFF5BDC01', 'test_role7', '测试角色7', '测试角色7', null, null, null, '2017-08-10 10:33:46', 'sfxie', null, 'Y', 'test_organization3', '0', 'R');
+INSERT INTO `sfxie_sys_role` VALUES ('ED4FF4AA9DB340C786EAE776B93B9564', 'test_role_2', '测试角色2', null, null, null, null, '2017-08-09 17:29:34', 'sfxie', null, 'Y', 'test_company2', '0', 'R');
+INSERT INTO `sfxie_sys_role` VALUES ('F6874420124B44C887B18636692B98A2', 'test_role6', '测试角色6', 'ss', null, null, null, '2017-08-10 10:30:12', 'sfxie', null, 'Y', 'test_organization3', '0', 'R');
+INSERT INTO `sfxie_sys_role` VALUES ('F82FB362E1D7492DAD02CE7525AC1CDC', 'test_role11', '测试角色11', '', null, null, null, '2017-08-10 10:47:28', 'sfxie', null, 'Y', 'test_organization3', '0', 'R');
 INSERT INTO `sfxie_sys_role` VALUES ('R1000', 'test_role1', '测试角色1', null, null, null, null, '2017-08-08 13:52:57', 'sfxie', '1', 'Y', 'test_company2', '0', 'R');
 
 -- ----------------------------
@@ -534,6 +561,7 @@ CREATE TABLE `sfxie_sys_system` (
   `update_time` datetime DEFAULT NULL COMMENT '最后修改时间 : 最后修改时间',
   `update_user` varchar(32) DEFAULT NULL COMMENT '最后修改人 : 最后修改人',
   `partition_company` varchar(8) DEFAULT NULL COMMENT '分区字段 : 分区字段,从用户公司代码字段取值',
+  `create_company_code` varchar(32) DEFAULT NULL COMMENT '创建公司 : 创建公司',
   PRIMARY KEY (`id_`),
   UNIQUE KEY `system_code` (`system_code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统表';
@@ -541,8 +569,8 @@ CREATE TABLE `sfxie_sys_system` (
 -- ----------------------------
 -- Records of sfxie_sys_system
 -- ----------------------------
-INSERT INTO `sfxie_sys_system` VALUES ('1', 'sys_center', '云后台管理平台', '云后台管理平台', '', null, null, 'Y', '2017-05-05 08:56:13', 'sfxie', null, null, '0');
-INSERT INTO `sfxie_sys_system` VALUES ('2', 'sys_center_company', '公司', '公司', null, null, null, 'Y', '2017-05-05 08:56:20', 'sfxie', null, null, '0');
+INSERT INTO `sfxie_sys_system` VALUES ('1', 'sys_center', '云后台管理平台', '云后台管理平台', '', null, null, 'Y', '2017-05-05 08:56:13', 'sfxie', null, null, '0', null);
+INSERT INTO `sfxie_sys_system` VALUES ('2', 'sys_center_company', '公司', '公司', null, null, null, 'Y', '2017-05-05 08:56:20', 'sfxie', null, null, '0', null);
 
 -- ----------------------------
 -- Table structure for sfxie_sys_userinfo
@@ -600,9 +628,7 @@ CREATE TABLE `sfxie_sys_user_relation` (
   KEY `department_code` (`department_code`),
   KEY `post_code` (`post_code`),
   KEY `user_id` (`user_id`),
-  CONSTRAINT `sfxie_sys_user_relation_ibfk_1` FOREIGN KEY (`company_code`) REFERENCES `sfxie_sys_company` (`company_code`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `sfxie_sys_user_relation_ibfk_2` FOREIGN KEY (`department_code`) REFERENCES `sfxie_sys_department` (`department_code`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `sfxie_sys_user_relation_ibfk_3` FOREIGN KEY (`post_code`) REFERENCES `sfxie_sys_post` (`post_code`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `sfxie_sys_user_relation_ibfk_1` FOREIGN KEY (`company_code`) REFERENCES `sfxie_sys_company` (`company_code`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='人员档案-关系表';
 
 -- ----------------------------
@@ -610,6 +636,11 @@ CREATE TABLE `sfxie_sys_user_relation` (
 -- ----------------------------
 INSERT INTO `sfxie_sys_user_relation` VALUES ('111', 'sfxie', '', 'Y', '2017-07-26 14:49:28', null, null, '', 'test_company2', '', null, '谢声锋', null, null, null, null, 'test_company2', null, null, '0');
 INSERT INTO `sfxie_sys_user_relation` VALUES ('1112', '', '', 'Y', '2017-07-26 14:49:28', null, null, '', 'test_company3', '', null, '张三', null, null, null, null, 'test_company3', null, null, '0');
+INSERT INTO `sfxie_sys_user_relation` VALUES ('1A330057DFA84D38B569D52858BC9203', '', null, 'Y', '2017-08-10 11:44:55', null, null, 'sfxie', 'test_company2', 'xsfcy@126.com', null, '测试部门人员档案1', null, null, null, null, 'test_company2', '', 'test_department', '0');
+INSERT INTO `sfxie_sys_user_relation` VALUES ('23BD227DF6FF4A90BC6EA7F083F7022A', '', null, 'Y', '2017-08-10 11:37:36', null, null, 'sfxie', 'test_company2', 'xsfcy@126.com', null, '大中', null, null, null, null, 'test_company2', '', '', '0');
+INSERT INTO `sfxie_sys_user_relation` VALUES ('7FAD52A0057144388D77101E228A144A', '', null, 'Y', '2017-08-10 11:37:14', null, null, 'sfxie', 'test_organization3', 'xsfcy@126.com', null, '王五', null, null, null, null, 'test_organization3', '', '', '0');
+INSERT INTO `sfxie_sys_user_relation` VALUES ('F61481CBF03F488DB4D8C916421DEF35', '', null, 'Y', '2017-08-10 11:36:41', null, null, 'sfxie', 'test_company2', 'xsfcy@126.com', null, '李四', null, null, null, null, 'test_company2', '', '', '0');
+INSERT INTO `sfxie_sys_user_relation` VALUES ('uaasq', '', null, 'Y', '2017-08-09 15:21:59', null, null, 'sfxie', 'test_organization3', 'xsfcy@126.com', null, '测试新增组织结构3用户1', null, null, null, null, 'test_organization3', '', '', '0');
 
 -- ----------------------------
 -- Table structure for sfxie_sys_user_role

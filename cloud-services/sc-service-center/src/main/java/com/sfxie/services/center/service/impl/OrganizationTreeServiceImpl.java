@@ -7,7 +7,6 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import com.sfxie.services.center.dao.mapper.OrganizationTreeMapper;
 import com.sfxie.services.center.dao.mapper.SfxieSysCompanyMapper;
