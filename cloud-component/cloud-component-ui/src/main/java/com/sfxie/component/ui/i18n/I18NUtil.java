@@ -8,6 +8,8 @@ import org.springframework.context.NoSuchMessageException;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
 
+import com.sfxie.core.framework.core.SpringContext;
+
 /**
  * 获取spring 环境中的i18n国际化资源
  * @author xiesf
@@ -38,5 +40,16 @@ public class I18NUtil  {
 	 */
 	public String getMessage(String code){
 		return getMsg(code);
+	}
+	/**
+	 * 获取国际化资源
+	 * @param code
+	 * 			资源代码
+	 * @return
+	 * 			返回资源名称
+	 */
+	public static String getProperty(String code){
+		I18NUtil i18NUtil = SpringContext.getBeanByClass(I18NUtil.class);
+		return i18NUtil.getMsg(code);
 	}
 }
