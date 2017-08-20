@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE mycat:schema SYSTEM "schema.dtd">
+<mycat:schema xmlns:mycat="http://io.mycat/">
+
+	<schema name="sc_center" checkSQLschema="false" sqlMaxLimit="100">
+		<!-- 
+		<table name="sfxie_sys_organizition" primaryKey="id_" dataNode="dn_sc_center_1" />
+		<table name="sfxie_sys_company" primaryKey="id_"  dataNode="dn_sc_center_1" /> 
+		-->
+		<table name="sfxie_sys_organizition" primaryKey="id_" type="global"  dataNode="mysql_center_$0-1"/>
+		<table name="sfxie_sys_company" primaryKey="id_" type="global" dataNode="mysql_center_$0-1"/>
+		<table name="sfxie_sys_role_action" primaryKey="id_"  dataNode="mysql_center_$0-1"  rule="sharding-by-intfile" /> 
+		<table name="sfxie_sys_action" primaryKey="id_"  dataNode="mysql_center_$0-1"  rule="sharding-by-intfile" /> 
+		<table name="sfxie_sys_authorization" primaryKey="id_"  dataNode="mysql_center_$0-1"  rule="sharding-by-intfile" /> 
+		<table name="sfxie_sys_auth_role_menu" primaryKey="id_"  dataNode="mysql_center_$0-1"  rule="sharding-by-intfile" /> 
+		<table name="sfxie_sys_post_role" primaryKey="id_"  dataNode="mysql_center_$0-1"  rule="sharding-by-intfile" /> 
+		<table name="sfxie_sys_post" primaryKey="id_"  dataNode="mysql_center_$0-1"  rule="sharding-by-intfile" /> 
+		<table name="sfxie_sys_department" primaryKey="id_"  dataNode="mysql_center_$0-1"  rule="sharding-by-intfile" /> 
+		<table name="sfxie_sys_user_relation" primaryKey="id_"  dataNode="mysql_center_$0-1"  rule="sharding-by-intfile" />  
+		<table name="sfxie_sys_role_menu" primaryKey="id_"  dataNode="mysql_center_$0-1"  rule="sharding-by-intfile" />  
+		<table name="sfxie_sys_menu" primaryKey="id_"  dataNode="mysql_center_$0-1"  rule="sharding-by-intfile" />  
+		<table name="sfxie_sys_user_role" primaryKey="id_"  dataNode="mysql_center_$0-1"  rule="sharding-by-intfile" />  
+		<table name="sfxie_sys_role" primaryKey="id_"  dataNode="mysql_center_$0-1"  rule="sharding-by-intfile" />  
+		<table name="sfxie_sys_system" primaryKey="id_"  dataNode="mysql_center_$0-1"  rule="sharding-by-intfile" />  
+		<table name="sfxie_sys_userinfo" primaryKey="id_"  dataNode="mysql_center_$0-1"  rule="sharding-by-intfile" />  
+		<table name="sfxie_ui_skin" primaryKey="id_"  dataNode="mysql_center_$0-1"  rule="sharding-by-intfile" /> 
+		
+	</schema>
+	
+	<dataNode name="mysql_center_0" dataHost="mysql_3306" database="sc_center" />
+	<dataNode name="mysql_center_1" dataHost="mysql_3307" database="sc_center" />
+	
+	<dataHost name="mysql_3306" maxCon="10" minCon="10" balance="0"
+			  writeType="0" dbType="mysql" dbDriver="native" switchType="1"  slaveThreshold="100">
+		<heartbeat>select user()</heartbeat>
+		<writeHost host="mysql_sc_center_1" url="mysql_sc_center_1:3306" user="root"
+				   password="root">
+		</writeHost>
+	</dataHost>
+	
+	<dataHost name="mysql_3307" maxCon="10" minCon="10" balance="0"
+			  writeType="0" dbType="mysql" dbDriver="native" switchType="1"  slaveThreshold="100">
+		<heartbeat>select user()</heartbeat>
+		<writeHost host="mysql_sc_center_2" url="mysql_sc_center_2:3306" user="root"
+				   password="root">
+		</writeHost>
+	</dataHost>
+</mycat:schema>

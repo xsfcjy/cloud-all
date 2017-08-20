@@ -14,7 +14,9 @@
 				WHERE ssc.create_user = #{createUser} AND ssc.is_valid = 'Y'
 	      		AND ssc2.company_level  = (
 	      			SELECT ssu.create_company_level from sfxie_sys_userinfo ssu WHERE ssu.user_id = #{createUser} 
+					<if test="partitionCompany != null and partitionCompany != ''">
 	      			AND ssu.partition_company = #{partitionCompany}
+				  	</if>
 	      		)
 	
 		<!-- SELECT sso.company_code id, sso.parent_company_code pid ,ssc2.company_level level,ssc2.company_name_cn name
@@ -41,7 +43,7 @@
 	<select id="selectByParentCompanyCode" parameterType="map" resultType="com.sfxie.services.center.pojo.tree.OrganizationTreePojo">
 			SELECT
 				ssc.company_code id,
-				NULL pid,
+				sso.parent_company_code pid,
 				ssc.company_level companyLevel,
 				ssc.company_name_cn NAME,
 				1 isParent,
@@ -68,7 +70,9 @@
 					LEFT JOIN sfxie_ui_skin sus ON sus.id_ = ssd.department_code
 				WHERE
 					  ssd.company_code = #{parentCompanyCode}
-				  AND ssd.partition_company = #{partitionCompany} 
+					<if test="partitionCompany != null and partitionCompany != ''">
+				  	AND ssd.partition_company = #{partitionCompany} 
+				  	</if>
 			UNION
 				SELECT
 					ssp.post_code id,
@@ -83,7 +87,9 @@
 					LEFT JOIN sfxie_ui_skin sus ON sus.id_ = ssp.post_code
 				WHERE
 					  ssp.company_code = #{parentCompanyCode}
-				  AND ssp.partition_company = #{partitionCompany} 
+					<if test="partitionCompany != null and partitionCompany != ''">
+				  	AND ssp.partition_company = #{partitionCompany} 
+				  	</if>
 					
 
 	</select>
@@ -129,8 +135,10 @@
 			ON ssat.operator_code = #{companyCode} AND ssat.operator_type = 'c' 
 			AND ssat.resource_type = 'p' AND ssat.resource_code = ssur.user_id
 		LEFT JOIN sfxie_sys_userinfo ssu ON ssu.user_id = ssur.user_id
-		WHERE
-			 ssur.partition_company = #{partitionCompany} 
+		WHERE 1=1
+		<if test="partitionCompany != null and partitionCompany != ''">
+		AND ssur.partition_company = #{partitionCompany} 
+	  	</if>
       	<if test="userNameCn != null and userNameCn != ''">
         AND ssur.user_name_cn like '%${userNameCn}%'
       	</if>

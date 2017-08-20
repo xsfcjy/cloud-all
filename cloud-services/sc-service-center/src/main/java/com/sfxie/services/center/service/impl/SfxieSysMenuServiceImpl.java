@@ -1,6 +1,7 @@
 package com.sfxie.services.center.service.impl;
 
 import java.util.List;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Service;
 import com.sfxie.core.framework.core.TransactionService;
 import com.sfxie.services.center.dao.mapper.SfxieSysMenuMapper;
 import com.sfxie.services.center.pojo.SfxieSysMenu;
+import com.sfxie.services.center.util.ServicesContext;
+import com.sfxie.utils.StringUtils;
 
 @Service
 public class SfxieSysMenuServiceImpl extends TransactionService {
@@ -40,6 +43,12 @@ public class SfxieSysMenuServiceImpl extends TransactionService {
      * @param record
      */
     public int insertSelective(SfxieSysMenu record){
+    	if(StringUtils.isEmpty(record.getPartitionCompany())){
+    		record.setPartitionCompany(ServicesContext.getUserDefaultPartitionCompany());
+    	}
+    	String createUser = StringUtils.isNotEmpty(record.getCreateUser())?record.getCreateUser():ServicesContext.getDefaultCreateUserId();
+    	record.setCreateUser(createUser);
+    	record.setId(UUID.randomUUID().toString());
     	return sfxieSysMenuMapper.insertSelective(record);
     }
 

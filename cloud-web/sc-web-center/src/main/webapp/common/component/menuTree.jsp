@@ -36,14 +36,14 @@ callback: {
 <SCRIPT type="text/javascript">
 	var menuType = '<%= request.getParameter("menuType") %>';
 	Component.menuTree.callback['getUrl'] = function(){
-		return "${centerPath}/menu/${userId}/${partitionCompany}";
+		return "${centerPath}/menuTree/${userId}";
 	}
 	Component.menuTree.callback['myBeforeCallBack'] = function(treeId, treeNode) {
 		if(treeNode){
 			var treeObj = $.fn.zTree.getZTreeObj('<%= request.getParameter("treeId") %>');
-			var levelUrl = "${centerPath}/menu/u/sub/{id}/${partitionCompany}";
+			var levelUrl = "${centerPath}/menuTree/u/sub/{id}";
 			if(menuType == 'D' ){
-				levelUrl = "${centerPath}/menu/d/sub/{id}/${partitionCompany}";
+				levelUrl = "${centerPath}/menuTree/d/sub/{id}";
 			}
 			treeObj.setting.async.url = levelUrl.format(treeNode);
 		}

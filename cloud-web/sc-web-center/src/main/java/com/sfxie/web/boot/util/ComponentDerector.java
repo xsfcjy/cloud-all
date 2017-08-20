@@ -33,6 +33,8 @@ public class ComponentDerector {
 			return "actionList.jsp";
 		}else if (componentName.equals("jsp.center.menu.list.dataList")) {
 			return "dataList.jsp";
+		}else if (componentName.equals("jsp.center.menu.list.menuEdit")) {
+			return "menuEdit.jsp";
 		}else if (componentName.equals("jsp.center.organization.list.organizationDataAuthList")) {
 			return "";
 		}

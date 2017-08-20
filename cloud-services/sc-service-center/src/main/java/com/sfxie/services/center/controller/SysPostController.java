@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sfxie.core.framework.mvc.handle.Result;
 import com.sfxie.services.center.pojo.SfxieSysPost;
 import com.sfxie.services.center.service.impl.SfxieSysPostServiceImpl;
+import com.sfxie.services.center.util.ServicesContext;
 
 @RestController
 public class SysPostController {
@@ -29,11 +30,11 @@ public class SysPostController {
 		return result;
 	}
 	
-	@RequestMapping(value = "/post/{id}/{partitionCompany}", method = RequestMethod.GET)
-	public Object selectByPrimaryKey(@PathVariable(value="id") String id ,@PathVariable(value="partitionCompany") String partitionCompany){
+	@RequestMapping(value = "/post/{id}", method = RequestMethod.GET)
+	public Object selectByPrimaryKey(@PathVariable(value="id") String id ){
 		SfxieSysPost sfxieSysPost = new SfxieSysPost ();
 		sfxieSysPost.setId(id);
-		sfxieSysPost.setPartitionCompany(partitionCompany);
+		sfxieSysPost.setPartitionCompany(ServicesContext.getUserDefaultPartitionCompany());
 		Result<SfxieSysPost> result = new Result.BuilderObject<SfxieSysPost>(sfxieSysPostService.selectByPrimaryKey(sfxieSysPost)).build();
     	return result;
     }
@@ -43,11 +44,11 @@ public class SysPostController {
      *
      * @param id
      */
-	@RequestMapping(value = "/post/{id}/{partitionCompany}", method = RequestMethod.DELETE)
-    public int deleteByPrimaryKey(@PathVariable(value="id") String id ,@PathVariable(value="partitionCompany") String partitionCompany){
+	@RequestMapping(value = "/post/{id}", method = RequestMethod.DELETE)
+    public int deleteByPrimaryKey(@PathVariable(value="id") String id ){
 		SfxieSysPost sfxieSysPost = new SfxieSysPost ();
 		sfxieSysPost.setId(id);
-		sfxieSysPost.setPartitionCompany(partitionCompany);
+		sfxieSysPost.setPartitionCompany(ServicesContext.getUserDefaultPartitionCompany());
     	return sfxieSysPostService.deleteByPrimaryKey(sfxieSysPost);
     }
 

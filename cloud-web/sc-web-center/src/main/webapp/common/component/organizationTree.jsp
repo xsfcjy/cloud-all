@@ -35,12 +35,13 @@ callback: {
 
 <SCRIPT type="text/javascript">
 	Component.organizationTree.callback['getUrl'] = function(){
-		return "${centerPath}/organization/${userId}/${partitionCompany}";
+		return "${centerPath}/organization/${userId}";
 	}
 	Component.organizationTree.callback['myBeforeCallBack'] = function(treeId, treeNode) {
 		if(treeNode){
 			var treeObj = $.fn.zTree.getZTreeObj('<%= request.getParameter("treeId") %>');
-			var levelUrl = "${centerPath}/organization/sub/{id}/{companyLevel}/${partitionCompany}";
+			var levelUrl = "${centerPath}/organization/sub/{id}/{companyLevel}";
+			console.log(levelUrl.format(treeNode));
 			treeObj.setting.async.url = levelUrl.format(treeNode);
 		}
 	    return true;

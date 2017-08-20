@@ -27,14 +27,13 @@ public class MenuController {
 	 * @param userId
 	 * @return
 	 */
-	@RequestMapping(value = "/menu/{userId}/{partitionCompany}", method = {RequestMethod.POST})
-	public @ResponseBody Object organizationByUser(@PathVariable String userId,@PathVariable String partitionCompany ) {
-		return service.selectByUserId(userId,partitionCompany);
+	@RequestMapping(value = "/menuTree/{userId}", method = {RequestMethod.POST})
+	public @ResponseBody Object organizationByUser(@PathVariable String userId ) {
+		return service.selectByUserId(userId);
 	}
-	@RequestMapping(value = "/menu/{menuTypye}/sub/{parentCode}/{partitionCompany}", method = {RequestMethod.POST})
-	public @ResponseBody Object menuByParentCode(@PathVariable String menuTypye,@PathVariable String parentCode
-			, @PathVariable String partitionCompany) {
-		return service.selectByParentCode(menuTypye,parentCode,partitionCompany);
+	@RequestMapping(value = "/menuTree/{menuTypye}/sub/{parentCode}", method = {RequestMethod.POST})
+	public @ResponseBody Object menuByParentCode(@PathVariable String menuTypye,@PathVariable String parentCode) {
+		return service.selectByParentCode(menuTypye,parentCode);
 	}
 	
 }

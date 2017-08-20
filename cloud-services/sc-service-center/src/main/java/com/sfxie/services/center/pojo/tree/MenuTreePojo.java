@@ -26,6 +26,8 @@ public class MenuTreePojo extends CustomerNodeEntity {
 	private String iconSkin;
 	
 	private String  menuType;
+	
+	private String  menuId;
 
 	public String getId() {
 		return id;
@@ -107,6 +109,14 @@ public class MenuTreePojo extends CustomerNodeEntity {
 
 	public void setMenuType(String menuType) {
 		this.menuType = menuType;
+	}
+
+	public String getMenuId() {
+		return menuId;
+	}
+
+	public void setMenuId(String menuId) {
+		this.menuId = menuId;
 	}
 
 }

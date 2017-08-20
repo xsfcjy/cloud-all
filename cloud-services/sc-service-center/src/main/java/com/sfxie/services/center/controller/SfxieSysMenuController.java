@@ -19,6 +19,7 @@ import com.sfxie.core.framework.mvc.handle.Result;
 import com.sfxie.services.center.pojo.SfxieSysMenu;
 import com.sfxie.services.center.service.impl.SfxieSysMenuServiceImpl;
 import com.sfxie.services.center.ui.easyui.EasyUIMenuDecorator;
+import com.sfxie.services.center.util.ServicesContext;
 
 @RestController
 public class SfxieSysMenuController {
@@ -34,12 +35,12 @@ public class SfxieSysMenuController {
 		return result;
 	}
 	
-	@RequestMapping(value = "/menu/{id}/{partitionCompany}", method = RequestMethod.GET)
-	public Object selectByPrimaryKey(@PathVariable(value="id") String id ,@PathVariable(value="partitionCompany") String partitionCompany){
+	@RequestMapping(value = "/menu/{id}", method = RequestMethod.GET)
+	public Object selectByPrimaryKey(@PathVariable(value="id") String id ){
 		SfxieSysMenu sfxieSysMenu = new SfxieSysMenu ();
 		sfxieSysMenu.setId(id);
-		sfxieSysMenu.setPartitionCompany(partitionCompany);
-		Result<SfxieSysMenu> result = new Result.BuilderObject<SfxieSysMenu>(sfxieSysMenu).build();
+		sfxieSysMenu.setPartitionCompany(ServicesContext.getUserDefaultPartitionCompany());
+		Result<SfxieSysMenu> result = new Result.BuilderObject<SfxieSysMenu>(sfxieSysMenuService.selectByPrimaryKey(sfxieSysMenu)).build();
     	return result;
     }
 	
@@ -48,11 +49,11 @@ public class SfxieSysMenuController {
      *
      * @param id
      */
-	@RequestMapping(value = "/menu/{id}/{partitionCompany}", method = RequestMethod.DELETE)
-    public int deleteByPrimaryKey(@PathVariable(value="id") String id ,@PathVariable(value="partitionCompany") String partitionCompany){
+	@RequestMapping(value = "/menu/{id}", method = RequestMethod.DELETE)
+    public int deleteByPrimaryKey(@PathVariable(value="id") String id){
 		SfxieSysMenu sfxieSysMenu = new SfxieSysMenu ();
 		sfxieSysMenu.setId(id);
-		sfxieSysMenu.setPartitionCompany(partitionCompany);
+		sfxieSysMenu.setPartitionCompany(ServicesContext.getUserDefaultPartitionCompany());
     	return sfxieSysMenuService.deleteByPrimaryKey(sfxieSysMenu);
     }
 
@@ -71,7 +72,7 @@ public class SfxieSysMenuController {
      *
      * @param record
      */
-	@RequestMapping(value = "/menu/insertSelective", method = RequestMethod.POST)
+	@RequestMapping(value = "/menu", method = RequestMethod.POST)
     public int insertSelective(@RequestBody SfxieSysMenu record){
     	return sfxieSysMenuService.insertSelective(record);
     }
@@ -81,7 +82,7 @@ public class SfxieSysMenuController {
      *
      * @param record
      */
-	@RequestMapping(value = "/menu/updateSelective", method = RequestMethod.PUT)
+	@RequestMapping(value = "/menu", method = RequestMethod.PUT)
     public int updateByPrimaryKeySelective(@RequestBody SfxieSysMenu record){
     	return sfxieSysMenuService.updateByPrimaryKeySelective(record);
     }

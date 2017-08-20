@@ -18,10 +18,11 @@
 			'menu' menuLevel,
 			ssm.menu_name NAME,
 			ssm.menu_type menuType,
+			ssm.id_ menuId,
 			IF (ssmsub.count > 0, 1, 0) isParent
 		FROM
 			sfxie_sys_menu ssm
-		INNER JOIN sfxie_sys_system sss ON ssm.system_id = sss.id_
+		INNER JOIN sfxie_sys_system sss ON ssm.system_code = sss.system_code
 		LEFT JOIN (
 			SELECT
 				count(1) count,
@@ -32,7 +33,9 @@
 				ssmsub.parent_id
 		) ssmsub ON ssmsub.parent_id = ssm.id_
 		WHERE sss.system_code = #{parentCode} 
+	  	<if test="partitionCompany != null and partitionCompany != ''">
 	  	AND ssm.partition_company = #{partitionCompany} 
+	  	</if>
 		AND ssm.menu_type = #{menuType} 
 		UNION 
 		
@@ -42,6 +45,7 @@
 			'menu' menuLevel,
 			ssm.menu_name NAME,
 			ssm.menu_type menuType,
+			ssm.id_ menuId,
 			IF (ssmsub.count > 0, 1, 0) isParent
 		FROM
 			sfxie_sys_menu ssm
@@ -56,7 +60,9 @@
 				ssmsub.parent_id
 		) ssmsub ON ssmsub.parent_id = ssm.id_
 		WHERE sss.menu_code = #{parentCode} 
+	  	<if test="partitionCompany != null and partitionCompany != ''">
 	  	AND sss.partition_company = #{partitionCompany}  
+	  	</if>
 		AND ssm.menu_type = #{menuType} 
 			  	
 	</select>

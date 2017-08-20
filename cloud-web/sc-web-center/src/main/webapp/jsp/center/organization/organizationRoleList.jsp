@@ -5,7 +5,7 @@
 	
 	
 	function organizationRoleList(node){	
-		var url = '${centerPath}/organization/{id}/{partitionCompany}/roleList'.format(node);
+		var url = '${centerPath}/organization/{id}/roleList'.format(node);
     	$('#dataGridRoleList').easyUILoadData({
     		dataGridId: 'dataGridRoleList',
 			extractParameter:function(params){

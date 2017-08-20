@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sfxie.core.framework.mvc.handle.Result;
 import com.sfxie.services.center.pojo.SfxieSysDepartment;
 import com.sfxie.services.center.service.impl.SfxieSysDepartmentServiceImpl;
+import com.sfxie.services.center.util.ServicesContext;
 
 @RestController
 public class SfxieSysDepartmentController {
@@ -29,11 +30,11 @@ public class SfxieSysDepartmentController {
 		return result;
 	}
 	
-	@RequestMapping(value = "/department/{id}/{partitionCompany}", method = RequestMethod.GET)
-	public Object selectByPrimaryKey(@PathVariable(value="id") String id ,@PathVariable(value="partitionCompany") String partitionCompany){
+	@RequestMapping(value = "/department/{id}", method = RequestMethod.GET)
+	public Object selectByPrimaryKey(@PathVariable(value="id") String id){
 		SfxieSysDepartment sfxieSysDepartment = new SfxieSysDepartment ();
 		sfxieSysDepartment.setId(id);
-		sfxieSysDepartment.setPartitionCompany(partitionCompany);
+		sfxieSysDepartment.setPartitionCompany(ServicesContext.getUserDefaultPartitionCompany());
 		Result<SfxieSysDepartment> result = new Result.BuilderObject<SfxieSysDepartment>(sfxieSysDepartmentService.selectByPrimaryKey(sfxieSysDepartment)).build();
     	return result;
     }
@@ -43,11 +44,11 @@ public class SfxieSysDepartmentController {
      *
      * @param id
      */
-	@RequestMapping(value = "/department/{id}/{partitionCompany}", method = RequestMethod.DELETE)
-    public int deleteByPrimaryKey(@PathVariable(value="id") String id ,@PathVariable(value="partitionCompany") String partitionCompany){
+	@RequestMapping(value = "/department/{id}", method = RequestMethod.DELETE)
+    public int deleteByPrimaryKey(@PathVariable(value="id") String id ){
 		SfxieSysDepartment sfxieSysDepartment = new SfxieSysDepartment ();
 		sfxieSysDepartment.setId(id);
-		sfxieSysDepartment.setPartitionCompany(partitionCompany);
+		sfxieSysDepartment.setPartitionCompany(ServicesContext.getUserDefaultPartitionCompany());
     	return sfxieSysDepartmentService.deleteByPrimaryKey(sfxieSysDepartment);
     }
 

@@ -34,18 +34,18 @@ public class OrganizationTreeServiceImpl {
 	 * @param map
 	 * @return
 	 */
-	public List<OrganizationTreePojo> selectByUserId(String userId,String partitionCompany){
+	public List<OrganizationTreePojo> selectByUserId(String userId){
 		PartitionData record = new PartitionData();
 		record.setCreateUser(userId);
-		record.setPartitionCompany(partitionCompany);
+		record.setPartitionCompany(ServicesContext.getUserDefaultPartitionCompany());
 		return mapper.selectByUserId(record);
 	}
 	
 
-	public List<OrganizationTreePojo> selectByParentCompanyCode(String parentCompanyCode,String parentCompanyLevel,String partitionCompany){
+	public List<OrganizationTreePojo> selectByParentCompanyCode(String parentCompanyCode,String parentCompanyLevel){
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("parentCompanyCode", parentCompanyCode);
-		map.put("partitionCompany", partitionCompany);
+		map.put("partitionCompany", ServicesContext.getPartitionCompany(parentCompanyCode));
 		if(parentCompanyLevel.equals("department")){
 			return null;
 		}else if(parentCompanyLevel.equals("post")){
@@ -81,6 +81,7 @@ public class OrganizationTreeServiceImpl {
 
 
 	public List<SfxieSysUserRelation> selectUsersByCompanyCode(SfxieSysUserRelation sfxieSysUserRelation){
+		sfxieSysUserRelation.setPartitionCompany(ServicesContext.getPartitionCompany(sfxieSysUserRelation.getCompanyCode()));
 		return mapper.selectUsersByCompanyCode(sfxieSysUserRelation);
 	}
 

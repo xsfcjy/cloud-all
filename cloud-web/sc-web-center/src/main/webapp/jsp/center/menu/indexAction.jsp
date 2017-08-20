@@ -25,6 +25,12 @@
 		</div>
 	</div>
     <div style="display: none;">
+		<div id="menuWindowEdit" class="easyui-window" 
+				title="<spring:message code="page.center.menu.menuEdit" />" 
+				data-options="onBeforeClose:closeWindow,modal:true,closed:true,iconCls:'icon-save'" 
+				style="width:400px;height:250px;padding:10px;">
+			<jsp:include page="<%= com.sfxie.web.boot.util.ComponentDerector.getComponentPath(\"jsp.center.menu.list.menuEdit\")%>" flush="true"></jsp:include>
+		</div>
     </div>
   </body>
   <SCRIPT type="text/javascript">
@@ -33,12 +39,10 @@
     		GoLive.EasyUI.Form.reset(formId);
     	}
     	Component.menuTree.callback.zTreeOnClick = function (event, treeId, treeNode) {
-// 			if(treeNode.companyLevel == 'department'){
-// 			}else if ( treeNode.companyLevel == 'post' ){
-// 			}else{
-				organizationUserList(treeNode);
-				organizationRoleList(treeNode);
-// 			}
+	    		console.log(treeNode);
+    		if(treeNode['menuLevel'] == 'menu'){
+    			
+    		}
 		};
 		
 		function getParentNodeCurs(node,callback){
@@ -66,17 +70,64 @@
 
 		var newCount = 1;
 		Component.menuTree.callback.addHoverDom = function (treeId, treeNode) {
-			
+			if (treeNode.editNameFlag || $("#addMenuBtn_"+treeNode.tId).length>0) return;
+			var sObj = $("#" + treeNode.tId + "_span");
+			addMenuNodeBtn(sObj,treeNode);
 		};
 		Component.menuTree.callback.removeHoverDom = function (treeId, treeNode) {
+			try{
+				$("#addMenuBtn_"+treeNode.tId).unbind().remove();
+			}catch(e){
+				;
+			}
 		};
+		
+		function addMenuNodeBtn(sObj,treeNode){
+			var addStr = "<span class='button icon02_ico_docu' id='addMenuBtn_" + treeNode.tId
+			+ "' title='<spring:message code="page.center.menu.addMenu" />' onfocus='this.blur();'></span>";
+			sObj.after(addStr);
+			var btn = $("#addMenuBtn_"+treeNode.tId);
+			if (btn) btn.bind("click", function(){
+				openEditMenuWin(treeNode);
+				var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+				zTree.selectNode(treeNode);
+				return false;
+			});
+		}
+		
+		function openEditMenuWin(treeNode){
+			var loadRoleUrl = "${centerPath}/menu/{id}".format({id:'null'});
+			GoLive.EasyUI.Form.loadData({
+				prefix:'',
+				formId:'menuForm',
+				type:'GET',
+				url:loadRoleUrl,
+				afterLoadData: function(data){
+					if(!data['isValid'])
+						data['isValid'] = 'Y';
+					if(treeNode['menuLevel'] == 'system'){
+						data['systemCode'] = treeNode['id'];
+					}else{
+						data['parentId'] = treeNode['menuId'];
+					}
+				},
+				afterFormRender : function (data){
+					if(data){
+            			$('#isValidMenuList').combobox('setValue', data["isValid"]);
+					}
+                	$('#menuWindowEdit').window('open');
+				},
+				parameter:{
+				}
+			});
+		}
 		function selectAll() {
 			var zTree = $.fn.zTree.getZTreeObj("treeDemo");
 			zTree.setting.edit.editNameSelectAll =  $("#selectAll").attr("checked");
 		}
 		
 		function initTabsDatagrid(){
-			organizationUserList(null);
+// 			organizationUserList(null);
 		}
 		
 		$(document).ready(function(){

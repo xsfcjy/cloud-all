@@ -25,7 +25,7 @@ public class SfxieSysMenu extends CustomerNodeEntity{
     /**
      *  关联system_id : 关联web_system表,所属表字段为sfxie_sys_menu.system_id
      */
-    private String systemId;
+    private String systemCode;
 
     /**
      *  数据权限id : 关联数据权限主键,所属表字段为sfxie_sys_menu.auth_data_id
@@ -139,25 +139,16 @@ public class SfxieSysMenu extends CustomerNodeEntity{
         this.menuCode = menuCode == null ? null : menuCode.trim();
     }
 
-    /**
-     * 获取 关联system_id : 关联web_system表 字段:sfxie_sys_menu.system_id
-     *
-     * @return sfxie_sys_menu.system_id, 关联system_id : 关联web_system表
-     */
-    public String getSystemId() {
-        return systemId;
-    }
 
-    /**
-     * 设置 关联system_id : 关联web_system表 字段:sfxie_sys_menu.system_id
-     *
-     * @param systemId sfxie_sys_menu.system_id, 关联system_id : 关联web_system表
-     */
-    public void setSystemId(String systemId) {
-        this.systemId = systemId == null ? null : systemId.trim();
-    }
+    public String getSystemCode() {
+		return systemCode;
+	}
 
-    /**
+	public void setSystemCode(String systemCode) {
+		this.systemCode = systemCode;
+	}
+
+	/**
      * 获取 数据权限id : 关联数据权限主键 字段:sfxie_sys_menu.auth_data_id
      *
      * @return sfxie_sys_menu.auth_data_id, 数据权限id : 关联数据权限主键

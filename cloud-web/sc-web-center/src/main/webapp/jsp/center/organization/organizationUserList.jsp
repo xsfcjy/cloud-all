@@ -21,28 +21,30 @@
 		});
 		console.log(parentNodeDatas); */
 // 		var url = '${centerPath}/organization/{id}/userList/{partitionCompany}'.format(node);
-		var url = '${centerPath}/organization/{id}/{partitionCompany}/userList'.format(node);
-    	$('#dataGridUserList').easyUILoadData({
-    		dataGridId: 'dataGridUserList',
-			extractParameter:function(params){
-// 				params['data']= parentNodeDatas;
-			},
-    		url: url ,
-    		columnDecoratedUrl:'${easyuiDataProviderPath}',
-    		decoratedColumns:[{
-    			field:'isValid',
-    			type:'string',
-    			dataRegister:'companyGridColumnDataProvider',
-    			displayField:'text',
-    			valueField:'value'
-    		}],
-    		toolbarConditions:[{
-				type:'textbox',
-				name:'userNameCn',
-				id:'userNameCnId',
-				label:'<spring:message code="page.center.organization.userList.userNameCn" />'
-			}]
-    	});
+		if(node){
+			var url = '${centerPath}/organization/{id}/userList'.format(node);
+	    	$('#dataGridUserList').easyUILoadData({
+	    		dataGridId: 'dataGridUserList',
+				extractParameter:function(params){
+	// 				params['data']= parentNodeDatas;
+				},
+	    		url: url ,
+	    		columnDecoratedUrl:'${easyuiDataProviderPath}',
+	    		decoratedColumns:[{
+	    			field:'isValid',
+	    			type:'string',
+	    			dataRegister:'companyGridColumnDataProvider',
+	    			displayField:'text',
+	    			valueField:'value'
+	    		}],
+	    		toolbarConditions:[{
+					type:'textbox',
+					name:'userNameCn',
+					id:'userNameCnId',
+					label:'<spring:message code="page.center.organization.userList.userNameCn" />'
+				}]
+	    	});
+		}
     }
     var toolbarUser = [{
         text:'<spring:message code="button.query" />',

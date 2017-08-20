@@ -19,6 +19,7 @@ import com.sfxie.services.center.pojo.SfxieSysUserRelation;
 import com.sfxie.services.center.service.impl.OrganizationTreeServiceImpl;
 import com.sfxie.services.center.service.impl.SfxieSysRoleServiceImpl;
 import com.sfxie.services.center.service.impl.SfxieSysUserRelationServiceImpl;
+import com.sfxie.services.center.util.ServicesContext;
 import com.sfxie.services.center.vo.SfxieSysCompanyVo;
 import com.sfxie.services.center.vo.SfxieSysOrganizationVo;
 
@@ -43,14 +44,13 @@ public class OrganizationController {
 	 * @param userId
 	 * @return
 	 */
-	@RequestMapping(value = "/organization/{userId}/{partitionCompany}", method = {RequestMethod.POST})
-	public @ResponseBody Object organizationByUser(@PathVariable String userId,@PathVariable String partitionCompany ) {
-		return service.selectByUserId(userId,partitionCompany);
+	@RequestMapping(value = "/organization/{userId}", method = {RequestMethod.POST})
+	public @ResponseBody Object organizationByUser(@PathVariable String userId ) {
+		return service.selectByUserId(userId);
 	}
-	@RequestMapping(value = "/organization/sub/{parentCompanyCode}/{parentCompanyLevel}/{partitionCompany}", method = {RequestMethod.POST})
-	public @ResponseBody Object organizationByParentCompanyCode(@PathVariable String parentCompanyCode, @PathVariable String parentCompanyLevel
-			, @PathVariable String partitionCompany) {
-		return service.selectByParentCompanyCode(parentCompanyCode,parentCompanyLevel,partitionCompany);
+	@RequestMapping(value = "/organization/sub/{parentCompanyCode}/{parentCompanyLevel}", method = {RequestMethod.POST})
+	public @ResponseBody Object organizationByParentCompanyCode(@PathVariable String parentCompanyCode, @PathVariable String parentCompanyLevel) {
+		return service.selectByParentCompanyCode(parentCompanyCode,parentCompanyLevel);
 	}
 	
 	/**
@@ -75,23 +75,21 @@ public class OrganizationController {
      *根据公司编码获取用户列表
      * @param record
      */
-	@RequestMapping(value = "/organization/{company}/userList/{partitionCompany}", method = RequestMethod.POST)
-    public Object queryUserinfos(@PathVariable String company,@PathVariable String partitionCompany,
+	/*@RequestMapping(value = "/organization/{company}/userList", method = RequestMethod.POST)
+    public Object queryUserinfos(@PathVariable String company,
     		@RequestBody SfxieSysUserRelation sfxieSysUserRelation){
 		sfxieSysUserRelation.setCompanyCode(company);
-		sfxieSysUserRelation.setPartitionCompany(partitionCompany);
 		List<SfxieSysUserRelation>  list = service.selectUsersByCompanyCode(sfxieSysUserRelation);
 		Result<List<SfxieSysUserRelation>> result = new Result.BuilderArray<List<SfxieSysUserRelation>>(list).build();
 		return result;
-    }
+    }*/
 	
 	/**
      *
      * @param record
      */
-	@RequestMapping(value = "/organization/{code}/{partitionCompany}/userList", method = RequestMethod.POST)
-    public Object queryUserinfos(@PathVariable String code,@PathVariable String partitionCompany
-    		,@RequestBody SfxieSysOrganizationVo sfxieSysOrganizationVo
+	@RequestMapping(value = "/organization/{companyCode}/userList", method = RequestMethod.POST)
+    public Object queryUserinfos(@PathVariable String companyCode,@RequestBody SfxieSysOrganizationVo sfxieSysOrganizationVo
     		){
 		PageHelper.ignorePaged();
 		List<SfxieSysUserRelation>  list = new ArrayList<SfxieSysUserRelation> ();
@@ -102,8 +100,8 @@ public class OrganizationController {
 //				
 //			}else {
 				SfxieSysUserRelation sfxieSysUserRelation = new SfxieSysUserRelation();
-				sfxieSysUserRelation.setPartitionCompany(partitionCompany);
-				sfxieSysUserRelation.setCompanyCode(code);
+				sfxieSysUserRelation.setPartitionCompany(ServicesContext.getPartitionCompany(companyCode));
+				sfxieSysUserRelation.setCompanyCode(companyCode);
 				sfxieSysUserRelation.setUserNameCn(sfxieSysOrganizationVo.getUserNameCn());
 				List<SfxieSysUserRelation>  listTemp =service.selectUsersByCompanyCode(sfxieSysUserRelation);
 				if(null!=listTemp && listTemp.size()>0)
@@ -124,15 +122,14 @@ public class OrganizationController {
 	 * @param sfxieSysOrganizationVo
 	 * @return
 	 */
-	@RequestMapping(value = "/organization/{code}/{partitionCompany}/roleList", method = RequestMethod.POST)
-   public Object queryRoles(@PathVariable String code,@PathVariable String partitionCompany
-   		,@RequestBody SfxieSysOrganizationVo sfxieSysOrganizationVo
+	@RequestMapping(value = "/organization/{companyCode}/roleList", method = RequestMethod.POST)
+   public Object queryRoles(@PathVariable String companyCode,@RequestBody SfxieSysOrganizationVo sfxieSysOrganizationVo
    		){
 		PageHelper.ignorePaged();
 		List<SfxieSysRole>  list = new ArrayList<SfxieSysRole> ();
 		SfxieSysRole entity = new SfxieSysRole();
-		entity.setPartitionCompany(partitionCompany);
-		entity.setCreateCompanyCode(code);
+		entity.setPartitionCompany(ServicesContext.getPartitionCompany(companyCode));
+		entity.setCreateCompanyCode(companyCode);
 		entity.setRoleName(sfxieSysOrganizationVo.getRoleName());
 		List<SfxieSysRole>  listTemp =sfxieSysRoleServiceImpl.selectByCondition(entity);
 		if(null!=listTemp && listTemp.size()>0)
